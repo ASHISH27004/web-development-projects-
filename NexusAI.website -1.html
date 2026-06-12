@@ -1,883 +1,756 @@
+cat > /mnt/user-data/outputs/nexusai-final.html << 'HTMLEOF'
 <!DOCTYPE html>
+<!--
+=============================================================
+  NexusAI – Future Tech Hub 2026
+  TECHNOLOGIES USED:
+    ✅ HTML5         – Page structure & semantic elements
+    ✅ CSS3          – Custom styling, variables, animations
+    ✅ Bootstrap 5   – Responsive grid, navbar, cards, modals
+    ✅ jQuery 3.7    – DOM manipulation, events, AJAX style
+    ✅ Java Servlet  – Backend config shown (web.xml, DAO)
+    ✅ SQL Database  – Real SQLite via SQL.js (WebAssembly)
+    ✅ Chart.js      – Live market trend charts
+=============================================================
+-->
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexusAI — Future Tech Intelligence Hub 2026</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusAI – Future Tech Hub 2026</title>
 
-<!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- Chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- ── 1. BOOTSTRAP 5 CSS (Responsive Grid + Components) ── -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
-  :root {
-    --bg-dark: #020408;
-    --bg-card: #0a0f1a;
-    --bg-surface: #0f1623;
-    --accent-cyan: #00f5ff;
-    --accent-lime: #a8ff3e;
-    --accent-amber: #ffb547;
-    --accent-magenta: #ff3ea8;
-    --text-primary: #f0f4ff;
-    --text-muted: #8a94b0;
-    --border-glow: rgba(0,245,255,0.15);
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
+  <!-- ── 2. GOOGLE FONTS ── -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  <!-- ── 3. FONT AWESOME ICONS ── -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  body {
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    overflow-x: hidden;
-    cursor: none;
-  }
+  <!-- ── 4. jQuery (DOM manipulation, events, animations) ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-  /* Custom cursor */
-  #cursor { position: fixed; width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width .2s, height .2s, background .2s; mix-blend-mode: difference; }
-  #cursor-ring { position: fixed; width: 38px; height: 38px; border: 1.5px solid var(--accent-cyan); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all .15s ease; opacity: 0.5; }
-  body:hover #cursor { opacity: 1; }
+  <!-- ── 5. SQL.js – Real SQLite Database in Browser (WebAssembly) ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
 
-  /* Noise texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.4;
-  }
+  <!-- ── 6. Chart.js – Data Visualization ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
-  /* Grid background */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
+  <!-- ════════════════════════════════════════════════════════
+       CSS3 – Custom Styles with CSS Variables & Animations
+       ════════════════════════════════════════════════════════ -->
+  <style>
+    /* ── CSS Variables (Design Tokens) ── */
+    :root {
+      --bg:        #07090f;
+      --bg-card:   #0d1117;
+      --bg-raised: #111827;
+      --cyan:      #00e5ff;
+      --green:     #69ff47;
+      --amber:     #ffb300;
+      --pink:      #ff4081;
+      --text:      #e8edf5;
+      --muted:     #6b7a99;
+      --border:    rgba(255,255,255,0.07);
+      --font:      'Space Grotesk', sans-serif;
+      --mono:      'JetBrains Mono', monospace;
+      --radius:    8px;
+    }
 
-  /* Navbar */
-  .nexus-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    background: rgba(2, 4, 8, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0,245,255,0.08);
-    padding: 1rem 0;
-    transition: all 0.3s;
-  }
-  .nexus-nav.scrolled { padding: 0.6rem 0; border-bottom-color: rgba(0,245,255,0.15); }
+    /* ── Base Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      overflow-x: hidden;
+    }
 
-  .nav-brand {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-  }
-  .nav-brand span { color: var(--accent-magenta); -webkit-text-fill-color: var(--accent-magenta); }
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 3px; }
 
-  .nexus-nav .nav-link {
-    color: var(--text-muted) !important;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.4rem 1rem !important;
-    transition: color 0.2s;
-    position: relative;
-  }
-  .nexus-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 1rem;
-    right: 1rem;
-    height: 1px;
-    background: var(--accent-cyan);
-    transform: scaleX(0);
-    transition: transform 0.2s;
-  }
-  .nexus-nav .nav-link:hover { color: var(--accent-cyan) !important; }
-  .nexus-nav .nav-link:hover::after { transform: scaleX(1); }
+    /* ── Grid background overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
 
-  .nav-cta {
-    background: transparent;
-    border: 1px solid var(--accent-cyan);
-    color: var(--accent-cyan) !important;
-    border-radius: 2px;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    padding: 0.45rem 1.2rem !important;
-    transition: all 0.25s;
-  }
-  .nav-cta:hover { background: var(--accent-cyan); color: var(--bg-dark) !important; }
+    /* ════════ NAVBAR (Bootstrap + jQuery scroll) ════════ */
+    .nexus-navbar {
+      position: fixed; top: 0; width: 100%; z-index: 999;
+      background: rgba(7,9,15,0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0;
+      transition: padding 0.3s, background 0.3s;
+    }
+    .nexus-navbar.scrolled {
+      padding: 0.55rem 0;
+      background: rgba(7,9,15,0.95);
+      border-bottom-color: rgba(0,229,255,0.15);
+    }
+    .brand {
+      font-weight: 700; font-size: 1.3rem; text-decoration: none;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nexus-navbar .nav-link {
+      color: var(--muted) !important;
+      font-size: 0.82rem; font-family: var(--mono);
+      padding: 0.35rem 0.9rem !important;
+      transition: color 0.2s;
+    }
+    .nexus-navbar .nav-link:hover { color: var(--cyan) !important; }
+    .btn-nav {
+      background: transparent; border: 1px solid var(--cyan);
+      color: var(--cyan) !important; border-radius: 4px;
+      font-family: var(--mono); font-size: 0.78rem;
+      padding: 0.35rem 1rem !important; transition: all 0.2s;
+    }
+    .btn-nav:hover { background: var(--cyan); color: var(--bg) !important; }
+    .navbar-toggler { border: 1px solid rgba(0,229,255,0.3); }
 
-  /* Hero */
-  .hero-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 0 80px;
-    position: relative;
-    z-index: 2;
-  }
+    /* ════════ LIVE TICKER ════════ */
+    .ticker {
+      background: rgba(0,229,255,0.04);
+      border-bottom: 1px solid rgba(0,229,255,0.08);
+      padding: 0.55rem 0; overflow: hidden; margin-top: 62px;
+    }
+    .ticker-track {
+      display: flex; white-space: nowrap;
+      animation: tickerScroll 25s linear infinite;
+    }
+    .tick-item {
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--muted); padding: 0 2rem;
+    }
+    .tick-item .tag { color: var(--cyan); }
+    .tick-item .up  { color: var(--green); }
+    @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  .hero-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    pointer-events: none;
-    animation: orb-drift 10s ease-in-out infinite alternate;
-  }
-  .orb-1 { width: 600px; height: 600px; background: rgba(0,245,255,0.06); top: -100px; right: -200px; }
-  .orb-2 { width: 400px; height: 400px; background: rgba(168,255,62,0.05); bottom: -100px; left: -100px; animation-delay: -5s; }
-  .orb-3 { width: 300px; height: 300px; background: rgba(255,62,168,0.04); top: 50%; right: 30%; animation-delay: -2s; }
+    /* ════════ HERO SECTION ════════ */
+    .hero {
+      min-height: 92vh; display: flex; align-items: center;
+      padding: 4rem 0; position: relative; overflow: hidden;
+    }
+    /* Glowing orb background */
+    .hero::before {
+      content: ''; position: absolute;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+      top: -100px; right: -100px; pointer-events: none;
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(105,255,71,0.05) 0%, transparent 70%);
+      bottom: -80px; left: -80px; pointer-events: none;
+    }
+    .badge-eye {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 50px; padding: 0.3rem 0.9rem;
+      font-family: var(--mono); font-size: 0.7rem; color: var(--cyan);
+      margin-bottom: 1.2rem;
+    }
+    .badge-eye .dot-live {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(105,255,71,0.4); }
+      50%       { box-shadow: 0 0 0 6px rgba(105,255,71,0); }
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -1.5px; margin-bottom: 1.2rem;
+    }
+    .hero-title .accent { color: var(--cyan); display: block; }
+    .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.75; max-width: 480px; margin-bottom: 2rem; }
 
-  @keyframes orb-drift { from { transform: translate(0, 0); } to { transform: translate(30px, 20px); } }
+    /* Tech stack badges */
+    .stack-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 4px; padding: 0.25rem 0.65rem;
+      font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+      margin: 0.18rem; transition: all 0.2s; cursor: default;
+    }
+    .stack-badge:hover { border-color: var(--cyan); color: var(--cyan); }
 
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent-cyan);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-  .hero-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--accent-cyan); }
+    /* CTA Buttons */
+    .btn-primary-nx {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cyan); color: #000 !important;
+      font-weight: 700; font-size: 0.88rem; border-radius: 5px;
+      padding: 0.75rem 1.8rem; border: none; cursor: pointer;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .btn-primary-nx:hover { background: var(--green); transform: translateY(-2px); }
+    .btn-outline-nx {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text) !important;
+      font-weight: 600; font-size: 0.88rem; border-radius: 5px;
+      padding: 0.75rem 1.5rem; border: 1px solid var(--border);
+      text-decoration: none; transition: all 0.25s; cursor: pointer;
+    }
+    .btn-outline-nx:hover { border-color: var(--cyan); color: var(--cyan) !important; }
 
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 7vw, 6rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -2px;
-    margin-bottom: 1.5rem;
-  }
-  .hero-title .line-accent { color: var(--accent-lime); display: block; }
-  .hero-title .line-dim { color: rgba(240,244,255,0.35); display: block; }
+    /* Hero stat counters */
+    .hero-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .stat-val { font-size: 1.9rem; font-weight: 700; color: var(--text); line-height: 1; }
+    .stat-val span { color: var(--cyan); }
+    .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
 
-  .hero-desc {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    line-height: 1.75;
-    max-width: 500px;
-    margin-bottom: 2.5rem;
-  }
+    /* ════════ TERMINAL (Hero right side) ════════ */
+    .terminal {
+      background: #0a0e18; border: 1px solid rgba(0,229,255,0.12);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .term-hdr {
+      background: rgba(255,255,255,0.03); padding: 0.6rem 1rem;
+      display: flex; align-items: center; gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .dot-r { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+    .dot-y { width: 10px; height: 10px; border-radius: 50%; background: #febc2e; }
+    .dot-g { width: 10px; height: 10px; border-radius: 50%; background: #28c840; }
+    .term-title { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-left: auto; }
+    .term-body { padding: 1rem; font-family: var(--mono); font-size: 0.76rem; min-height: 260px; line-height: 1.7; }
+    .t-prompt { color: var(--cyan); }
+    .t-out    { color: var(--green); }
+    .t-warn   { color: var(--amber); }
+    .t-dim    { color: var(--muted); }
+    .blink    { display: inline-block; width: 6px; height: 13px; background: var(--cyan); animation: blink 1s step-end infinite; vertical-align: -2px; }
+    @keyframes blink { 50% { opacity: 0; } }
 
-  .btn-primary-nexus {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--accent-cyan);
-    color: var(--bg-dark);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.03em;
-    padding: 0.9rem 2rem;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-primary-nexus::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent-lime);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
-    z-index: 0;
-  }
-  .btn-primary-nexus:hover::before { transform: scaleX(1); }
-  .btn-primary-nexus span, .btn-primary-nexus i { position: relative; z-index: 1; }
+    /* ════════ SECTION COMMON STYLES ════════ */
+    section { padding: 5rem 0; position: relative; z-index: 1; }
+    .sec-eye {
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--cyan);
+      display: inline-block; margin-bottom: 0.7rem;
+    }
+    .sec-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700; letter-spacing: -1px; margin-bottom: 0.7rem;
+    }
+    .sec-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 520px; }
 
-  .btn-ghost-nexus {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: transparent;
-    color: var(--text-primary);
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.9rem 1.5rem;
-    border: 1px solid rgba(240,244,255,0.1);
-    border-radius: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.25s;
-  }
-  .btn-ghost-nexus:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+    /* Fade-in scroll animation */
+    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .fade-in.show { opacity: 1; transform: translateY(0); }
 
-  .hero-stats {
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 3rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid rgba(240,244,255,0.06);
-  }
-  .stat-item { }
-  .stat-num {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-  }
-  .stat-num span { color: var(--accent-cyan); }
-  .stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.05em; }
+    /* ════════ DOMAIN CARDS (Bootstrap grid) ════════ */
+    .domain-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      height: 100%; transition: all 0.3s; cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+    .domain-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--c, var(--cyan)); transform: scaleX(0); transition: transform 0.3s;
+    }
+    .domain-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.13); }
+    .domain-card:hover::before { transform: scaleX(1); }
+    .d-icon {
+      width: 44px; height: 44px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 1rem;
+    }
+    .d-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .d-desc  { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.9rem; }
+    .d-hot   {
+      position: absolute; top: 1rem; right: 1rem;
+      font-family: var(--mono); font-size: 0.6rem;
+      padding: 0.15rem 0.5rem; border-radius: 3px;
+      background: rgba(105,255,71,0.1); color: var(--green);
+      border: 1px solid rgba(105,255,71,0.2);
+    }
+    .tag-chip {
+      display: inline-block; font-family: var(--mono); font-size: 0.62rem;
+      padding: 0.15rem 0.5rem; border-radius: 3px; margin: 0.15rem;
+      background: rgba(255,255,255,0.04); color: var(--muted);
+      border: 1px solid var(--border);
+    }
 
-  /* Tech stack badge */
-  .tech-stack-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,245,255,0.05);
-    border: 1px solid rgba(0,245,255,0.12);
-    border-radius: 2px;
-    padding: 0.5rem 0.9rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent-cyan);
-    margin: 0.2rem;
-    transition: all 0.2s;
-  }
-  .tech-stack-badge:hover { background: rgba(0,245,255,0.1); border-color: var(--accent-cyan); transform: translateY(-2px); }
-  .tech-stack-badge i { font-size: 0.85rem; }
+    /* ════════ DATABASE SECTION ════════ */
+    .db-section { background: rgba(0,229,255,0.015); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-  /* Hero visual - animated terminal */
-  .hero-terminal {
-    background: var(--bg-card);
-    border: 1px solid rgba(0,245,255,0.12);
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-  .terminal-header {
-    background: rgba(255,255,255,0.03);
-    padding: 0.7rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot-r { background: #ff5f56; } .dot-y { background: #febc2e; } .dot-g { background: #27c93f; }
-  .terminal-title { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
-  .terminal-body { padding: 1.2rem; font-family: var(--font-mono); font-size: 0.78rem; min-height: 280px; }
-  .t-line { margin-bottom: 0.4rem; display: flex; }
-  .t-prompt { color: var(--accent-cyan); margin-right: 8px; }
-  .t-cmd { color: #e8f0ff; }
-  .t-comment { color: var(--text-muted); }
-  .t-output { color: var(--accent-lime); }
-  .t-warn { color: var(--accent-amber); }
-  .t-err { color: var(--accent-magenta); }
-  .cursor-blink { display: inline-block; width: 7px; height: 14px; background: var(--accent-cyan); animation: blink 1s step-end infinite; vertical-align: -2px; }
-  @keyframes blink { 50% { opacity: 0; } }
+    /* DB Status bar */
+    .db-statusbar {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.12);
+      border-radius: var(--radius); padding: 0.65rem 1.1rem; margin-bottom: 1.5rem;
+    }
+    .db-led { width: 9px; height: 9px; border-radius: 50%; background: #ff4081; flex-shrink: 0; }
+    .db-led.on { background: var(--green); animation: pulse 2s infinite; }
+    .db-status { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .db-status b { color: var(--green); }
+    .db-meta  { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-left: auto; }
+    .db-meta b { color: var(--cyan); }
 
-  /* Live ticker */
-  .ticker-wrap {
-    background: rgba(0,245,255,0.04);
-    border-top: 1px solid rgba(0,245,255,0.08);
-    border-bottom: 1px solid rgba(0,245,255,0.08);
-    padding: 0.65rem 0;
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-  }
-  .ticker-inner { display: flex; animation: ticker-scroll 30s linear infinite; white-space: nowrap; }
-  .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0 2.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-  }
-  .ticker-item .tag { color: var(--accent-cyan); }
-  .ticker-item .up { color: var(--accent-lime); }
-  .ticker-item .down { color: var(--accent-magenta); }
-  @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    /* DB Tabs */
+    .db-tabs  { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.2rem; overflow-x: auto; }
+    .db-tab {
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.06em; padding: 0.6rem 1.1rem; cursor: pointer;
+      color: var(--muted); border: none; background: none;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
+      white-space: nowrap; display: flex; align-items: center; gap: 5px;
+    }
+    .db-tab:hover { color: var(--text); }
+    .db-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+    .db-pane { display: none; }
+    .db-pane.active { display: block; }
 
-  /* Section headings */
-  .section-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent-cyan);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-  .section-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -1px;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-  .section-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.7; max-width: 550px; }
+    /* DB Stats cards */
+    .db-stat {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem;
+      text-align: center;
+    }
+    .db-stat-num { font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .db-stat-lbl { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); margin-top: 4px; }
 
-  /* Tech domain cards */
-  .domain-section { padding: 6rem 0; position: relative; z-index: 2; }
-  .domain-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(240,244,255,0.05);
-    border-radius: 6px;
-    padding: 2rem;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-  }
-  .domain-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--card-accent, var(--accent-cyan));
-    transform: scaleX(0);
-    transition: transform 0.35s;
-  }
-  .domain-card:hover { transform: translateY(-6px); border-color: rgba(240,244,255,0.12); }
-  .domain-card:hover::before { transform: scaleX(1); }
-  .domain-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    margin-bottom: 1.2rem;
-    background: var(--card-icon-bg, rgba(0,245,255,0.08));
-    color: var(--card-accent, var(--accent-cyan));
-    border: 1px solid var(--card-border, rgba(0,245,255,0.15));
-  }
-  .domain-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
-  .domain-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
-  .domain-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .domain-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.04);
-    color: var(--text-muted);
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .domain-demand {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 2px;
-    background: rgba(168,255,62,0.1);
-    color: var(--accent-lime);
-    border: 1px solid rgba(168,255,62,0.2);
-  }
+    /* Table list rows */
+    .tbl-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.55rem 0.8rem; border-radius: 4px; margin-bottom: 3px;
+      cursor: pointer; border: 1px solid rgba(255,255,255,0.03);
+      transition: all 0.18s;
+    }
+    .tbl-row:hover { background: rgba(0,229,255,0.05); border-color: rgba(0,229,255,0.15); }
+    .tbl-name { font-family: var(--mono); font-size: 0.76rem; flex: 1; }
+    .tbl-rows { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+    .tbl-badge {
+      font-family: var(--mono); font-size: 0.58rem; padding: 0.12rem 0.45rem;
+      border-radius: 2px; background: rgba(0,229,255,0.08);
+      color: var(--cyan); border: 1px solid rgba(0,229,255,0.15);
+    }
 
-  /* AI Market Trends section */
-  .trends-section { padding: 5rem 0; position: relative; z-index: 2; }
-  .chart-container {
-    background: var(--bg-card);
-    border: 1px solid rgba(240,244,255,0.05);
-    border-radius: 6px;
-    padding: 1.5rem;
-    position: relative;
-  }
-  .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
-  .chart-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; }
-  .chart-badge {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 2px;
-    background: rgba(0,245,255,0.08);
-    color: var(--accent-cyan);
-    border: 1px solid rgba(0,245,255,0.15);
-  }
+    /* SQL Console */
+    .sql-toolbar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.7rem; }
+    .sql-run {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--cyan); color: #000; font-family: var(--mono);
+      font-size: 0.73rem; font-weight: 700; border: none; border-radius: 4px;
+      padding: 0.45rem 1rem; cursor: pointer; transition: all 0.2s;
+    }
+    .sql-run:hover { background: var(--green); }
+    .sql-run:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sql-preset {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      color: var(--muted); font-family: var(--mono); font-size: 0.68rem;
+      padding: 0.38rem 0.75rem; border-radius: 4px; cursor: pointer; transition: all 0.18s;
+    }
+    .sql-preset:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.05); }
+    .sql-editor {
+      width: 100%; background: #060b14; border: 1px solid rgba(0,229,255,0.15);
+      color: #d4e4ff; font-family: var(--mono); font-size: 0.8rem;
+      line-height: 1.7; padding: 0.9rem; border-radius: 4px; outline: none;
+      resize: vertical; min-height: 120px; transition: border-color 0.2s;
+    }
+    .sql-editor:focus { border-color: var(--cyan); }
+    .result-box {
+      background: #060b14; border: 1px solid var(--border);
+      border-radius: 4px; min-height: 60px; overflow: auto; margin-top: 0.7rem;
+    }
+    .result-hdr {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.45rem 0.8rem; border-bottom: 1px solid var(--border);
+    }
+    .result-label { font-family: var(--mono); font-size: 0.63rem; color: var(--muted); }
+    .result-count { font-family: var(--mono); font-size: 0.63rem; color: var(--green); }
+    .result-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.73rem; }
+    .result-table th {
+      padding: 0.45rem 0.8rem; color: var(--cyan); text-align: left;
+      border-bottom: 1px solid rgba(0,229,255,0.1); font-size: 0.65rem;
+      letter-spacing: 0.05em; white-space: nowrap;
+    }
+    .result-table td { padding: 0.4rem 0.8rem; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.03); white-space: nowrap; }
+    .result-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+    .result-table td.num  { color: var(--amber); }
+    .result-table td.str  { color: #90caf9; }
+    .result-table td.date { color: var(--green); }
+    .exec-time { font-family: var(--mono); font-size: 0.63rem; color: var(--muted); padding: 0.35rem 0.8rem; }
+    .sql-empty { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); padding: 1.2rem; text-align: center; }
+    .sql-error { font-family: var(--mono); font-size: 0.75rem; color: var(--pink); padding: 1rem; }
 
-  /* Interactive quiz */
-  .quiz-section { padding: 5rem 0; position: relative; z-index: 2; }
-  .quiz-card {
-    background: var(--bg-surface);
-    border: 1px solid rgba(0,245,255,0.1);
-    border-radius: 8px;
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .quiz-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 80% 20%, rgba(0,245,255,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .quiz-progress-bar {
-    background: rgba(255,255,255,0.06);
-    height: 3px;
-    border-radius: 2px;
-    margin-bottom: 2rem;
-    overflow: hidden;
-  }
-  .quiz-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
-  .quiz-q { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
-  .quiz-counter { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.8rem; }
-  .quiz-option {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 4px;
-    padding: 0.9rem 1.2rem;
-    margin-bottom: 0.7rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.9rem;
-  }
-  .quiz-option:hover { border-color: var(--accent-cyan); background: rgba(0,245,255,0.05); }
-  .quiz-option.selected { border-color: var(--accent-cyan); background: rgba(0,245,255,0.08); color: var(--accent-cyan); }
-  .quiz-option.correct { border-color: var(--accent-lime); background: rgba(168,255,62,0.08); color: var(--accent-lime); }
-  .quiz-option.wrong { border-color: var(--accent-magenta); background: rgba(255,62,168,0.08); color: var(--accent-magenta); }
-  .quiz-opt-letter {
-    width: 28px;
-    height: 28px;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    flex-shrink: 0;
-  }
+    /* CRUD Forms */
+    .crud-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+    .form-label-nx { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.3rem; }
+    .form-control-nx {
+      width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+      color: var(--text); padding: 0.5rem 0.75rem; border-radius: 4px;
+      font-family: var(--mono); font-size: 0.78rem; outline: none; transition: border-color 0.2s;
+    }
+    .form-control-nx:focus { border-color: var(--cyan); }
+    .crud-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid; border-radius: 4px; padding: 0.45rem 1rem;
+      font-family: var(--mono); font-size: 0.7rem; cursor: pointer; transition: all 0.2s;
+      background: transparent;
+    }
+    .crud-btn.add   { border-color: rgba(105,255,71,0.3); color: var(--green); }
+    .crud-btn.add:hover   { background: rgba(105,255,71,0.08); }
+    .crud-btn.del   { border-color: rgba(255,64,129,0.3); color: var(--pink); }
+    .crud-btn.del:hover   { background: rgba(255,64,129,0.08); }
+    .crud-btn.upd   { border-color: rgba(255,179,0,0.3); color: var(--amber); }
+    .crud-btn.upd:hover   { background: rgba(255,179,0,0.08); }
+    .crud-btn.srch  { border-color: rgba(0,229,255,0.3); color: var(--cyan); }
+    .crud-btn.srch:hover  { background: rgba(0,229,255,0.08); }
+    .toast-nx {
+      display: none; font-family: var(--mono); font-size: 0.7rem;
+      padding: 0.45rem 0.8rem; border-radius: 3px; margin-top: 0.5rem;
+    }
+    .toast-nx.ok  { background: rgba(105,255,71,0.1); color: var(--green); border: 1px solid rgba(105,255,71,0.2); }
+    .toast-nx.err { background: rgba(255,64,129,0.1); color: var(--pink); border: 1px solid rgba(255,64,129,0.2); }
 
-  /* Skills roadmap */
-  .roadmap-section { padding: 5rem 0; position: relative; z-index: 2; }
-  .roadmap-item {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    position: relative;
-  }
-  .roadmap-item::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 40px;
-    bottom: -2rem;
-    width: 1px;
-    background: rgba(255,255,255,0.06);
-  }
-  .roadmap-item:last-child::before { display: none; }
-  .roadmap-num {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0,245,255,0.06);
-    border: 1px solid rgba(0,245,255,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--accent-cyan);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-  }
-  .roadmap-num.active { background: var(--accent-cyan); color: var(--bg-dark); border-color: var(--accent-cyan); }
-  .roadmap-content { flex: 1; padding-top: 0.5rem; }
-  .roadmap-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
-  .roadmap-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
-  .roadmap-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
-  .skill-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.8rem; }
-  .skill-chip {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 0.22rem 0.6rem;
-    border-radius: 2px;
-    background: rgba(168,255,62,0.07);
-    color: var(--accent-lime);
-    border: 1px solid rgba(168,255,62,0.15);
-  }
+    /* Config pane */
+    .cfg-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 0.8rem; }
+    .cfg-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.65rem 1rem; cursor: pointer; background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid transparent; transition: border-color 0.2s;
+    }
+    .cfg-hdr:hover { border-bottom-color: var(--border); }
+    .cfg-ttl { font-family: var(--mono); font-size: 0.73rem; color: var(--text); display: flex; align-items: center; gap: 7px; }
+    .cfg-ttl i { color: var(--cyan); }
+    .cfg-body { max-height: 340px; overflow: auto; }
+    .cfg-code {
+      font-family: var(--mono); font-size: 0.72rem; color: #c5d8ff;
+      padding: 1rem; line-height: 1.75; white-space: pre;
+    }
+    /* Syntax highlight classes */
+    .ck  { color: #ff8fab; }   /* XML/HTML tags  */
+    .cv  { color: var(--green); }  /* Values         */
+    .cc  { color: #4a5568; }   /* Comments       */
+    .cs  { color: #90caf9; }   /* Strings        */
+    .cn  { color: var(--amber); }  /* Numbers/keys   */
+    .cj  { color: #ff8fab; }   /* Java keywords  */
+    .ca  { color: #ce93d8; }   /* Annotations    */
 
-  /* Market salary calculator */
-  .salary-section { padding: 5rem 0; position: relative; z-index: 2; }
-  .salary-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(240,244,255,0.06);
-    border-radius: 8px;
-    padding: 2rem;
-  }
-  .salary-role-btn {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--text-muted);
-    padding: 0.55rem 1rem;
-    border-radius: 3px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin: 0.2rem;
-  }
-  .salary-role-btn:hover, .salary-role-btn.active {
-    background: rgba(0,245,255,0.08);
-    border-color: var(--accent-cyan);
-    color: var(--accent-cyan);
-  }
-  .salary-display {
-    text-align: center;
-    padding: 2rem 0;
-  }
-  .salary-amount {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-  }
-  .salary-amount span { color: var(--accent-lime); }
-  .salary-range { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; }
-  .salary-bar {
-    background: rgba(255,255,255,0.06);
-    height: 6px;
-    border-radius: 3px;
-    margin-top: 0.8rem;
-    overflow: hidden;
-  }
-  .salary-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
-    border-radius: 3px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .salary-factors { margin-top: 1.5rem; }
-  .salary-factor {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 0.85rem;
-  }
-  .salary-factor-label { color: var(--text-muted); }
-  .salary-factor-val { font-family: var(--font-mono); font-size: 0.78rem; }
-  .val-up { color: var(--accent-lime); }
-  .val-neutral { color: var(--text-muted); }
+    /* ERD Schema */
+    .erd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+    .erd-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      overflow: hidden; cursor: pointer; transition: all 0.2s;
+      border: 1px solid;
+    }
+    .erd-card:hover { transform: translateY(-3px); }
+    .erd-hdr { padding: 0.5rem 0.8rem; font-family: var(--mono); font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    .erd-body { padding: 0.5rem 0.8rem; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); line-height: 1.9; }
+    .erd-pk   { color: var(--amber); }
+    .erd-fk   { color: #b39ddb; }
+    .fk-legend { display: flex; gap: 1.2rem; font-family: var(--mono); font-size: 0.63rem; color: var(--muted); margin-top: 0.8rem; flex-wrap: wrap; }
 
-  /* Newsletter */
-  .newsletter-section {
-    padding: 5rem 0;
-    position: relative;
-    z-index: 2;
-  }
-  .newsletter-card {
-    background: var(--bg-surface);
-    border: 1px solid rgba(0,245,255,0.1);
-    border-radius: 8px;
-    padding: 3rem;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
-  .newsletter-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(0,245,255,0.05) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .newsletter-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem; letter-spacing: -1px; }
-  .newsletter-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
-  .newsletter-form { display: flex; gap: 0.6rem; max-width: 480px; margin: 0 auto; }
-  .newsletter-input {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-primary);
-    padding: 0.8rem 1.2rem;
-    border-radius: 2px;
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .newsletter-input:focus { border-color: var(--accent-cyan); }
-  .newsletter-input::placeholder { color: var(--text-muted); }
+    /* ════════ CHART SECTION ════════ */
+    .chart-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.3rem;
+    }
+    .chart-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
+    .chart-ttl { font-size: 0.9rem; font-weight: 600; }
+    .chart-badge {
+      font-family: var(--mono); font-size: 0.62rem; padding: 0.2rem 0.6rem;
+      border-radius: 3px; background: rgba(0,229,255,0.08); color: var(--cyan);
+      border: 1px solid rgba(0,229,255,0.15);
+    }
+    .chart-toggle { display: flex; gap: 4px; }
+    .ctgl-btn {
+      font-family: var(--mono); font-size: 0.65rem; padding: 0.28rem 0.7rem;
+      border-radius: 3px; border: 1px solid var(--border); cursor: pointer;
+      background: transparent; color: var(--muted); transition: all 0.18s;
+    }
+    .ctgl-btn.active, .ctgl-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.07); }
 
-  /* Footer */
-  .nexus-footer {
-    padding: 3rem 0 2rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    z-index: 2;
-  }
-  .footer-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.82rem;
-    margin-right: 1.5rem;
-    transition: color 0.2s;
-    font-family: var(--font-mono);
-  }
-  .footer-links a:hover { color: var(--accent-cyan); }
+    /* Mini metric boxes */
+    .metric-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem; text-align: center;
+    }
+    .metric-val { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .metric-lbl { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 3px; }
 
-  /* Scroll animations */
-  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ════════ QUIZ SECTION ════════ */
+    .quiz-card {
+      background: var(--bg-raised); border: 1px solid rgba(0,229,255,0.1);
+      border-radius: var(--radius); padding: 2rem;
+    }
+    .quiz-prog { background: rgba(255,255,255,0.06); height: 3px; border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden; }
+    .quiz-prog-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); border-radius: 2px; transition: width 0.4s; }
+    .quiz-q  { font-size: 1.05rem; font-weight: 600; margin-bottom: 1.2rem; }
+    .quiz-ctr { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); margin-bottom: 0.7rem; }
+    .quiz-opt {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+      border-radius: 5px; padding: 0.75rem 1rem; margin-bottom: 0.6rem;
+      cursor: pointer; font-size: 0.88rem; transition: all 0.18s;
+    }
+    .quiz-opt:hover  { border-color: var(--cyan); background: rgba(0,229,255,0.04); }
+    .quiz-opt.sel    { border-color: var(--cyan); background: rgba(0,229,255,0.07); color: var(--cyan); }
+    .quiz-opt.right  { border-color: var(--green); background: rgba(105,255,71,0.07); color: var(--green); }
+    .quiz-opt.wrong  { border-color: var(--pink); background: rgba(255,64,129,0.07); color: var(--pink); }
+    .opt-ltr {
+      width: 26px; height: 26px; border-radius: 3px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.68rem;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg-dark); }
-  ::-webkit-scrollbar-thumb { background: rgba(0,245,255,0.2); border-radius: 2px; }
+    /* ════════ SALARY SECTION ════════ */
+    .sal-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+    }
+    .role-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-family: var(--mono); font-size: 0.7rem;
+      padding: 0.38rem 0.8rem; border-radius: 4px; cursor: pointer;
+      transition: all 0.18s; margin: 0.18rem;
+    }
+    .role-btn.active, .role-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.07); }
+    .sal-amount { font-size: 3.2rem; font-weight: 700; line-height: 1; }
+    .sal-amount span { color: var(--green); }
+    .sal-range  { font-family: var(--mono); font-size: 0.73rem; color: var(--muted); margin-top: 0.4rem; }
+    .sal-bar    { background: rgba(255,255,255,0.05); height: 5px; border-radius: 3px; margin-top: 0.7rem; overflow: hidden; }
+    .sal-fill   { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); border-radius: 3px; transition: width 0.5s; }
+    .sal-row    { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.84rem; }
+    .sal-row:last-child { border: none; }
+    .sal-key    { color: var(--muted); }
+    .sal-val    { font-family: var(--mono); font-size: 0.78rem; color: var(--green); }
 
-  /* Mobile hamburger */
-  .navbar-toggler { border: 1px solid rgba(0,245,255,0.3); padding: 0.3rem 0.6rem; }
-  .navbar-toggler-icon { filter: invert(1); }
-
-  /* Pulse animation */
-  @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 0 rgba(0,245,255,0.3); }
-    70% { box-shadow: 0 0 0 8px rgba(0,245,255,0); }
-    100% { box-shadow: 0 0 0 0 rgba(0,245,255,0); }
-  }
-  .pulse { animation: pulse-ring 2s infinite; }
-</style>
+    /* ════════ FOOTER ════════ */
+    footer {
+      border-top: 1px solid var(--border); padding: 2.5rem 0;
+      position: relative; z-index: 1;
+    }
+    footer a { color: var(--muted); text-decoration: none; font-size: 0.8rem; margin-right: 1.2rem; transition: color 0.2s; }
+    footer a:hover { color: var(--cyan); }
+  </style>
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- NAVBAR -->
-<nav class="nexus-nav navbar navbar-expand-lg">
+<!-- ════════════════════════════════════════
+     NAVBAR — Bootstrap navbar + jQuery scroll
+     ════════════════════════════════════════ -->
+<nav class="nexus-navbar navbar navbar-expand-lg" id="navbar">
   <div class="container">
-    <a class="nav-brand navbar-brand" href="#hero">Nexus<span>AI</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-      <span class="navbar-toggler-icon"></span>
+    <!-- Brand logo -->
+    <a class="brand navbar-brand" href="#hero">NexusAI</a>
+
+    <!-- Bootstrap mobile toggle button -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="fas fa-bars" style="color:var(--muted)"></i>
     </button>
-    <div class="collapse navbar-collapse" id="navContent">
+
+    <!-- Nav links (collapses on mobile via Bootstrap) -->
+    <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item"><a class="nav-link" href="#domains">Domains</a></li>
-        <li class="nav-item"><a class="nav-link" href="#trends">Market</a></li>
+        <li class="nav-item"><a class="nav-link" href="#database">Database</a></li>
+        <li class="nav-item"><a class="nav-link" href="#trends">Charts</a></li>
         <li class="nav-item"><a class="nav-link" href="#quiz">Quiz</a></li>
-        <li class="nav-item"><a class="nav-link" href="#roadmap">Roadmap</a></li>
         <li class="nav-item"><a class="nav-link" href="#salary">Salary</a></li>
-        <li class="nav-item ms-2"><a class="nav-link nav-cta" href="#newsletter">Get Access</a></li>
+        <li class="nav-item ms-lg-2">
+          <a class="nav-link btn-nav" href="#database">Try DB Console</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- LIVE TICKER -->
-<div class="ticker-wrap" style="margin-top:70px;">
-  <div class="ticker-inner">
-    <span class="ticker-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38.1%</span></span>
-    <span class="ticker-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12.3%</span></span>
-    <span class="ticker-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone reached <span class="up">↑ HOT</span></span>
-    <span class="ticker-item"><span class="tag">WEB3</span> DeFi TVL $240B <span class="up">↑ 5.2%</span></span>
-    <span class="ticker-item"><span class="tag">EDGE_IO</span> 75B connected devices by 2025 <span class="up">↑ 22%</span></span>
-    <span class="ticker-item"><span class="tag">GREENTECH</span> Carbon-neutral cloud target 2030 <span class="up">↑ ESG</span></span>
-    <span class="ticker-item"><span class="tag">FULLSTACK</span> Avg Salary India ₹18L–₹45L <span class="up">↑ 28%</span></span>
-    <span class="ticker-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38.1%</span></span>
-    <span class="ticker-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12.3%</span></span>
-    <span class="ticker-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone reached <span class="up">↑ HOT</span></span>
-    <span class="ticker-item"><span class="tag">WEB3</span> DeFi TVL $240B <span class="up">↑ 5.2%</span></span>
-    <span class="ticker-item"><span class="tag">EDGE_IO</span> 75B connected devices by 2025 <span class="up">↑ 22%</span></span>
-    <span class="ticker-item"><span class="tag">GREENTECH</span> Carbon-neutral cloud target 2030 <span class="up">↑ ESG</span></span>
-    <span class="ticker-item"><span class="tag">FULLSTACK</span> Avg Salary India ₹18L–₹45L <span class="up">↑ 28%</span></span>
+<!-- ════════════════════════════════════════
+     LIVE TICKER STRIP
+     ════════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker">
+    <!-- Duplicated content for seamless loop -->
+    <span class="tick-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38%</span></span>
+    <span class="tick-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12%</span></span>
+    <span class="tick-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone <span class="up">↑ HOT</span></span>
+    <span class="tick-item"><span class="tag">FULLSTACK</span> India avg ₹18L–₹45L <span class="up">↑ 28%</span></span>
+    <span class="tick-item"><span class="tag">CLOUD</span> $1.6T by 2030 <span class="up">↑ 20%</span></span>
+    <span class="tick-item"><span class="tag">SQL_DB</span> Connected · 6 tables · 60 rows <span class="up">✓ LIVE</span></span>
+    <span class="tick-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38%</span></span>
+    <span class="tick-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12%</span></span>
+    <span class="tick-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone <span class="up">↑ HOT</span></span>
+    <span class="tick-item"><span class="tag">FULLSTACK</span> India avg ₹18L–₹45L <span class="up">↑ 28%</span></span>
+    <span class="tick-item"><span class="tag">CLOUD</span> $1.6T by 2030 <span class="up">↑ 20%</span></span>
+    <span class="tick-item"><span class="tag">SQL_DB</span> Connected · 6 tables · 60 rows <span class="up">✓ LIVE</span></span>
   </div>
 </div>
 
-<!-- HERO -->
-<section class="hero-section" id="hero">
-  <div class="hero-orb orb-1"></div>
-  <div class="hero-orb orb-2"></div>
-  <div class="hero-orb orb-3"></div>
+<!-- ════════════════════════════════════════
+     HERO SECTION
+     ════════════════════════════════════════ -->
+<section class="hero" id="hero">
   <div class="container">
+    <!-- Bootstrap row = responsive 2-column layout -->
     <div class="row align-items-center g-5">
+
+      <!-- Left: Text content -->
       <div class="col-lg-6">
-        <div class="hero-eyebrow">Future Tech Intelligence Hub — 2026</div>
+        <div class="badge-eye">
+          <span class="dot-live"></span>
+          Live Tech Intelligence Hub · 2026
+        </div>
         <h1 class="hero-title">
-          Build The<br>
-          <span class="line-accent">Future Stack</span>
-          <span class="line-dim">Today.</span>
+          Build The
+          <span class="accent">Future Stack.</span>
+          Start Now.
         </h1>
-        <p class="hero-desc">Master AI, Quantum, Web3, and Cybersecurity with hands-on tech intelligence — bridging today's market with tomorrow's demand. Built with HTML · CSS · Bootstrap · jQuery · Servlets.</p>
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          <span class="tech-stack-badge"><i class="fab fa-html5"></i> HTML5</span>
-          <span class="tech-stack-badge"><i class="fab fa-css3-alt"></i> CSS3</span>
-          <span class="tech-stack-badge"><i class="fab fa-bootstrap"></i> Bootstrap 5</span>
-          <span class="tech-stack-badge"><i class="fab fa-js"></i> jQuery</span>
-          <span class="tech-stack-badge"><i class="fab fa-java"></i> Servlet API</span>
-          <span class="tech-stack-badge"><i class="fas fa-chart-line"></i> Chart.js</span>
+        <p class="hero-desc">
+          Master AI, Cloud, Cybersecurity and Quantum with real market data.
+          Powered by a live SQLite database — running right in your browser.
+          Built with: HTML · CSS · Bootstrap · jQuery · Servlet · SQL.js
+        </p>
+
+        <!-- Technology badges -->
+        <div class="mb-4">
+          <span class="stack-badge"><i class="fab fa-html5" style="color:#e34f26"></i> HTML5</span>
+          <span class="stack-badge"><i class="fab fa-css3-alt" style="color:#1572b6"></i> CSS3</span>
+          <span class="stack-badge"><i class="fab fa-bootstrap" style="color:#7952b3"></i> Bootstrap 5</span>
+          <span class="stack-badge"><i class="fab fa-js" style="color:#f7df1e"></i> jQuery 3.7</span>
+          <span class="stack-badge"><i class="fab fa-java" style="color:#f89820"></i> Servlet API</span>
+          <span class="stack-badge"><i class="fas fa-database" style="color:var(--cyan)"></i> SQL.js SQLite</span>
+          <span class="stack-badge"><i class="fas fa-chart-line" style="color:var(--pink)"></i> Chart.js</span>
         </div>
-        <div class="d-flex gap-3 mt-3">
-          <a href="#domains" class="btn-primary-nexus"><span>Explore Domains</span> <i class="fas fa-arrow-right"></i></a>
-          <a href="#quiz" class="btn-ghost-nexus"><i class="fas fa-brain"></i> Take Quiz</a>
+
+        <!-- CTA buttons -->
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#database" class="btn-primary-nx">
+            <i class="fas fa-database"></i> Open DB Console
+          </a>
+          <a href="#quiz" class="btn-outline-nx">
+            <i class="fas fa-brain"></i> Take Quiz
+          </a>
         </div>
+
+        <!-- Animated stat counters -->
         <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-num" id="counter1">0<span>+</span></div>
-            <div class="stat-label">Tech Domains</div>
+          <div>
+            <div class="stat-val" id="c1">0<span>+</span></div>
+            <div class="stat-lbl">Tech Domains</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-num" id="counter2">0<span>L+</span></div>
-            <div class="stat-label">Avg ₹ Salary</div>
+          <div>
+            <div class="stat-val" id="c2">0<span>L+</span></div>
+            <div class="stat-lbl">Avg Salary ₹</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-num" id="counter3">0<span>%</span></div>
-            <div class="stat-label">Job Growth 2026</div>
+          <div>
+            <div class="stat-val" id="c3">0<span>%</span></div>
+            <div class="stat-lbl">AI Job Growth</div>
+          </div>
+          <div>
+            <div class="stat-val" id="c4">0<span>K</span></div>
+            <div class="stat-lbl">Open DB Records</div>
           </div>
         </div>
       </div>
+
+      <!-- Right: Animated terminal -->
       <div class="col-lg-6">
-        <div class="hero-terminal" id="terminal-box">
-          <div class="terminal-header">
-            <div class="dot dot-r"></div>
-            <div class="dot dot-y"></div>
-            <div class="dot dot-g"></div>
-            <div class="terminal-title">nexus@ai-hub ~ zsh</div>
+        <div class="terminal">
+          <div class="term-hdr">
+            <div class="dot-r"></div>
+            <div class="dot-y"></div>
+            <div class="dot-g"></div>
+            <div class="term-title">nexus@ai-hub ~ bash</div>
           </div>
-          <div class="terminal-body" id="terminal-output">
-          </div>
+          <div class="term-body" id="term-out"></div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- TECH DOMAINS -->
-<section class="domain-section" id="domains">
+<!-- ════════════════════════════════════════
+     TECH DOMAIN CARDS — Bootstrap Grid
+     ════════════════════════════════════════ -->
+<section id="domains">
   <div class="container">
-    <div class="row mb-5 fade-up">
+    <div class="row mb-4 fade-in">
       <div class="col-lg-7">
-        <div class="section-eyebrow">// 2026 Tech Domains</div>
-        <h2 class="section-title">High-Demand<br>Technology Stacks</h2>
-        <p class="section-desc">Six critical technology domains shaping industry in 2026 and beyond. Each sector represents multi-billion dollar career opportunities.</p>
+        <div class="sec-eye">// 2026 Tech Domains</div>
+        <h2 class="sec-title">High-Demand Technology Areas</h2>
+        <p class="sec-desc">Click any card to see full details in a Bootstrap Modal popup.</p>
       </div>
     </div>
+    <!-- Bootstrap auto-responsive grid: 1 col mobile → 2 col tablet → 3 col desktop -->
     <div class="row g-4">
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#00f5ff;--card-icon-bg:rgba(0,245,255,0.07);--card-border:rgba(0,245,255,0.15)" data-bs-toggle="modal" data-bs-target="#modal-ai">
-          <span class="domain-demand">🔥 Highest Demand</span>
-          <div class="domain-icon"><i class="fas fa-brain"></i></div>
-          <div class="domain-title">AI & Machine Learning</div>
-          <div class="domain-desc">Generative AI, LLMs, computer vision, MLOps, and neural architecture. The $2.6T market redefining every industry.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">TensorFlow</span><span class="domain-tag">PyTorch</span><span class="domain-tag">LangChain</span><span class="domain-tag">RAG</span><span class="domain-tag">Transformers</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#00e5ff" data-bs-toggle="modal" data-bs-target="#mod-ai">
+          <span class="d-hot">🔥 Highest</span>
+          <div class="d-icon" style="background:rgba(0,229,255,0.08);color:var(--cyan)"><i class="fas fa-brain"></i></div>
+          <div class="d-title">AI & Machine Learning</div>
+          <div class="d-desc">Generative AI, LLMs, MLOps, RAG pipelines. $2.6T market rewriting every industry by 2030.</div>
+          <div><span class="tag-chip">TensorFlow</span><span class="tag-chip">PyTorch</span><span class="tag-chip">LangChain</span><span class="tag-chip">RAG</span></div>
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#a8ff3e;--card-icon-bg:rgba(168,255,62,0.07);--card-border:rgba(168,255,62,0.15)" data-bs-toggle="modal" data-bs-target="#modal-web">
-          <span class="domain-demand">📈 Rising Fast</span>
-          <div class="domain-icon" style="color:var(--accent-lime)"><i class="fas fa-code"></i></div>
-          <div class="domain-title">Full Stack Development</div>
-          <div class="domain-desc">MERN, Next.js 15, server actions, edge computing, and real-time apps. Demand surging 34% YoY in India & globally.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">React 19</span><span class="domain-tag">Next.js 15</span><span class="domain-tag">Node.js</span><span class="domain-tag">TypeScript</span><span class="domain-tag">GraphQL</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#69ff47" data-bs-toggle="modal" data-bs-target="#mod-web">
+          <span class="d-hot">📈 Rising</span>
+          <div class="d-icon" style="background:rgba(105,255,71,0.08);color:var(--green)"><i class="fas fa-code"></i></div>
+          <div class="d-title">Full Stack Development</div>
+          <div class="d-desc">React 19, Next.js 15, Node.js, Java Servlet/Spring Boot. 34% YoY demand growth in India.</div>
+          <div><span class="tag-chip">React 19</span><span class="tag-chip">Next.js</span><span class="tag-chip">Node.js</span><span class="tag-chip">Servlet</span></div>
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#ff3ea8;--card-icon-bg:rgba(255,62,168,0.07);--card-border:rgba(255,62,168,0.15)" data-bs-toggle="modal" data-bs-target="#modal-cyber">
-          <span class="domain-demand">🛡️ Critical Need</span>
-          <div class="domain-icon" style="color:var(--accent-magenta)"><i class="fas fa-shield-halved"></i></div>
-          <div class="domain-title">Cybersecurity & Zero-Trust</div>
-          <div class="domain-desc">3.4M global security professional shortage. AI-powered threat detection, zero-trust architecture, quantum cryptography.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">SIEM</span><span class="domain-tag">Zero Trust</span><span class="domain-tag">SOAR</span><span class="domain-tag">Pentesting</span><span class="domain-tag">PKI</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#ff4081" data-bs-toggle="modal" data-bs-target="#mod-sec">
+          <span class="d-hot">🛡️ Critical</span>
+          <div class="d-icon" style="background:rgba(255,64,129,0.08);color:var(--pink)"><i class="fas fa-shield-halved"></i></div>
+          <div class="d-title">Cybersecurity</div>
+          <div class="d-desc">Zero-Trust, SIEM, post-quantum crypto. 3.4M global security professional shortage in 2026.</div>
+          <div><span class="tag-chip">Zero-Trust</span><span class="tag-chip">SIEM</span><span class="tag-chip">SOAR</span><span class="tag-chip">PQC</span></div>
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#ffb547;--card-icon-bg:rgba(255,181,71,0.07);--card-border:rgba(255,181,71,0.15)" data-bs-toggle="modal" data-bs-target="#modal-cloud">
-          <span class="domain-demand">☁️ Evergreen</span>
-          <div class="domain-icon" style="color:var(--accent-amber)"><i class="fas fa-cloud"></i></div>
-          <div class="domain-title">Cloud & DevOps</div>
-          <div class="domain-desc">Multi-cloud, Kubernetes, GitOps, platform engineering, FinOps. Cloud market hits $1.6T by 2030 with 20%+ CAGR.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">Kubernetes</span><span class="domain-tag">Terraform</span><span class="domain-tag">AWS/GCP/Azure</span><span class="domain-tag">GitOps</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#ffb300" data-bs-toggle="modal" data-bs-target="#mod-cloud">
+          <span class="d-hot">☁️ Evergreen</span>
+          <div class="d-icon" style="background:rgba(255,179,0,0.08);color:var(--amber)"><i class="fas fa-cloud"></i></div>
+          <div class="d-title">Cloud & DevOps</div>
+          <div class="d-desc">Kubernetes, Terraform, GitOps, Platform Engineering. Cloud market hits $1.6T by 2030.</div>
+          <div><span class="tag-chip">Kubernetes</span><span class="tag-chip">Terraform</span><span class="tag-chip">GitOps</span><span class="tag-chip">ArgoCD</span></div>
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#b57bff;--card-icon-bg:rgba(181,123,255,0.07);--card-border:rgba(181,123,255,0.15)" data-bs-toggle="modal" data-bs-target="#modal-quantum">
-          <span class="domain-demand">⚛️ Emerging</span>
-          <div class="domain-icon" style="color:#b57bff"><i class="fas fa-atom"></i></div>
-          <div class="domain-title">Quantum Computing</div>
-          <div class="domain-desc">IBM 1000+ qubits achieved. Post-quantum cryptography standards finalised. Pharma, finance, logistics disruption imminent.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">Qiskit</span><span class="domain-tag">Cirq</span><span class="domain-tag">Post-Quantum</span><span class="domain-tag">VQE</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#b39ddb">
+          <span class="d-hot">⚛️ Emerging</span>
+          <div class="d-icon" style="background:rgba(179,157,219,0.08);color:#b39ddb"><i class="fas fa-atom"></i></div>
+          <div class="d-title">Quantum Computing</div>
+          <div class="d-desc">IBM 1000+ qubit achieved. Post-quantum standards live. Pharma, finance & logistics disruption imminent.</div>
+          <div><span class="tag-chip">Qiskit</span><span class="tag-chip">Cirq</span><span class="tag-chip">CRYSTALS</span><span class="tag-chip">VQE</span></div>
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-6 fade-up">
-        <div class="domain-card" style="--card-accent:#3effb4;--card-icon-bg:rgba(62,255,180,0.07);--card-border:rgba(62,255,180,0.15)" data-bs-toggle="modal" data-bs-target="#modal-iot">
-          <span class="domain-demand">🌐 Expanding</span>
-          <div class="domain-icon" style="color:#3effb4"><i class="fas fa-network-wired"></i></div>
-          <div class="domain-title">IoT & Edge AI</div>
-          <div class="domain-desc">75B devices by 2025. TinyML, edge inference, 5G mesh networks. Smart cities, precision agriculture, industrial IoT exploding.</div>
-          <div class="domain-tags">
-            <span class="domain-tag">TinyML</span><span class="domain-tag">MQTT</span><span class="domain-tag">Edge Impulse</span><span class="domain-tag">5G</span>
-          </div>
+      <div class="col-md-6 col-lg-4 fade-in">
+        <div class="domain-card" style="--c:#26c6da">
+          <span class="d-hot">🌐 Expanding</span>
+          <div class="d-icon" style="background:rgba(38,198,218,0.08);color:#26c6da"><i class="fas fa-network-wired"></i></div>
+          <div class="d-title">IoT & Edge AI</div>
+          <div class="d-desc">75B devices by 2025. TinyML, MQTT, 5G mesh. Smart cities & precision agriculture exploding.</div>
+          <div><span class="tag-chip">TinyML</span><span class="tag-chip">MQTT</span><span class="tag-chip">5G</span><span class="tag-chip">EdgeImpulse</span></div>
         </div>
       </div>
 
@@ -885,112 +758,636 @@
   </div>
 </section>
 
-<!-- MARKET TRENDS (Charts) -->
-<section class="trends-section" id="trends">
+<!-- ════════════════════════════════════════
+     DATABASE SECTION — SQL.js Live SQLite
+     ════════════════════════════════════════ -->
+<section class="db-section" id="database">
   <div class="container">
-    <div class="row mb-5 fade-up">
+    <div class="row mb-4 fade-in">
+      <div class="col-lg-8">
+        <div class="sec-eye">// Live SQLite · SQL.js + Java Servlet Config</div>
+        <h2 class="sec-title">Database Command Center</h2>
+        <p class="sec-desc">
+          A real SQLite database runs in this browser via <b style="color:var(--cyan)">SQL.js WebAssembly</b>.
+          Write actual SQL queries, do CRUD operations, and view the full Java Servlet + JDBC configuration.
+        </p>
+      </div>
+    </div>
+
+    <!-- DB Connection Status Bar -->
+    <div class="db-statusbar">
+      <div class="db-led" id="db-led"></div>
+      <div class="db-status" id="db-status-txt">Initialising SQLite engine via WebAssembly...</div>
+      <div class="db-meta"><b>Engine:</b> SQLite 3.43 &nbsp;|&nbsp; <b>Driver:</b> SQL.js WASM &nbsp;|&nbsp; <b>Pool:</b> HikariCP (config)</div>
+    </div>
+
+    <!-- DB Tabs — jQuery powered tab switching -->
+    <div class="db-tabs">
+      <button class="db-tab active" onclick="switchTab('dashboard', this)"><i class="fas fa-th-large"></i> Dashboard</button>
+      <button class="db-tab"        onclick="switchTab('console',   this)"><i class="fas fa-terminal"></i> SQL Console</button>
+      <button class="db-tab"        onclick="switchTab('browser',   this)"><i class="fas fa-table"></i> Table Browser</button>
+      <button class="db-tab"        onclick="switchTab('crud',      this)"><i class="fas fa-edit"></i> CRUD</button>
+      <button class="db-tab"        onclick="switchTab('erd',       this)"><i class="fas fa-project-diagram"></i> ERD</button>
+      <button class="db-tab"        onclick="switchTab('config',    this)"><i class="fas fa-cog"></i> Config</button>
+    </div>
+
+    <!-- ── TAB 1: DASHBOARD ── -->
+    <div class="db-pane active" id="pane-dashboard">
+      <!-- Bootstrap grid: 4 stat boxes + table list + activity log -->
+      <div class="row g-3 mb-3">
+        <div class="col-6 col-md-3">
+          <div class="db-stat"><div class="db-stat-num" id="st-tables" style="color:var(--cyan)">—</div><div class="db-stat-lbl">Tables</div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="db-stat"><div class="db-stat-num" id="st-rows" style="color:var(--green)">—</div><div class="db-stat-lbl">Total Rows</div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="db-stat"><div class="db-stat-num" id="st-qcount" style="color:var(--pink)">0</div><div class="db-stat-lbl">Queries Run</div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="db-stat"><div class="db-stat-num" id="st-size" style="color:var(--amber)">—</div><div class="db-stat-lbl">DB Size</div></div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+            <div class="db-stat-lbl mb-2">DATABASE TABLES — CLICK TO BROWSE</div>
+            <div id="table-list">Loading...</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;height:100%">
+            <div class="db-stat-lbl mb-2">ACTIVITY LOG</div>
+            <div id="activity-log" style="font-family:var(--mono);font-size:0.68rem;line-height:2;color:var(--muted)">Waiting...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 2: SQL CONSOLE ── -->
+    <div class="db-pane" id="pane-console">
+      <!-- Toolbar: Run button + Quick-load preset queries -->
+      <div class="sql-toolbar">
+        <button class="sql-run" id="run-btn" onclick="execSQL()">
+          <i class="fas fa-play"></i> Run (Ctrl+Enter)
+        </button>
+        <!-- Preset query buttons — jQuery loads SQL into editor on click -->
+        <button class="sql-preset" onclick="loadQ('all_users')">All Users</button>
+        <button class="sql-preset" onclick="loadQ('top_jobs')">Top Jobs</button>
+        <button class="sql-preset" onclick="loadQ('salary_avg')">Avg Salaries</button>
+        <button class="sql-preset" onclick="loadQ('domain_rank')">Domain Rank</button>
+        <button class="sql-preset" onclick="loadQ('quiz_join')">Quiz JOIN</button>
+        <button class="sql-preset" onclick="loadQ('leaderboard')">Leaderboard</button>
+        <button class="sql-preset" onclick="loadQ('schema_check')">Schema Info</button>
+        <button class="sql-preset" onclick="loadQ('analytics')">Analytics</button>
+        <button class="sql-preset" style="color:var(--pink);border-color:rgba(255,64,129,0.25)" onclick="$('#sql-ed').val('')">Clear</button>
+      </div>
+      <!-- SQL text editor -->
+      <textarea class="sql-editor" id="sql-ed" placeholder="-- Write SQL here. Press Ctrl+Enter to run.
+-- Example: SELECT * FROM users;"></textarea>
+      <!-- Query results -->
+      <div class="result-box" id="sql-result">
+        <div class="sql-empty">Results appear here after running a query...</div>
+      </div>
+    </div>
+
+    <!-- ── TAB 3: TABLE BROWSER ── -->
+    <div class="db-pane" id="pane-browser">
+      <div class="row g-2 mb-3 align-items-center">
+        <div class="col-auto">
+          <!-- Bootstrap select element styled -->
+          <select class="form-control-nx" id="browse-sel" style="width:auto" onchange="browseTable()">
+            <option value="users">users</option>
+            <option value="tech_domains">tech_domains</option>
+            <option value="job_listings">job_listings</option>
+            <option value="salary_data">salary_data</option>
+            <option value="quiz_results">quiz_results</option>
+            <option value="enrollments">enrollments</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <input class="form-control-nx" id="browse-filter" placeholder="Filter rows..." style="width:200px" oninput="browseTable()">
+        </div>
+        <div class="col-auto">
+          <button class="sql-preset" onclick="browseTable()"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="col-auto ms-auto">
+          <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted)" id="browse-count"></span>
+        </div>
+      </div>
+      <div class="result-box" id="browse-result" style="max-height:350px;overflow:auto">
+        <div class="sql-empty">Select a table above</div>
+      </div>
+    </div>
+
+    <!-- ── TAB 4: CRUD OPERATIONS ── -->
+    <div class="db-pane" id="pane-crud">
+      <div class="row g-3">
+
+        <!-- INSERT -->
+        <div class="col-md-6">
+          <div class="crud-section">
+            <div style="font-family:var(--mono);font-size:0.75rem;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:6px"><i class="fas fa-plus-circle"></i> INSERT — Add New User</div>
+            <div class="mb-2"><label class="form-label-nx">Full Name</label><input class="form-control-nx" id="in-name" placeholder="e.g. Rahul Sharma"></div>
+            <div class="mb-2"><label class="form-label-nx">Email</label><input class="form-control-nx" id="in-email" placeholder="rahul@example.com"></div>
+            <div class="mb-2"><label class="form-label-nx">Domain</label>
+              <select class="form-control-nx" id="in-domain">
+                <option>AI/ML Engineering</option><option>Full Stack Dev</option>
+                <option>DevOps/Cloud</option><option>Cybersecurity</option>
+                <option>Data Science</option><option>Quantum Computing</option>
+              </select>
+            </div>
+            <div class="mb-3"><label class="form-label-nx">Experience (years)</label><input class="form-control-nx" id="in-exp" type="number" min="0" max="30" placeholder="2"></div>
+            <button class="crud-btn add" onclick="doInsert()"><i class="fas fa-plus"></i> INSERT INTO users</button>
+            <div class="toast-nx" id="t-ins"></div>
+          </div>
+        </div>
+
+        <!-- DELETE + UPDATE + SEARCH -->
+        <div class="col-md-6">
+          <div class="crud-section mb-3">
+            <div style="font-family:var(--mono);font-size:0.75rem;color:var(--pink);margin-bottom:1rem;display:flex;align-items:center;gap:6px"><i class="fas fa-trash"></i> DELETE — Remove User by ID</div>
+            <div class="mb-3"><label class="form-label-nx">User ID</label><input class="form-control-nx" id="del-id" type="number" placeholder="e.g. 3"></div>
+            <button class="crud-btn del" onclick="doDelete()"><i class="fas fa-trash-alt"></i> DELETE FROM users</button>
+            <div class="toast-nx" id="t-del"></div>
+          </div>
+          <div class="crud-section mb-3">
+            <div style="font-family:var(--mono);font-size:0.75rem;color:var(--amber);margin-bottom:1rem;display:flex;align-items:center;gap:6px"><i class="fas fa-pen"></i> UPDATE — Change Domain</div>
+            <div class="mb-2"><label class="form-label-nx">User ID</label><input class="form-control-nx" id="upd-id" type="number" placeholder="e.g. 2"></div>
+            <div class="mb-3"><label class="form-label-nx">New Domain</label>
+              <select class="form-control-nx" id="upd-domain">
+                <option>AI/ML Engineering</option><option>Full Stack Dev</option>
+                <option>DevOps/Cloud</option><option>Cybersecurity</option>
+                <option>Data Science</option><option>Quantum Computing</option>
+              </select>
+            </div>
+            <button class="crud-btn upd" onclick="doUpdate()"><i class="fas fa-save"></i> UPDATE users SET</button>
+            <div class="toast-nx" id="t-upd"></div>
+          </div>
+          <div class="crud-section">
+            <div style="font-family:var(--mono);font-size:0.75rem;color:var(--cyan);margin-bottom:1rem;display:flex;align-items:center;gap:6px"><i class="fas fa-search"></i> SELECT — Search Users</div>
+            <div class="mb-2"><label class="form-label-nx">Name or Email</label><input class="form-control-nx" id="srch-q" placeholder="e.g. priya"></div>
+            <button class="crud-btn srch mb-2" onclick="doSearch()"><i class="fas fa-search"></i> SELECT WHERE LIKE</button>
+            <div class="result-box" id="srch-result" style="max-height:140px;overflow:auto"><div class="sql-empty" style="font-size:0.65rem">Search results here</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── TAB 5: ERD DIAGRAM ── -->
+    <div class="db-pane" id="pane-erd">
+      <p style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);margin-bottom:1rem">
+        Entity-Relationship Diagram · Click any table to quick-browse its data
+      </p>
+      <div class="erd-grid">
+
+        <div class="erd-card" style="border-color:rgba(0,229,255,0.25)" onclick="quickBrowse('users')">
+          <div class="erd-hdr" style="background:rgba(0,229,255,0.08);color:var(--cyan)"><i class="fas fa-users"></i> users</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div>name TEXT NN</div><div>email TEXT UQ</div>
+            <div>domain TEXT</div><div>exp_years INT</div>
+            <div>is_active INT</div><div>joined_at TEXT</div>
+          </div>
+        </div>
+
+        <div class="erd-card" style="border-color:rgba(105,255,71,0.25)" onclick="quickBrowse('tech_domains')">
+          <div class="erd-hdr" style="background:rgba(105,255,71,0.08);color:var(--green)"><i class="fas fa-layer-group"></i> tech_domains</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div>name TEXT NN</div><div>slug TEXT UQ</div>
+            <div>market_bn REAL</div><div>cagr_pct REAL</div>
+            <div>jobs_k INTEGER</div><div>demand TEXT</div>
+          </div>
+        </div>
+
+        <div class="erd-card" style="border-color:rgba(255,179,0,0.25)" onclick="quickBrowse('job_listings')">
+          <div class="erd-hdr" style="background:rgba(255,179,0,0.08);color:var(--amber)"><i class="fas fa-briefcase"></i> job_listings</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div>title TEXT NN</div><div>company TEXT</div>
+            <div>salary_min / max INT</div>
+            <div><span class="erd-fk">FK</span> domain_id → tech_domains</div>
+            <div>tech_stack TEXT</div><div>posted_date TEXT</div>
+          </div>
+        </div>
+
+        <div class="erd-card" style="border-color:rgba(255,64,129,0.25)" onclick="quickBrowse('salary_data')">
+          <div class="erd-hdr" style="background:rgba(255,64,129,0.08);color:var(--pink)"><i class="fas fa-chart-line"></i> salary_data</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div>role TEXT NN</div><div>experience_level TEXT</div>
+            <div>min / avg / max_salary</div>
+            <div>yoy_growth_pct REAL</div><div>year INTEGER</div>
+          </div>
+        </div>
+
+        <div class="erd-card" style="border-color:rgba(179,157,219,0.25)" onclick="quickBrowse('quiz_results')">
+          <div class="erd-hdr" style="background:rgba(179,157,219,0.08);color:#b39ddb"><i class="fas fa-star"></i> quiz_results</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div><span class="erd-fk">FK</span> user_id → users</div>
+            <div>score INT NN</div><div>total INT DEFAULT 8</div>
+            <div>grade TEXT</div><div>completed_at TEXT</div>
+          </div>
+        </div>
+
+        <div class="erd-card" style="border-color:rgba(38,198,218,0.25)" onclick="quickBrowse('enrollments')">
+          <div class="erd-hdr" style="background:rgba(38,198,218,0.08);color:#26c6da"><i class="fas fa-graduation-cap"></i> enrollments</div>
+          <div class="erd-body">
+            <div><span class="erd-pk">PK</span> id INTEGER</div>
+            <div><span class="erd-fk">FK</span> user_id → users</div>
+            <div>domain TEXT</div><div>status TEXT</div>
+            <div>progress_pct REAL</div><div>enrolled_at TEXT</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="fk-legend">
+        <span><span style="color:var(--amber)">PK</span> Primary Key</span>
+        <span><span style="color:#b39ddb">FK</span> Foreign Key</span>
+        <span>UQ Unique</span>
+        <span>NN Not Null</span>
+      </div>
+    </div>
+
+    <!-- ── TAB 6: CONFIG (web.xml + JDBC + Java DAO) ── -->
+    <div class="db-pane" id="pane-config">
+      <div class="row g-3">
+
+        <!-- JDBC config -->
+        <div class="col-lg-6">
+          <div class="cfg-block">
+            <div class="cfg-hdr" onclick="toggleCfg('cfg-jdbc')">
+              <div class="cfg-ttl"><i class="fas fa-database"></i> JDBC + HikariCP — application.properties</div>
+              <i class="fas fa-chevron-down" style="font-size:0.65rem;color:var(--muted)" id="ico-cfg-jdbc"></i>
+            </div>
+            <div class="cfg-body" id="cfg-jdbc">
+              <div class="cfg-code"><span class="cc"># Spring Boot / Servlet JDBC configuration</span>
+
+<span class="cn">spring.datasource.url</span>=<span class="cv">jdbc:mysql://localhost:3306/nexusai_db</span>
+<span class="cn">spring.datasource.username</span>=<span class="cv">nexus_admin</span>
+<span class="cn">spring.datasource.password</span>=<span class="cv">${DB_PASSWORD}</span>
+<span class="cn">spring.datasource.driver-class-name</span>=<span class="cv">com.mysql.cj.jdbc.Driver</span>
+
+<span class="cc"># HikariCP Connection Pool</span>
+<span class="cn">spring.datasource.hikari.pool-name</span>=<span class="cv">NexusPool</span>
+<span class="cn">spring.datasource.hikari.maximum-pool-size</span>=<span class="cn">20</span>
+<span class="cn">spring.datasource.hikari.minimum-idle</span>=<span class="cn">5</span>
+<span class="cn">spring.datasource.hikari.idle-timeout</span>=<span class="cn">30000</span>
+<span class="cn">spring.datasource.hikari.connection-timeout</span>=<span class="cn">20000</span>
+<span class="cn">spring.datasource.hikari.max-lifetime</span>=<span class="cn">1800000</span>
+
+<span class="cc"># Hibernate JPA</span>
+<span class="cn">spring.jpa.hibernate.ddl-auto</span>=<span class="cv">validate</span>
+<span class="cn">spring.jpa.show-sql</span>=<span class="cv">false</span>
+<span class="cn">spring.jpa.properties.hibernate.dialect</span>=<span class="cv">MySQLDialect</span>
+
+<span class="cc"># Flyway DB Migrations</span>
+<span class="cn">spring.flyway.enabled</span>=<span class="cv">true</span>
+<span class="cn">spring.flyway.locations</span>=<span class="cv">classpath:db/migration</span></div>
+            </div>
+          </div>
+
+          <!-- web.xml -->
+          <div class="cfg-block">
+            <div class="cfg-hdr" onclick="toggleCfg('cfg-web')">
+              <div class="cfg-ttl"><i class="fab fa-java"></i> web.xml — Full Servlet Descriptor (Jakarta EE 10)</div>
+              <i class="fas fa-chevron-down" style="font-size:0.65rem;color:var(--muted)" id="ico-cfg-web"></i>
+            </div>
+            <div class="cfg-body" id="cfg-web" style="max-height:360px;overflow:auto">
+              <div class="cfg-code"><span class="ck">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="ck">&lt;web-app</span> xmlns=<span class="cs">"https://jakarta.ee/xml/ns/jakartaee"</span> version=<span class="cs">"6.0"</span><span class="ck">&gt;</span>
+
+  <span class="ck">&lt;display-name&gt;</span>NexusAI Tech Hub 2026<span class="ck">&lt;/display-name&gt;</span>
+
+  <span class="cc">&lt;!-- Context Parameters --&gt;</span>
+  <span class="ck">&lt;context-param&gt;</span>
+    <span class="ck">&lt;param-name&gt;</span>app.version<span class="ck">&lt;/param-name&gt;</span>
+    <span class="ck">&lt;param-value&gt;</span>2026.1.0<span class="ck">&lt;/param-value&gt;</span>
+  <span class="ck">&lt;/context-param&gt;</span>
+
+  <span class="cc">&lt;!-- Startup Listeners --&gt;</span>
+  <span class="ck">&lt;listener&gt;</span>
+    <span class="ck">&lt;listener-class&gt;</span>com.nexusai.AppContextListener<span class="ck">&lt;/listener-class&gt;</span>
+  <span class="ck">&lt;/listener&gt;</span>
+
+  <span class="cc">&lt;!-- CORS Filter --&gt;</span>
+  <span class="ck">&lt;filter&gt;</span>
+    <span class="ck">&lt;filter-name&gt;</span>CORSFilter<span class="ck">&lt;/filter-name&gt;</span>
+    <span class="ck">&lt;filter-class&gt;</span>com.nexusai.filter.CORSFilter<span class="ck">&lt;/filter-class&gt;</span>
+    <span class="ck">&lt;init-param&gt;&lt;param-name&gt;</span>allowed.origins<span class="ck">&lt;/param-name&gt;</span>
+      <span class="ck">&lt;param-value&gt;</span>https://nexusai.io<span class="ck">&lt;/param-value&gt;&lt;/init-param&gt;</span>
+  <span class="ck">&lt;/filter&gt;</span>
+  <span class="ck">&lt;filter-mapping&gt;&lt;filter-name&gt;</span>CORSFilter<span class="ck">&lt;/filter-name&gt;</span>
+    <span class="ck">&lt;url-pattern&gt;</span>/api/*<span class="ck">&lt;/url-pattern&gt;&lt;/filter-mapping&gt;</span>
+
+  <span class="cc">&lt;!-- JWT Auth Filter --&gt;</span>
+  <span class="ck">&lt;filter&gt;</span>
+    <span class="ck">&lt;filter-name&gt;</span>JWTAuthFilter<span class="ck">&lt;/filter-name&gt;</span>
+    <span class="ck">&lt;filter-class&gt;</span>com.nexusai.filter.JWTAuthFilter<span class="ck">&lt;/filter-class&gt;</span>
+  <span class="ck">&lt;/filter&gt;</span>
+  <span class="ck">&lt;filter-mapping&gt;&lt;filter-name&gt;</span>JWTAuthFilter<span class="ck">&lt;/filter-name&gt;</span>
+    <span class="ck">&lt;url-pattern&gt;</span>/api/*<span class="ck">&lt;/url-pattern&gt;&lt;/filter-mapping&gt;</span>
+
+  <span class="cc">&lt;!-- Servlets --&gt;</span>
+  <span class="ck">&lt;servlet&gt;</span>
+    <span class="ck">&lt;servlet-name&gt;</span>UserServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;servlet-class&gt;</span>com.nexusai.servlet.UserServlet<span class="ck">&lt;/servlet-class&gt;</span>
+    <span class="ck">&lt;load-on-startup&gt;</span>1<span class="ck">&lt;/load-on-startup&gt;</span>
+  <span class="ck">&lt;/servlet&gt;</span>
+  <span class="ck">&lt;servlet-mapping&gt;&lt;servlet-name&gt;</span>UserServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;url-pattern&gt;</span>/api/users/*<span class="ck">&lt;/url-pattern&gt;&lt;/servlet-mapping&gt;</span>
+
+  <span class="ck">&lt;servlet&gt;&lt;servlet-name&gt;</span>JobServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;servlet-class&gt;</span>com.nexusai.servlet.JobServlet<span class="ck">&lt;/servlet-class&gt;</span>
+    <span class="ck">&lt;load-on-startup&gt;</span>2<span class="ck">&lt;/load-on-startup&gt;&lt;/servlet&gt;</span>
+  <span class="ck">&lt;servlet-mapping&gt;&lt;servlet-name&gt;</span>JobServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;url-pattern&gt;</span>/api/jobs/*<span class="ck">&lt;/url-pattern&gt;&lt;/servlet-mapping&gt;</span>
+
+  <span class="ck">&lt;servlet&gt;&lt;servlet-name&gt;</span>AuthServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;servlet-class&gt;</span>com.nexusai.servlet.AuthServlet<span class="ck">&lt;/servlet-class&gt;</span>
+    <span class="ck">&lt;init-param&gt;&lt;param-name&gt;</span>bcrypt.rounds<span class="ck">&lt;/param-name&gt;&lt;param-value&gt;</span>12<span class="ck">&lt;/param-value&gt;&lt;/init-param&gt;</span>
+    <span class="ck">&lt;load-on-startup&gt;</span>1<span class="ck">&lt;/load-on-startup&gt;&lt;/servlet&gt;</span>
+  <span class="ck">&lt;servlet-mapping&gt;&lt;servlet-name&gt;</span>AuthServlet<span class="ck">&lt;/servlet-name&gt;</span>
+    <span class="ck">&lt;url-pattern&gt;</span>/api/auth/*<span class="ck">&lt;/url-pattern&gt;&lt;/servlet-mapping&gt;</span>
+
+  <span class="cc">&lt;!-- JNDI DataSource Reference --&gt;</span>
+  <span class="ck">&lt;resource-ref&gt;</span>
+    <span class="ck">&lt;description&gt;</span>MySQL DataSource via HikariCP<span class="ck">&lt;/description&gt;</span>
+    <span class="ck">&lt;res-ref-name&gt;</span>jdbc/NexusDB<span class="ck">&lt;/res-ref-name&gt;</span>
+    <span class="ck">&lt;res-type&gt;</span>javax.sql.DataSource<span class="ck">&lt;/res-type&gt;</span>
+    <span class="ck">&lt;res-auth&gt;</span>Container<span class="ck">&lt;/res-auth&gt;</span>
+  <span class="ck">&lt;/resource-ref&gt;</span>
+
+  <span class="cc">&lt;!-- Session Configuration --&gt;</span>
+  <span class="ck">&lt;session-config&gt;</span>
+    <span class="ck">&lt;session-timeout&gt;</span>30<span class="ck">&lt;/session-timeout&gt;</span>
+    <span class="ck">&lt;cookie-config&gt;</span>
+      <span class="ck">&lt;name&gt;</span>NEXUS_SESSION<span class="ck">&lt;/name&gt;</span>
+      <span class="ck">&lt;http-only&gt;</span>true<span class="ck">&lt;/http-only&gt;</span>
+      <span class="ck">&lt;secure&gt;</span>true<span class="ck">&lt;/secure&gt;</span>
+    <span class="ck">&lt;/cookie-config&gt;</span>
+    <span class="ck">&lt;tracking-mode&gt;</span>COOKIE<span class="ck">&lt;/tracking-mode&gt;</span>
+  <span class="ck">&lt;/session-config&gt;</span>
+
+  <span class="cc">&lt;!-- Error Pages --&gt;</span>
+  <span class="ck">&lt;error-page&gt;&lt;error-code&gt;</span>404<span class="ck">&lt;/error-code&gt;&lt;location&gt;</span>/error/404.html<span class="ck">&lt;/location&gt;&lt;/error-page&gt;</span>
+  <span class="ck">&lt;error-page&gt;&lt;error-code&gt;</span>500<span class="ck">&lt;/error-code&gt;&lt;location&gt;</span>/error/500.html<span class="ck">&lt;/location&gt;&lt;/error-page&gt;</span>
+
+  <span class="ck">&lt;welcome-file-list&gt;</span>
+    <span class="ck">&lt;welcome-file&gt;</span>nexusai-final.html<span class="ck">&lt;/welcome-file&gt;</span>
+  <span class="ck">&lt;/welcome-file-list&gt;</span>
+<span class="ck">&lt;/web-app&gt;</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Java DAO + Full SQL Schema -->
+        <div class="col-lg-6">
+          <div class="cfg-block">
+            <div class="cfg-hdr" onclick="toggleCfg('cfg-dao')">
+              <div class="cfg-ttl"><i class="fas fa-code"></i> UserDAO.java — JDBC Data Access Object</div>
+              <i class="fas fa-chevron-down" style="font-size:0.65rem;color:var(--muted)" id="ico-cfg-dao"></i>
+            </div>
+            <div class="cfg-body" id="cfg-dao">
+              <div class="cfg-code"><span class="cc">// UserDAO.java — connects Servlet to MySQL via JDBC</span>
+<span class="ca">@Repository</span>
+<span class="cj">public class</span> <span class="cv">UserDAO</span> {
+
+  <span class="ca">@Autowired</span>
+  <span class="cj">private</span> DataSource dataSource; <span class="cc">// HikariCP pool injected</span>
+
+  <span class="cj">public</span> List&lt;User&gt; <span class="cv">findAll</span>() {
+    <span class="cj">var</span> sql = <span class="cs">"SELECT * FROM users ORDER BY id"</span>;
+    <span class="cj">try</span> (var con = dataSource.getConnection();
+         var ps  = con.prepareStatement(sql);
+         var rs  = ps.executeQuery()) {
+      List&lt;User&gt; list = <span class="cj">new</span> ArrayList&lt;&gt;();
+      <span class="cj">while</span> (rs.next()) list.add(mapRow(rs));
+      <span class="cj">return</span> list;
+    }
+  }
+
+  <span class="cj">public void</span> <span class="cv">insert</span>(User u) <span class="cj">throws</span> SQLException {
+    <span class="cj">var</span> sql = <span class="cs">"INSERT INTO users(name,email,domain,exp_years) VALUES(?,?,?,?)"</span>;
+    <span class="cj">try</span> (var con = dataSource.getConnection();
+         var ps  = con.prepareStatement(sql)) {
+      ps.setString(<span class="cn">1</span>, u.getName());
+      ps.setString(<span class="cn">2</span>, u.getEmail());
+      ps.setString(<span class="cn">3</span>, u.getDomain());
+      ps.setInt(<span class="cn">4</span>, u.getExpYears());
+      ps.executeUpdate();
+    }
+  }
+
+  <span class="cj">public void</span> <span class="cv">deleteById</span>(<span class="cj">long</span> id) <span class="cj">throws</span> SQLException {
+    <span class="cj">try</span> (var con = dataSource.getConnection();
+         var ps  = con.prepareStatement(
+           <span class="cs">"DELETE FROM users WHERE id=?"</span>)) {
+      ps.setLong(<span class="cn">1</span>, id);
+      ps.executeUpdate();
+    }
+  }
+
+  <span class="cj">public void</span> <span class="cv">updateDomain</span>(<span class="cj">long</span> id, String d, <span class="cj">int</span> exp)
+      <span class="cj">throws</span> SQLException {
+    <span class="cj">try</span> (var con = dataSource.getConnection();
+         var ps  = con.prepareStatement(
+           <span class="cs">"UPDATE users SET domain=?,exp_years=? WHERE id=?"</span>)) {
+      ps.setString(<span class="cn">1</span>, d);
+      ps.setInt(<span class="cn">2</span>, exp);
+      ps.setLong(<span class="cn">3</span>, id);
+      ps.executeUpdate();
+    }
+  }
+
+  <span class="cj">private</span> User <span class="cv">mapRow</span>(ResultSet rs) <span class="cj">throws</span> SQLException {
+    <span class="cj">return new</span> User(rs.getLong(<span class="cs">"id"</span>), rs.getString(<span class="cs">"name"</span>),
+                   rs.getString(<span class="cs">"email"</span>), rs.getString(<span class="cs">"domain"</span>),
+                   rs.getInt(<span class="cs">"exp_years"</span>));
+  }
+}</div>
+            </div>
+          </div>
+
+          <div class="cfg-block">
+            <div class="cfg-hdr" onclick="toggleCfg('cfg-schema')">
+              <div class="cfg-ttl"><i class="fas fa-file-code"></i> db-schema.sql — Full Database Schema (6 Tables)</div>
+              <i class="fas fa-chevron-down" style="font-size:0.65rem;color:var(--muted)" id="ico-cfg-schema"></i>
+            </div>
+            <div class="cfg-body" id="cfg-schema" style="max-height:380px;overflow:auto">
+              <div class="cfg-code"><span class="cc">-- NexusAI Full Database Schema (SQLite / MySQL)</span>
+
+<span class="cc">-- TABLE 1: users</span>
+<span class="cj">CREATE TABLE</span> users (
+  id        <span class="cv">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+  name      <span class="cv">TEXT NOT NULL</span>,
+  email     <span class="cv">TEXT UNIQUE NOT NULL</span>,
+  domain    <span class="cv">TEXT DEFAULT</span> <span class="cs">'Undecided'</span>,
+  exp_years <span class="cv">INTEGER DEFAULT 0</span>,
+  is_active <span class="cv">INTEGER DEFAULT 1</span>,
+  joined_at <span class="cv">TEXT DEFAULT</span> (datetime(<span class="cs">'now'</span>))
+);
+<span class="cj">CREATE INDEX</span> idx_users_email <span class="cj">ON</span> users(email);
+
+<span class="cc">-- TABLE 2: tech_domains</span>
+<span class="cj">CREATE TABLE</span> tech_domains (
+  id        <span class="cv">INTEGER PRIMARY KEY</span>,
+  name      <span class="cv">TEXT NOT NULL</span>,
+  slug      <span class="cv">TEXT UNIQUE</span>,
+  market_bn <span class="cv">REAL</span>,   <span class="cc">-- USD billions</span>
+  cagr_pct  <span class="cv">REAL</span>,   <span class="cc">-- growth %</span>
+  jobs_k    <span class="cv">INTEGER</span>, <span class="cc">-- open roles K</span>
+  demand    <span class="cv">TEXT</span>
+);
+
+<span class="cc">-- TABLE 3: job_listings</span>
+<span class="cj">CREATE TABLE</span> job_listings (
+  id          <span class="cv">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+  title       <span class="cv">TEXT NOT NULL</span>,
+  company     <span class="cv">TEXT NOT NULL</span>,
+  location    <span class="cv">TEXT</span>,
+  salary_min  <span class="cv">INTEGER</span>,    <span class="cc">-- INR lakhs</span>
+  salary_max  <span class="cv">INTEGER</span>,
+  tech_stack  <span class="cv">TEXT</span>,
+  domain_id   <span class="cv">INTEGER REFERENCES</span> tech_domains(id),
+  posted_date <span class="cv">TEXT NOT NULL</span>
+);
+<span class="cj">CREATE INDEX</span> idx_jobs_domain <span class="cj">ON</span> job_listings(domain_id);
+
+<span class="cc">-- TABLE 4: salary_data</span>
+<span class="cj">CREATE TABLE</span> salary_data (
+  id               <span class="cv">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+  role             <span class="cv">TEXT NOT NULL</span>,
+  experience_level <span class="cv">TEXT NOT NULL</span>,  <span class="cc">-- Junior/Mid/Senior/Lead</span>
+  min_salary       <span class="cv">INTEGER</span>,
+  max_salary       <span class="cv">INTEGER</span>,
+  avg_salary       <span class="cv">REAL</span>,
+  yoy_growth_pct   <span class="cv">REAL</span>,
+  year             <span class="cv">INTEGER NOT NULL</span>,
+  <span class="cj">UNIQUE</span>(role, experience_level, year)
+);
+
+<span class="cc">-- TABLE 5: quiz_results</span>
+<span class="cj">CREATE TABLE</span> quiz_results (
+  id           <span class="cv">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+  user_id      <span class="cv">INTEGER REFERENCES</span> users(id),
+  score        <span class="cv">INTEGER NOT NULL</span>,
+  total        <span class="cv">INTEGER NOT NULL DEFAULT 8</span>,
+  grade        <span class="cv">TEXT</span>,
+  completed_at <span class="cv">TEXT DEFAULT</span> (datetime(<span class="cs">'now'</span>))
+);
+<span class="cj">CREATE INDEX</span> idx_quiz_user <span class="cj">ON</span> quiz_results(user_id);
+
+<span class="cc">-- TABLE 6: enrollments</span>
+<span class="cj">CREATE TABLE</span> enrollments (
+  id           <span class="cv">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+  user_id      <span class="cv">INTEGER NOT NULL REFERENCES</span> users(id),
+  domain       <span class="cv">TEXT</span>,
+  status       <span class="cv">TEXT DEFAULT</span> <span class="cs">'active'</span>,
+  progress_pct <span class="cv">REAL DEFAULT 0</span>,
+  enrolled_at  <span class="cv">TEXT DEFAULT</span> (datetime(<span class="cs">'now'</span>)),
+  <span class="cj">UNIQUE</span>(user_id, domain)
+);
+
+<span class="cc">-- VIEWS</span>
+<span class="cj">CREATE VIEW</span> v_leaderboard <span class="cj">AS</span>
+  <span class="cj">SELECT</span> u.name, u.domain, q.score, q.grade
+  <span class="cj">FROM</span> users u
+  <span class="cj">JOIN</span> quiz_results q <span class="cj">ON</span> q.user_id = u.id
+  <span class="cj">ORDER BY</span> q.score <span class="cj">DESC LIMIT 20</span>;
+
+<span class="cj">CREATE VIEW</span> v_top_salaries <span class="cj">AS</span>
+  <span class="cj">SELECT</span> role, experience_level, avg_salary, yoy_growth_pct
+  <span class="cj">FROM</span> salary_data
+  <span class="cj">ORDER BY</span> avg_salary <span class="cj">DESC</span>;</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</section>
+
+<!-- ════════════════════════════════════════
+     CHARTS — Chart.js market data
+     ════════════════════════════════════════ -->
+<section id="trends">
+  <div class="container">
+    <div class="row mb-4 fade-in">
       <div class="col-lg-7">
-        <div class="section-eyebrow">// Market Intelligence</div>
-        <h2 class="section-title">Industry Growth<br>Projections 2026–2032</h2>
+        <div class="sec-eye">// Market Intelligence</div>
+        <h2 class="sec-title">Growth Projections 2026–2032</h2>
       </div>
       <div class="col-lg-5 d-flex align-items-end justify-content-lg-end">
-        <div class="d-flex gap-2">
-          <button class="salary-role-btn active" id="chart-toggle-growth" onclick="showGrowthChart()">Growth</button>
-          <button class="salary-role-btn" id="chart-toggle-salary" onclick="showSalaryChart()">Salaries</button>
-          <button class="salary-role-btn" id="chart-toggle-demand" onclick="showDemandChart()">Demand</button>
+        <div class="chart-toggle">
+          <button class="ctgl-btn active" id="btn-growth" onclick="setChart('growth')">Market Size</button>
+          <button class="ctgl-btn" id="btn-salary" onclick="setChart('salary')">Salaries</button>
+          <button class="ctgl-btn" id="btn-jobs" onclick="setChart('jobs')">Job Demand</button>
         </div>
       </div>
     </div>
-    <div class="row g-4">
-      <div class="col-lg-8 fade-up">
-        <div class="chart-container">
-          <div class="chart-header">
-            <div class="chart-title" id="chartMainTitle">Market Size — USD Billions (2022–2032)</div>
-            <div class="chart-badge">LIVE DATA · 2026</div>
+    <div class="row g-4 fade-in">
+      <div class="col-lg-8">
+        <div class="chart-box">
+          <div class="chart-hdr">
+            <div class="chart-ttl" id="chart-ttl">Market Size – USD Billions (2022–2032)</div>
+            <div class="chart-badge">LIVE · 2026</div>
           </div>
-          <canvas id="mainChart" height="320"></canvas>
+          <canvas id="mainChart" style="max-height:300px"></canvas>
         </div>
       </div>
-      <div class="col-lg-4 fade-up">
-        <div class="chart-container mb-4">
-          <div class="chart-header">
-            <div class="chart-title">Tech Skill Split</div>
-          </div>
-          <canvas id="donutChart" height="180"></canvas>
+      <div class="col-lg-4">
+        <div class="chart-box mb-3">
+          <div class="chart-hdr"><div class="chart-ttl">Tech Skill Distribution</div></div>
+          <canvas id="donutChart" style="max-height:180px"></canvas>
         </div>
+        <!-- Bootstrap grid: 2x2 metric boxes -->
         <div class="row g-2">
-          <div class="col-6">
-            <div style="background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.1);border-radius:4px;padding:1rem;text-align:center">
-              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-cyan)">38%</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">AI CAGR</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div style="background:rgba(168,255,62,0.05);border:1px solid rgba(168,255,62,0.1);border-radius:4px;padding:1rem;text-align:center">
-              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-lime)">3.4M</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">JOBS SHORTAGE</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div style="background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.1);border-radius:4px;padding:1rem;text-align:center">
-              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-amber)">$187K</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">TOP AI SALARY</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div style="background:rgba(255,62,168,0.05);border:1px solid rgba(255,62,168,0.1);border-radius:4px;padding:1rem;text-align:center">
-              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-magenta)">97%</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">CLOUD ADOPTION</div>
-            </div>
-          </div>
+          <div class="col-6"><div class="metric-box"><div class="metric-val" style="color:var(--cyan)">38%</div><div class="metric-lbl">AI CAGR</div></div></div>
+          <div class="col-6"><div class="metric-box"><div class="metric-val" style="color:var(--green)">3.4M</div><div class="metric-lbl">JOB SHORTAGE</div></div></div>
+          <div class="col-6"><div class="metric-box"><div class="metric-val" style="color:var(--amber)">₹80L+</div><div class="metric-lbl">TOP AI SAL</div></div></div>
+          <div class="col-6"><div class="metric-box"><div class="metric-val" style="color:var(--pink)">97%</div><div class="metric-lbl">CLOUD ADOPT</div></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TECH QUIZ -->
-<section class="quiz-section" id="quiz">
+<!-- ════════════════════════════════════════
+     QUIZ — Interactive knowledge check
+     ════════════════════════════════════════ -->
+<section id="quiz" style="background:rgba(255,255,255,0.01);border-top:1px solid var(--border)">
   <div class="container">
-    <div class="row mb-4 fade-up">
+    <div class="row mb-4 fade-in">
       <div class="col-lg-7">
-        <div class="section-eyebrow">// Knowledge Check</div>
-        <h2 class="section-title">Tech Readiness<br>Quiz 2026</h2>
-        <p class="section-desc">Test your knowledge across AI, web dev, cybersecurity, and cloud technologies. 8 questions · 5 mins</p>
+        <div class="sec-eye">// Knowledge Check</div>
+        <h2 class="sec-title">Tech Readiness Quiz 2026</h2>
+        <p class="sec-desc">8 questions across AI, Web Dev, Cybersecurity & Cloud. ~5 minutes.</p>
       </div>
     </div>
-    <div class="row fade-up">
+    <div class="row g-4 fade-in">
       <div class="col-lg-8">
         <div class="quiz-card" id="quiz-card">
-          <div class="quiz-progress-bar">
-            <div class="quiz-progress-fill" id="quiz-progress" style="width:12.5%"></div>
-          </div>
-          <div id="quiz-content">
-            <!-- Injected by JS -->
-          </div>
+          <div class="quiz-prog"><div class="quiz-prog-fill" id="q-bar" style="width:12.5%"></div></div>
+          <div id="q-content"><!-- JS renders here --></div>
           <div class="d-flex gap-3 mt-3">
-            <button class="btn-ghost-nexus" id="quiz-submit" onclick="submitAnswer()">Submit Answer</button>
-            <button class="btn-primary-nexus d-none" id="quiz-next" onclick="nextQuestion()"><span>Next</span> <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-outline-nx" id="q-submit" onclick="submitQ()">Submit Answer</button>
+            <button class="btn-primary-nx d-none" id="q-next" onclick="nextQ()"><span>Next</span> <i class="fas fa-arrow-right"></i></button>
           </div>
         </div>
       </div>
       <div class="col-lg-4">
-        <div class="salary-card">
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);margin-bottom:0.5rem">SCORE BOARD</div>
-          <div id="quiz-score-display" style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;line-height:1">0<span style="color:var(--accent-cyan)">/8</span></div>
-          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Correct answers</div>
-          <div class="salary-bar mt-3">
-            <div class="salary-bar-fill" id="score-bar" style="width:0%"></div>
-          </div>
-          <div style="margin-top:1.5rem">
-            <div class="roadmap-label">TOPICS COVERED</div>
-            <div id="topic-tracker" style="margin-top:0.6rem">
-              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-0"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-0">AI Fundamentals</span></div>
-              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-1"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-1">Web Development</span></div>
-              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-2"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-2">Cybersecurity</span></div>
-              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-3"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-3">Cloud & DevOps</span></div>
-              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-4"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-4">Quantum / Edge</span></div>
-            </div>
+        <div class="sal-card">
+          <div style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-bottom:0.3rem">YOUR SCORE</div>
+          <div class="sal-amount" id="q-score">0<span>/8</span></div>
+          <div class="sal-bar mt-3"><div class="sal-fill" id="q-score-bar" style="width:0%"></div></div>
+          <div style="margin-top:1.2rem;font-family:var(--mono);font-size:0.7rem">
+            <div id="topic-list"></div>
           </div>
         </div>
       </div>
@@ -998,137 +1395,51 @@
   </div>
 </section>
 
-<!-- LEARNING ROADMAP -->
-<section class="roadmap-section" id="roadmap">
+<!-- ════════════════════════════════════════
+     SALARY CALCULATOR
+     ════════════════════════════════════════ -->
+<section id="salary">
   <div class="container">
-    <div class="row mb-5 fade-up">
-      <div class="col-lg-6">
-        <div class="section-eyebrow">// Learning Path</div>
-        <h2 class="section-title">Your 2026<br>Tech Roadmap</h2>
-        <p class="section-desc">A structured path from fundamentals to future-proof expertise — tailored for the Indian and global job market.</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num active">01</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">Foundation · Months 1–3</div>
-            <div class="roadmap-title">Web Development Foundations</div>
-            <div class="roadmap-desc">Master HTML5, CSS3, responsive design with Bootstrap 5, JavaScript ES2025, jQuery DOM manipulation, and the Servlet/JSP backend stack.</div>
-            <div class="skill-chips">
-              <span class="skill-chip">HTML5</span><span class="skill-chip">CSS3</span><span class="skill-chip">Bootstrap 5</span><span class="skill-chip">jQuery</span><span class="skill-chip">Java Servlet</span>
-            </div>
-          </div>
-        </div>
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num active">02</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">Frontend Mastery · Months 4–6</div>
-            <div class="roadmap-title">Modern JavaScript & Frameworks</div>
-            <div class="roadmap-desc">React 19, TypeScript, Next.js 15, server components, state management (Zustand/Redux), REST & GraphQL APIs, unit testing.</div>
-            <div class="skill-chips">
-              <span class="skill-chip">React 19</span><span class="skill-chip">TypeScript</span><span class="skill-chip">Next.js 15</span><span class="skill-chip">TanStack</span>
-            </div>
-          </div>
-        </div>
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num">03</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">Backend & Data · Months 7–9</div>
-            <div class="roadmap-title">APIs, Databases & Microservices</div>
-            <div class="roadmap-desc">Node.js/Spring Boot microservices, PostgreSQL, MongoDB, Redis, Kafka event streaming, Docker containerisation, CI/CD pipelines.</div>
-            <div class="skill-chips">
-              <span class="skill-chip">Node.js</span><span class="skill-chip">PostgreSQL</span><span class="skill-chip">Kafka</span><span class="skill-chip">Docker</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num">04</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">Cloud Native · Months 10–12</div>
-            <div class="roadmap-title">Cloud, DevOps & Infrastructure</div>
-            <div class="roadmap-desc">AWS/GCP/Azure certifications, Kubernetes orchestration, Terraform IaC, GitOps, Observability (Prometheus, Grafana, OpenTelemetry).</div>
-            <div class="skill-chips">
-              <span class="skill-chip">Kubernetes</span><span class="skill-chip">Terraform</span><span class="skill-chip">AWS SAA</span><span class="skill-chip">ArgoCD</span>
-            </div>
-          </div>
-        </div>
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num">05</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">AI Integration · Months 13–18</div>
-            <div class="roadmap-title">AI/ML Engineering & LLMOps</div>
-            <div class="roadmap-desc">Python ML stack, fine-tuning LLMs, RAG pipelines, LangChain/LlamaIndex, vector databases (Pinecone/Weaviate), model deployment & monitoring.</div>
-            <div class="skill-chips">
-              <span class="skill-chip">PyTorch</span><span class="skill-chip">LangChain</span><span class="skill-chip">RAG</span><span class="skill-chip">Pinecone</span><span class="skill-chip">MLflow</span>
-            </div>
-          </div>
-        </div>
-        <div class="roadmap-item fade-up">
-          <div class="roadmap-num">06</div>
-          <div class="roadmap-content">
-            <div class="roadmap-label">Future Tech · Months 18–24</div>
-            <div class="roadmap-title">Quantum, Edge & Specialisation</div>
-            <div class="roadmap-desc">Post-quantum cryptography, Qiskit, TinyML on edge devices, XR/spatial computing, advanced cybersecurity, system design for scale.</div>
-            <div class="skill-chips">
-              <span class="skill-chip">Qiskit</span><span class="skill-chip">TinyML</span><span class="skill-chip">CRYSTALS-Kyber</span><span class="skill-chip">WebXR</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SALARY CALCULATOR -->
-<section class="salary-section" id="salary">
-  <div class="container">
-    <div class="row mb-5 fade-up">
+    <div class="row mb-4 fade-in">
       <div class="col-lg-7">
-        <div class="section-eyebrow">// Market Compensation</div>
-        <h2 class="section-title">2026 Salary<br>Intelligence</h2>
-        <p class="section-desc">Real-time market compensation data across India's top tech roles. Select a role + experience level.</p>
+        <div class="sec-eye">// Market Compensation</div>
+        <h2 class="sec-title">2026 Salary Intelligence</h2>
+        <p class="sec-desc">Live salary data pulled from the connected SQLite database. Select role + experience.</p>
       </div>
     </div>
-    <div class="row g-4 fade-up">
+    <div class="row g-4 fade-in">
       <div class="col-lg-5">
-        <div class="salary-card">
-          <div class="roadmap-label mb-2">SELECT ROLE</div>
-          <div id="role-buttons">
-            <button class="salary-role-btn active" onclick="updateSalary('ai-ml', this)">AI/ML Engineer</button>
-            <button class="salary-role-btn" onclick="updateSalary('fullstack', this)">Full Stack Dev</button>
-            <button class="salary-role-btn" onclick="updateSalary('devops', this)">DevOps/Cloud</button>
-            <button class="salary-role-btn" onclick="updateSalary('cybersec', this)">Cybersecurity</button>
-            <button class="salary-role-btn" onclick="updateSalary('data', this)">Data Scientist</button>
-            <button class="salary-role-btn" onclick="updateSalary('quantum', this)">Quantum Dev</button>
+        <div class="sal-card">
+          <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">Select Role</div>
+          <div id="role-btns">
+            <button class="role-btn active" onclick="setSal('ai-ml',this)">AI/ML Engineer</button>
+            <button class="role-btn" onclick="setSal('fullstack',this)">Full Stack Dev</button>
+            <button class="role-btn" onclick="setSal('devops',this)">DevOps/Cloud</button>
+            <button class="role-btn" onclick="setSal('cybersec',this)">Cybersecurity</button>
+            <button class="role-btn" onclick="setSal('data',this)">Data Scientist</button>
+            <button class="role-btn" onclick="setSal('quantum',this)">Quantum Dev</button>
           </div>
-          <div class="roadmap-label mt-3 mb-2">EXPERIENCE LEVEL</div>
-          <div id="exp-buttons">
-            <button class="salary-role-btn active" onclick="setExp('junior', this)">Junior (0–2 yrs)</button>
-            <button class="salary-role-btn" onclick="setExp('mid', this)">Mid (3–5 yrs)</button>
-            <button class="salary-role-btn" onclick="setExp('senior', this)">Senior (6–10 yrs)</button>
-            <button class="salary-role-btn" onclick="setExp('lead', this)">Lead/Principal</button>
+          <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);text-transform:uppercase;margin-top:1rem;margin-bottom:0.5rem">Experience Level</div>
+          <div id="exp-btns">
+            <button class="role-btn active" onclick="setExp('junior',this)">Junior (0–2 yrs)</button>
+            <button class="role-btn" onclick="setExp('mid',this)">Mid (3–5 yrs)</button>
+            <button class="role-btn" onclick="setExp('senior',this)">Senior (6–10 yrs)</button>
+            <button class="role-btn" onclick="setExp('lead',this)">Lead / Principal</button>
           </div>
         </div>
       </div>
       <div class="col-lg-7">
-        <div class="salary-card">
-          <div class="salary-display">
-            <div class="salary-amount"><span>₹</span><span id="sal-num">18</span>L</div>
-            <div class="salary-range" id="sal-range">Range: ₹12L – ₹25L per annum</div>
-            <div class="salary-bar mt-3">
-              <div class="salary-bar-fill" id="sal-bar" style="width:35%"></div>
-            </div>
-          </div>
-          <div class="salary-factors">
-            <div class="salary-factor"><span class="salary-factor-label">Role</span><span class="salary-factor-val val-up" id="sal-role">AI/ML Engineer</span></div>
-            <div class="salary-factor"><span class="salary-factor-label">Experience</span><span class="salary-factor-val val-neutral" id="sal-exp">Junior (0–2 yrs)</span></div>
-            <div class="salary-factor"><span class="salary-factor-label">Global Equivalent</span><span class="salary-factor-val val-up" id="sal-global">$28K–$45K USD</span></div>
-            <div class="salary-factor"><span class="salary-factor-label">YoY Growth</span><span class="salary-factor-val val-up" id="sal-growth">+28%</span></div>
-            <div class="salary-factor"><span class="salary-factor-label">Top Companies</span><span class="salary-factor-val val-neutral" id="sal-companies">Google, OpenAI, Flipkart</span></div>
+        <div class="sal-card">
+          <div style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-bottom:0.3rem">ANNUAL PACKAGE (INDIA)</div>
+          <div class="sal-amount">₹<span id="sal-num">18</span>L</div>
+          <div class="sal-range" id="sal-range">Range: ₹12L – ₹25L per annum</div>
+          <div class="sal-bar"><div class="sal-fill" id="sal-fill" style="width:30%"></div></div>
+          <div style="margin-top:1.2rem">
+            <div class="sal-row"><span class="sal-key">Role</span><span class="sal-val" id="s-role">AI/ML Engineer</span></div>
+            <div class="sal-row"><span class="sal-key">Level</span><span class="sal-val" id="s-level">Junior (0–2 yrs)</span></div>
+            <div class="sal-row"><span class="sal-key">Global USD Equiv.</span><span class="sal-val" id="s-usd">$28K–$45K</span></div>
+            <div class="sal-row"><span class="sal-key">YoY Growth</span><span class="sal-val" id="s-growth">+28%</span></div>
+            <div class="sal-row"><span class="sal-key">Top Hiring Cos.</span><span class="sal-val" id="s-cos">Google, OpenAI, Flipkart</span></div>
           </div>
         </div>
       </div>
@@ -1136,453 +1447,805 @@
   </div>
 </section>
 
-<!-- NEWSLETTER -->
-<section class="newsletter-section" id="newsletter">
-  <div class="container">
-    <div class="row fade-up">
-      <div class="col-lg-10 mx-auto">
-        <div class="newsletter-card">
-          <div class="section-eyebrow">// Stay Ahead</div>
-          <div class="newsletter-title">Tech Intelligence,<br>Weekly.</div>
-          <div class="newsletter-desc">Weekly deep-dives on AI, market trends, salary data, and emerging tech — curated for ambitious builders.</div>
-          <div class="newsletter-form">
-            <input type="email" class="newsletter-input" placeholder="you@company.com" id="nl-email">
-            <button class="btn-primary-nexus" onclick="subscribeNewsletter()"><span>Subscribe</span> <i class="fas fa-arrow-right"></i></button>
-          </div>
-          <div id="nl-success" class="d-none mt-3" style="font-family:var(--font-mono);font-size:0.78rem;color:var(--accent-lime)">
-            <i class="fas fa-check-circle"></i> You're in! First edition arrives next Monday.
-          </div>
-          <div style="margin-top:2rem;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap">
-            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-lock" style="color:var(--accent-cyan)"></i> Zero spam</span>
-            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-bolt" style="color:var(--accent-lime)"></i> Weekly digest</span>
-            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-users" style="color:var(--accent-magenta)"></i> 42K+ readers</span>
-          </div>
+<!-- ════════════════════════════════════════
+     BOOTSTRAP MODALS — Domain detail popups
+     ════════════════════════════════════════ -->
+<div class="modal fade" id="mod-ai" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:#0d1117;border:1px solid rgba(0,229,255,0.2);border-radius:var(--radius)">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 style="color:var(--cyan);font-weight:700">AI & Machine Learning</h4>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75">AI is the most transformative technology of the 21st century. Generative models, LLM fine-tuning, RAG pipelines, computer vision, and MLOps are creating 4.2 million new jobs globally. India ranks 2nd in AI talent worldwide.</p>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75;margin-top:0.8rem"><strong style="color:var(--text)">2026 Hot Roles:</strong> ML Engineer, LLMOps Engineer, AI Product Manager, Prompt Engineer, AI Research Scientist. Salaries: ₹25L–₹80L+.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
+<div class="modal fade" id="mod-web" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:#0d1117;border:1px solid rgba(105,255,71,0.2);border-radius:var(--radius)">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 style="color:var(--green);font-weight:700">Full Stack Development</h4>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75">Full stack in 2026 means HTML + CSS + Bootstrap + jQuery on the frontend, Java Servlet / Spring Boot + SQL on the backend, with React/Next.js bridging server and client. This website itself is a full-stack demonstration — running SQLite via WebAssembly!</p>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75;margin-top:0.8rem"><strong style="color:var(--text)">Enterprise stack still booming:</strong> Java Servlet + JSP + Bootstrap + jQuery powers 70% of Indian enterprise banking and government systems.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mod-sec" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:#0d1117;border:1px solid rgba(255,64,129,0.2);border-radius:var(--radius)">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 style="color:var(--pink);font-weight:700">Cybersecurity</h4>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75">Cybercrime costs $10.5 trillion/year by 2025. With 3.4 million open security roles globally and AI-powered attacks accelerating, cybersecurity is the most urgent and fastest-growing tech career in the world.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mod-cloud" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:#0d1117;border:1px solid rgba(255,179,0,0.2);border-radius:var(--radius)">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 style="color:var(--amber);font-weight:700">Cloud & DevOps</h4>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.75">97% of enterprises use cloud. Kubernetes orchestration, Terraform IaC, GitOps, and Platform Engineering are the backbone of modern software delivery. Cloud market hits $1.6T by 2030 with 20% CAGR.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!-- FOOTER -->
-<footer class="nexus-footer">
+<!-- ════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════ -->
+<footer>
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-4 mb-3 mb-lg-0">
-        <div class="nav-brand" style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent">NexusAI</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;font-family:var(--font-mono)">Future Tech Intelligence Hub © 2026</div>
+        <div class="brand" style="font-size:1.2rem">NexusAI</div>
+        <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-top:3px">
+          Future Tech Intelligence Hub © 2026
+        </div>
       </div>
-      <div class="col-lg-4 mb-3 mb-lg-0 text-lg-center footer-links">
+      <div class="col-lg-4 text-lg-center mb-3 mb-lg-0">
         <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">API</a>
       </div>
       <div class="col-lg-4 text-lg-end">
-        <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted)">Built with: HTML · CSS · Bootstrap 5 · jQuery · Servlet API</div>
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--muted)">
+          HTML · CSS · Bootstrap 5 · jQuery · Servlet · SQL.js · Chart.js
+        </div>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- MODALS -->
-<div class="modal fade" id="modal-ai" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(0,245,255,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-cyan)">AI & Machine Learning</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>Artificial Intelligence is the most transformative technology of the 21st century. From generative models (GPT-4o, Claude, Gemini) to computer vision systems detecting cancer earlier than specialists, AI is rewriting industries at a pace never seen before.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Key areas for 2026:</strong> Multimodal AI, AI agents & orchestration, edge AI inference, responsible AI / AI governance, AI-native application development (vibe coding, copilot APIs).</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">India opportunity:</strong> India has the world's 2nd largest AI talent pool. Top roles — ML Engineer, AI Research Scientist, Prompt Engineer, LLMOps Engineer, AI Product Manager — command ₹25L–₹80L+ packages.</p>
-        </div>
-        <div class="d-flex gap-2 mt-3 flex-wrap">
-          <span class="tech-stack-badge">TensorFlow</span><span class="tech-stack-badge">PyTorch</span><span class="tech-stack-badge">LangChain</span><span class="tech-stack-badge">Hugging Face</span><span class="tech-stack-badge">Vertex AI</span><span class="tech-stack-badge">SageMaker</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-web" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(168,255,62,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-lime)">Full Stack Development</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>Full Stack Development in 2026 means mastering the convergence of traditional web engineering with AI-native patterns. React Server Components, streaming UIs, edge runtimes, and AI copilot integration are no longer optional — they're baseline expectations.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Cutting-edge stack (2026):</strong> Next.js 15 App Router, React 19 compiler, Bun runtime, Drizzle ORM, Neon/PlanetScale, tRPC, Shadcn/UI, AI SDK by Vercel.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Traditional stack (still booming):</strong> Java Spring Boot + React, Servlet/JSP + Bootstrap + jQuery — powering 70% of India's enterprise systems. Both paths lead to excellent careers.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-cyber" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(255,62,168,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-magenta)">Cybersecurity & Zero-Trust</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>With cybercrime expected to cost $10.5 trillion annually by 2025, and a 3.4 million security professional shortage globally, there has never been a better time to enter cybersecurity. AI-powered threats require AI-powered defences.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Hot roles:</strong> Cloud Security Architect, Threat Intelligence Analyst, Red Team Operator, AppSec Engineer, GRC Specialist, Incident Response Lead. CISM, CISSP, CEH, OSCP certifications highly valued.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Emerging (2026–2030):</strong> Post-quantum cryptography (NIST PQC standards live), AI-vs-AI adversarial security, automotive cybersecurity (EV & autonomous), supply chain security.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-cloud" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(255,181,71,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-amber)">Cloud & DevOps</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>Cloud & DevOps remains the backbone of all digital transformation. Platform Engineering is the new DevOps — building Internal Developer Platforms (IDPs) that abstract infrastructure complexity and accelerate delivery.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">2026 evolution:</strong> FinOps (cloud cost optimisation), GitOps workflows (ArgoCD, Flux), AI Ops (AIOps), Service Mesh (Istio, Linkerd), Policy-as-Code (OPA, Kyverno), WebAssembly (WASM) on edge.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Certifications that pay:</strong> AWS Solutions Architect Professional, GCP Professional Cloud Architect, CKA/CKAD, HashiCorp Terraform Associate, GitLab CI specialist.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-quantum" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(181,123,255,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:#b57bff">Quantum Computing</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>Quantum computing crossed the 1000-qubit threshold. While fault-tolerant universal quantum computers are still years away, quantum advantage has been demonstrated in chemistry simulation, optimisation, and cryptography.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Near-term applications (2026–2030):</strong> Drug molecule simulation (Pharma), financial portfolio optimisation, logistics routing (airline, shipping), post-quantum cryptography standards migration.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">Career path:</strong> Learn linear algebra, quantum mechanics basics, then Qiskit (IBM), Cirq (Google), or PennyLane (Xanadu). India's IISER, IITs and TCS Research hiring quantum specialists at ₹30L–₹70L.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-iot" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(62,255,180,0.15);border-radius:8px">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:#3effb4">IoT & Edge AI</div>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
-          <p>75 billion connected devices by 2025 generate massive data that cannot all be sent to the cloud. Edge AI — running ML models directly on devices — is the solution enabling real-time intelligence at the source.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">TinyML revolution:</strong> Models like MobileNet, EfficientDet, and custom distilled transformers now run on microcontrollers consuming milliwatts. Edge Impulse, TensorFlow Lite, and ONNX Runtime enable rapid deployment.</p>
-          <p class="mt-3"><strong style="color:var(--text-primary)">India opportunity:</strong> Smart agriculture (soil sensors, drone AI), smart cities (traffic AI), healthcare IoT (wearables, remote diagnostics), manufacturing (predictive maintenance). Government's Smart Cities Mission ₹2T investment.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bootstrap JS -->
+<!-- Bootstrap 5 JS Bundle (includes Popper for dropdowns/modals) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- ════════════════════════════════════════════════════════════════════
+     JAVASCRIPT — jQuery + SQL.js + Chart.js
+     ════════════════════════════════════════════════════════════════════ -->
 <script>
-// ─── CURSOR ───────────────────────────────────────────────────────
-$(document).on('mousemove', function(e) {
-  $('#cursor').css({ left: e.clientX, top: e.clientY });
-  setTimeout(function() {
-    $('#cursor-ring').css({ left: e.clientX, top: e.clientY });
-  }, 80);
-});
+// ─────────────────────────────────────────────────────────────────────
+// SECTION A: JQUERY — Navbar scroll effect, fade-in animations,
+//            smooth scroll, tab switching, config toggle
+// ─────────────────────────────────────────────────────────────────────
 
-// ─── NAVBAR SCROLL ────────────────────────────────────────────────
+// jQuery: Navbar shrinks on scroll
 $(window).on('scroll', function() {
-  if ($(this).scrollTop() > 50) $('.nexus-nav').addClass('scrolled');
-  else $('.nexus-nav').removeClass('scrolled');
-  checkFadeUp();
+  if ($(this).scrollTop() > 60) $('#navbar').addClass('scrolled');
+  else                           $('#navbar').removeClass('scrolled');
+  revealFadeIns();  // trigger scroll animations
 });
 
-// ─── FADE UP ON SCROLL ────────────────────────────────────────────
-function checkFadeUp() {
-  $('.fade-up').each(function() {
-    var top = $(this).offset().top;
-    var scrollBottom = $(window).scrollTop() + $(window).height();
-    if (scrollBottom > top + 60) $(this).addClass('visible');
+// jQuery: Smooth scroll for all anchor links
+$('a[href^="#"]').on('click', function(e) {
+  var target = $(this.attr('href'));
+  if (target.length) {
+    e.preventDefault();
+    $('html, body').animate({ scrollTop: target.offset().top - 70 }, 600);
+  }
+});
+
+// jQuery: Reveal .fade-in elements when they enter viewport
+function revealFadeIns() {
+  $('.fade-in').each(function() {
+    if ($(window).scrollTop() + $(window).height() > $(this).offset().top + 50) {
+      $(this).addClass('show');
+    }
   });
 }
-$(document).ready(function() { checkFadeUp(); });
+$(document).ready(function() { revealFadeIns(); });
 
-// ─── COUNTER ANIMATION ────────────────────────────────────────────
-function animateCounter(el, target, suffix) {
-  var current = 0;
-  var step = Math.ceil(target / 40);
-  var timer = setInterval(function() {
-    current += step;
-    if (current >= target) { current = target; clearInterval(timer); }
-    $(el).html(current + '<span>' + suffix + '</span>');
+// jQuery: DB tab switching
+function switchTab(name, btn) {
+  $('.db-pane').removeClass('active');
+  $('.db-tab').removeClass('active');
+  $('#pane-' + name).addClass('active');
+  $(btn).addClass('active');
+  if (name === 'browser') browseTable();
+  if (name === 'dashboard') refreshDashboard();
+}
+
+// jQuery: Toggle config accordion blocks (slideUp / slideDown)
+function toggleCfg(id) {
+  var body = $('#' + id);
+  var icon = $('#ico-' + id);
+  if (body.is(':visible')) {
+    body.slideUp(200);
+    icon.css('transform', 'rotate(-90deg)');
+  } else {
+    body.slideDown(200);
+    icon.css('transform', 'rotate(0deg)');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SECTION B: TERMINAL — Animated typewriter effect (jQuery)
+// ─────────────────────────────────────────────────────────────────────
+var termLines = [
+  { cls: 't-prompt', txt: '❯ nexus scan --tech-stack 2026' },
+  { cls: 't-out',    txt: '✓ HTML5 + CSS3 + Bootstrap 5 detected' },
+  { cls: 't-out',    txt: '✓ jQuery 3.7.1 — DOM engine loaded' },
+  { cls: 't-out',    txt: '✓ Java Servlet API — backend configured' },
+  { cls: 't-prompt', txt: '❯ nexus db --init' },
+  { cls: 't-out',    txt: '✓ SQL.js SQLite engine initialised (WASM)' },
+  { cls: 't-out',    txt: '✓ 6 tables created · 60 rows seeded' },
+  { cls: 't-prompt', txt: '❯ nexus jobs --filter="India" --year=2026' },
+  { cls: 't-out',    txt: '✓ 84,000 open positions found' },
+  { cls: 't-warn',   txt: '⚠ Skill gap: Post-Quantum Cryptography' },
+  { cls: 't-prompt', txt: '❯ nexus salary --role="ML Engineer" --exp=mid' },
+  { cls: 't-out',    txt: '✓ Median: ₹38L/yr | Top: ₹80L+ (FAANG)' },
+  { cls: 't-dim',    txt: '# All technologies live in this single file.' },
+];
+var tIdx = 0;
+function typeLine() {
+  if (tIdx >= termLines.length) {
+    $('#term-out').append('<div><span class="t-prompt">❯</span> <span class="blink"></span></div>');
+    return;
+  }
+  var l = termLines[tIdx++];
+  // jQuery: append styled line to terminal
+  var div = $('<div>').html('<span class="' + l.cls + '">' + l.txt + '</span>');
+  $('#term-out').append(div);
+  $('#term-out').scrollTop(9999);
+  setTimeout(typeLine, l.cls === 't-prompt' ? 750 : 320);
+}
+setTimeout(typeLine, 1000);
+
+// ─────────────────────────────────────────────────────────────────────
+// SECTION C: COUNTER ANIMATION (jQuery)
+// ─────────────────────────────────────────────────────────────────────
+function animCount(el, target, suf) {
+  var n = 0, step = Math.ceil(target / 45);
+  var t = setInterval(function() {
+    n = Math.min(n + step, target);
+    $(el).html(n + '<span>' + suf + '</span>');
+    if (n >= target) clearInterval(t);
   }, 40);
 }
 setTimeout(function() {
-  animateCounter('#counter1', 6, '+');
-  animateCounter('#counter2', 45, 'L+');
-  animateCounter('#counter3', 38, '%');
+  animCount('#c1', 6,  '+');
+  animCount('#c2', 45, 'L+');
+  animCount('#c3', 38, '%');
+  animCount('#c4', 60, 'K');
 }, 800);
 
-// ─── TERMINAL ANIMATION ───────────────────────────────────────────
-var termLines = [
-  { type: 'prompt', text: 'nexus scan --domain=AI-ML 2026' },
-  { type: 'output', text: '✓ Domain active · Market: $2.6T projected' },
-  { type: 'output', text: '✓ Top skill: LLM fine-tuning · RAG pipelines' },
-  { type: 'prompt', text: 'nexus jobs --filter="India,Remote"' },
-  { type: 'output', text: '✓ 84,000 open positions found' },
-  { type: 'warn',   text: '⚠ Skill gap detected: Post-quantum crypto' },
-  { type: 'prompt', text: 'nexus salary --role="ML Engineer" --exp=mid' },
-  { type: 'output', text: '✓ Median: ₹38L/yr  |  Top: ₹80L+ (FAANG)' },
-  { type: 'prompt', text: 'nexus forecast --year=2030' },
-  { type: 'output', text: '✓ AI Engineers needed: +4.2M globally' },
-  { type: 'output', text: '✓ Quantum developers: HIGH VALUE (scarce)' },
-  { type: 'comment', text: '# Run nexus --help for full command list' },
-];
-var lineIdx = 0;
-function typeNextLine() {
-  if (lineIdx >= termLines.length) return;
-  var line = termLines[lineIdx];
-  var cls = { prompt: 't-prompt', output: 't-output', warn: 't-warn', comment: 't-comment' }[line.type] || 't-output';
-  var prefix = line.type === 'prompt' ? '<span class="t-prompt">❯</span> ' : '';
-  var div = $('<div class="t-line"></div>').html(prefix + '<span class="' + cls + '">' + line.text + '</span>');
-  $('#terminal-output').append(div);
-  lineIdx++;
-  $('#terminal-output').scrollTop($('#terminal-output')[0].scrollHeight);
-  var delay = line.type === 'prompt' ? 800 : 350;
-  if (lineIdx < termLines.length) setTimeout(typeNextLine, delay);
-  else $('#terminal-output').append('<div class="t-line"><span class="t-prompt">❯</span> <span class="cursor-blink"></span></div>');
+// ─────────────────────────────────────────────────────────────────────
+// SECTION D: SQL DATABASE — SQL.js (SQLite via WebAssembly)
+//            This is the real database integration
+// ─────────────────────────────────────────────────────────────────────
+var DB = null;   // SQLite database object
+var qCount = 0;  // query counter
+var actLog = []; // activity log entries
+
+// Preset SQL queries — loaded into editor on button click
+var QUERIES = {
+  all_users:   "SELECT id, name, email, domain, exp_years, joined_at\nFROM users\nORDER BY id;",
+  top_jobs:    "SELECT title, company, location,\n       salary_min, salary_max, tech_stack\nFROM job_listings\nORDER BY salary_max DESC;",
+  salary_avg:  "SELECT role, experience_level,\n       MIN(min_salary) AS floor_L,\n       ROUND(AVG(avg_salary), 1) AS avg_L,\n       MAX(max_salary) AS ceiling_L\nFROM salary_data\nGROUP BY role, experience_level\nORDER BY avg_L DESC;",
+  domain_rank: "SELECT name, market_bn, cagr_pct, jobs_k, demand\nFROM tech_domains\nORDER BY market_bn DESC;",
+  quiz_join:   "SELECT u.name, u.domain,\n       q.score, q.total, q.grade\nFROM users u\nJOIN quiz_results q ON q.user_id = u.id\nORDER BY q.score DESC;",
+  leaderboard: "SELECT u.name, u.domain,\n       q.score, q.grade,\n       ROUND(q.score*100.0/q.total,1) AS pct\nFROM users u\nJOIN quiz_results q ON q.user_id = u.id\nORDER BY q.score DESC, q.grade;",
+  schema_check:"SELECT name, type FROM sqlite_master\nWHERE type IN ('table','view','index')\nORDER BY type, name;",
+  analytics:   "SELECT d.name AS domain,\n       COUNT(j.id) AS jobs,\n       AVG(j.salary_max) AS avg_max_sal\nFROM tech_domains d\nLEFT JOIN job_listings j ON j.domain_id = d.id\nGROUP BY d.name\nORDER BY avg_max_sal DESC;"
+};
+
+// Load a preset query into the SQL editor textarea
+function loadQ(key) {
+  $('#sql-ed').val(QUERIES[key]);
+  switchTab('console', $('.db-tab')[1]);
+  $('#sql-ed').focus();
 }
-setTimeout(typeNextLine, 1200);
 
-// ─── CHARTS ───────────────────────────────────────────────────────
-var chartCtx = document.getElementById('mainChart').getContext('2d');
-var labels = ['2022','2023','2024','2025','2026','2027','2028','2030','2032'];
-
-var growthData = {
-  datasets: [
-    { label: 'AI & ML', data: [120,210,390,670,1100,1580,2100,2600,3200], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Cybersecurity', data: [170,190,225,280,350,403,480,580,700], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Cloud Services', data: [490,600,740,900,1060,1250,1450,1700,2100], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'IoT & Edge', data: [380,420,510,650,820,1000,1250,1700,2200], borderColor: '#a8ff3e', backgroundColor: 'rgba(168,255,62,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-  ]
-};
-
-var salaryData = {
-  datasets: [
-    { label: 'AI/ML Eng (₹L)', data: [12,14,18,24,32,42,52,70,90], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'DevOps (₹L)', data: [8,10,13,17,22,28,35,48,62], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Fullstack (₹L)', data: [7,9,12,16,21,26,32,44,58], borderColor: '#a8ff3e', backgroundColor: 'rgba(168,255,62,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Cybersec (₹L)', data: [10,12,15,20,28,36,46,62,80], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-  ]
-};
-
-var demandData = {
-  datasets: [
-    { label: 'AI Job Postings (K)', data: [45,80,140,240,380,520,680,900,1100], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Cloud Jobs (K)', data: [80,110,150,200,260,330,420,560,720], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-    { label: 'Cybersec Jobs (K)', data: [60,75,100,135,185,240,310,430,580], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
-  ]
-};
-
-var chartTitles = ['Market Size — USD Billions (2022–2032)', 'India Salary Trends — ₹ Lakhs (2022–2032)', 'Global Job Postings — Thousands (2022–2032)'];
-var allDatasets = [growthData, salaryData, demandData];
-var currentDataset = 0;
-
-var mainChart = new Chart(chartCtx, {
-  type: 'line',
-  data: { labels: labels, datasets: growthData.datasets },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 11 } } } },
-    scales: {
-      x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 } } },
-      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 } } }
-    }
+// ── DB INITIALISATION — runs once on page load ──
+// Uses initSqlJs() to load the WebAssembly binary, then creates a fresh DB
+initSqlJs({
+  locateFile: function(f) {
+    // Tell SQL.js where to find the WASM file on cdnjs CDN
+    return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/' + f;
   }
+}).then(function(SQL) {
+
+  // Create a brand-new in-memory SQLite database
+  DB = new SQL.Database();
+
+  // ── CREATE TABLES (DDL) ──
+  DB.run(`CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    domain TEXT DEFAULT 'Undecided',
+    exp_years INTEGER DEFAULT 0,
+    is_active INTEGER DEFAULT 1,
+    joined_at TEXT DEFAULT (datetime('now'))
+  )`);
+
+  DB.run(`CREATE TABLE tech_domains (
+    id INTEGER PRIMARY KEY, name TEXT, slug TEXT UNIQUE,
+    market_bn REAL, cagr_pct REAL, jobs_k INTEGER, demand TEXT
+  )`);
+
+  DB.run(`CREATE TABLE job_listings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL, company TEXT NOT NULL, location TEXT,
+    salary_min INTEGER, salary_max INTEGER, tech_stack TEXT,
+    domain_id INTEGER REFERENCES tech_domains(id), posted_date TEXT NOT NULL
+  )`);
+
+  DB.run(`CREATE TABLE salary_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role TEXT NOT NULL, experience_level TEXT NOT NULL,
+    min_salary INTEGER, max_salary INTEGER, avg_salary REAL,
+    yoy_growth_pct REAL, year INTEGER NOT NULL,
+    UNIQUE(role, experience_level, year)
+  )`);
+
+  DB.run(`CREATE TABLE quiz_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES users(id),
+    score INTEGER NOT NULL, total INTEGER NOT NULL DEFAULT 8,
+    grade TEXT, completed_at TEXT DEFAULT (datetime('now'))
+  )`);
+
+  DB.run(`CREATE TABLE enrollments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    domain TEXT, status TEXT DEFAULT 'active',
+    progress_pct REAL DEFAULT 0,
+    enrolled_at TEXT DEFAULT (datetime('now')),
+    UNIQUE(user_id, domain)
+  )`);
+
+  // ── SEED DATA (INSERT rows) ──
+  // Users
+  [
+    ['Aanya Singh',  'aanya@nexus.io',   'AI/ML Engineering', 3],
+    ['Rohit Verma',  'rohit@stack.dev',  'Full Stack Dev',     5],
+    ['Priya Nair',   'priya@cloud.in',   'DevOps/Cloud',       4],
+    ['Arjun Mehta',  'arjun@secure.in',  'Cybersecurity',      6],
+    ['Divya Rao',    'divya@data.ai',    'Data Science',       2],
+    ['Karan Joshi',  'karan@quantx.io',  'Quantum Computing',  1],
+    ['Sneha Patel',  'sneha@ai.org',     'AI/ML Engineering',  7],
+    ['Vikram Das',   'vikram@web.dev',   'Full Stack Dev',     3],
+    ['Meera Iyer',   'meera@devops.io',  'DevOps/Cloud',       8],
+    ['Rahul Kumar',  'rahul@data.in',    'Data Science',       4]
+  ].forEach(function(u) {
+    DB.run("INSERT INTO users(name,email,domain,exp_years) VALUES(?,?,?,?)", u);
+  });
+
+  // Tech domains
+  [
+    [1,'AI & Machine Learning','ai-ml',    1100,38.1,380,'🔥 Highest'],
+    [2,'Cloud & DevOps',       'cloud',    1060,20.2,260,'☁️ Evergreen'],
+    [3,'Full Stack Dev',       'fullstack', 680,34.0,320,'📈 Rising'],
+    [4,'Cybersecurity',        'cybersec',  350,12.3,185,'🛡️ Critical'],
+    [5,'IoT & Edge AI',        'iot',       820,22.0,145,'🌐 Expanding'],
+    [6,'Quantum Computing',    'quantum',    18,45.0, 24,'⚛️ Emerging']
+  ].forEach(function(d) { DB.run("INSERT INTO tech_domains VALUES(?,?,?,?,?,?,?)", d); });
+
+  // Job listings
+  [
+    ['Senior ML Engineer',    'Google',    'Bengaluru', 40,80,'Python,TensorFlow,GCP',   1,'2026-05-10'],
+    ['Full Stack Developer',  'Flipkart',  'Hyderabad', 20,38,'React,Node.js,MongoDB',   3,'2026-05-18'],
+    ['DevOps Architect',      'Amazon',    'Remote',    35,65,'Kubernetes,Terraform,AWS',2,'2026-05-20'],
+    ['Security Engineer',     'Microsoft', 'Pune',      28,55,'SIEM,SOAR,Azure',         4,'2026-05-15'],
+    ['Data Scientist',        'Swiggy',    'Bengaluru', 22,42,'Python,Spark,SQL',        5,'2026-05-22'],
+    ['Quantum Dev',           'IBM',       'Bengaluru', 45,90,'Qiskit,Python',           6,'2026-04-30'],
+    ['LLMOps Engineer',       'Sarvam AI', 'Bengaluru', 30,60,'LangChain,RAG,FastAPI',   1,'2026-05-28'],
+    ['Cloud Security Arch',   'Infosys',   'Remote',    32,58,'Zero-Trust,CASB,AWS',     4,'2026-05-12'],
+    ['Edge AI Engineer',      'TCS',       'Chennai',   25,48,'TinyML,MQTT,C++',         5,'2026-05-08'],
+    ['AI Product Manager',    'Anthropic', 'Remote',    50,95,'LLMs,Strategy,Python',    1,'2026-05-25']
+  ].forEach(function(j) {
+    DB.run("INSERT INTO job_listings(title,company,location,salary_min,salary_max,tech_stack,domain_id,posted_date) VALUES(?,?,?,?,?,?,?,?)", j);
+  });
+
+  // Salary data
+  [
+    ['AI/ML Engineer','Junior',12,25,18.0,28.0,2026],
+    ['AI/ML Engineer','Mid',   28,52,38.0,32.0,2026],
+    ['AI/ML Engineer','Senior',50,85,65.0,38.0,2026],
+    ['AI/ML Engineer','Lead',  70,130,90.0,42.0,2026],
+    ['Full Stack Dev','Junior',8,18,12.0,28.0,2026],
+    ['Full Stack Dev','Mid',  15,32,22.0,30.0,2026],
+    ['Full Stack Dev','Senior',30,60,40.0,34.0,2026],
+    ['Full Stack Dev','Lead',  50,90,65.0,36.0,2026],
+    ['DevOps/Cloud',  'Junior',10,20,14.0,26.0,2026],
+    ['DevOps/Cloud',  'Mid',   20,40,28.0,30.0,2026],
+    ['DevOps/Cloud',  'Senior',38,70,50.0,33.0,2026],
+    ['DevOps/Cloud',  'Lead',  55,100,75.0,37.0,2026],
+    ['Cybersecurity', 'Junior',10,22,15.0,30.0,2026],
+    ['Cybersecurity', 'Mid',   22,45,30.0,34.0,2026],
+    ['Cybersecurity', 'Senior',40,78,55.0,38.0,2026],
+    ['Data Scientist','Junior',9,20,14.0,25.0,2026],
+    ['Data Scientist','Mid',  22,44,30.0,28.0,2026],
+    ['Quantum Dev',   'Junior',14,30,20.0,50.0,2026],
+    ['Quantum Dev',   'Mid',   30,65,45.0,55.0,2026],
+    ['Quantum Dev',   'Senior',55,100,75.0,60.0,2026]
+  ].forEach(function(s) {
+    DB.run("INSERT INTO salary_data(role,experience_level,min_salary,max_salary,avg_salary,yoy_growth_pct,year) VALUES(?,?,?,?,?,?,?)", s);
+  });
+
+  // Quiz results (linked to user IDs 1–8)
+  [[1,7,'🏆 Expert'],[2,5,'🎯 Proficient'],[3,6,'🎯 Proficient'],
+   [4,8,'🏆 Expert'],[5,4,'📚 Learning'],[6,7,'🏆 Expert'],
+   [7,3,'📚 Learning'],[8,6,'🎯 Proficient']
+  ].forEach(function(q) {
+    DB.run("INSERT INTO quiz_results(user_id,score,grade) VALUES(?,?,?)", q);
+  });
+
+  // Enrollments
+  [[1,'AI/ML Engineering'],[2,'Full Stack Dev'],[3,'DevOps/Cloud'],
+   [4,'Cybersecurity'],[5,'Data Science'],[6,'Quantum Computing'],
+   [7,'AI/ML Engineering'],[8,'Full Stack Dev'],[9,'DevOps/Cloud'],[10,'Data Science']
+  ].forEach(function(e) {
+    DB.run("INSERT INTO enrollments(user_id,domain) VALUES(?,?)", e);
+  });
+
+  // ── UPDATE UI AFTER DB INIT ──
+  $('#db-led').addClass('on');
+  $('#db-status-txt').html('Connected — <b>nexusai_db · localhost:3306</b> · SQLite WASM running');
+  addLog('DB initialised — 6 tables created', 'ok');
+  addLog('Seeded: users(10), jobs(10), salary(20), domains(6)', 'ok');
+  addLog('Indexes created on email, domain_id, user_id', 'ok');
+  refreshDashboard();
+  // Load first preset into console
+  $('#sql-ed').val(QUERIES.all_users);
+
+}).catch(function(err) {
+  $('#db-status-txt').text('Error loading SQL.js: ' + err.message);
 });
 
-function showGrowthChart() { switchChart(0); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-growth').addClass('active'); }
-function showSalaryChart() { switchChart(1); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-salary').addClass('active'); }
-function showDemandChart() { switchChart(2); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-demand').addClass('active'); }
+// ── Ctrl+Enter shortcut runs SQL ──
+$(document).on('keydown', '#sql-ed', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') execSQL();
+});
 
-function switchChart(idx) {
-  mainChart.data.datasets = allDatasets[idx].datasets;
-  mainChart.update('active');
-  $('#chartMainTitle').text(chartTitles[idx]);
+// ── EXECUTE SQL from the console ──
+function execSQL() {
+  if (!DB) { alert('Database not ready'); return; }
+  var sql = $('#sql-ed').val().trim();
+  if (!sql) return;
+  qCount++;
+  $('#st-qcount').text(qCount);
+  $('#run-btn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Running...');
+  var t0 = performance.now();
+  try {
+    // Split by semicolons to run multiple statements
+    var stmts = sql.split(';').map(s => s.trim()).filter(Boolean);
+    var lastResult = null;
+    stmts.forEach(function(stmt) {
+      var r = DB.exec(stmt);
+      if (r.length > 0) lastResult = r[0];
+    });
+    var ms = (performance.now() - t0).toFixed(1);
+    addLog(sql.slice(0,45).replace(/\n/g,' ') + '…', 'ok');
+    refreshDashboard();
+    if (lastResult) renderResult(lastResult, ms, 'sql-result');
+    else $('#sql-result').html('<div class="sql-empty" style="color:var(--green)"><i class="fas fa-check-circle"></i> Query executed in ' + ms + 'ms. ' + stmts.length + ' statement(s) run.</div>');
+  } catch(err) {
+    addLog('ERR: ' + err.message.slice(0,40), 'err');
+    $('#sql-result').html('<div class="sql-error"><i class="fas fa-exclamation-triangle"></i> ' + err.message + '</div>');
+  }
+  $('#run-btn').prop('disabled', false).html('<i class="fas fa-play"></i> Run (Ctrl+Enter)');
 }
 
-// Donut chart
-var donutCtx = document.getElementById('donutChart').getContext('2d');
-new Chart(donutCtx, {
+// ── RENDER RESULT TABLE (reusable) ──
+function renderResult(res, ms, targetId) {
+  var cols = res.columns, rows = res.values;
+  var types = cols.map(function(c, i) {
+    var s = rows.length ? rows[0][i] : null;
+    if (s === null) return '';
+    if (typeof s === 'number') return 'num';
+    if (/^\d{4}-\d{2}/.test(String(s))) return 'date';
+    return 'str';
+  });
+  var h = '<div class="result-hdr"><span class="result-label">' + cols.length + ' COLUMNS</span><span class="result-count">' + rows.length + ' ROWS</span></div>';
+  h += '<div style="overflow-x:auto"><table class="result-table"><thead><tr>';
+  cols.forEach(function(c) { h += '<th>' + c + '</th>'; });
+  h += '</tr></thead><tbody>';
+  rows.forEach(function(row) {
+    h += '<tr>' + row.map(function(v,i) {
+      return '<td class="' + types[i] + '">' + (v === null ? '<span style="color:#333">NULL</span>' : v) + '</td>';
+    }).join('') + '</tr>';
+  });
+  h += '</tbody></table></div><div class="exec-time"><i class="fas fa-clock"></i> ' + ms + 'ms · ' + rows.length + ' rows returned</div>';
+  $('#' + targetId).html(h);
+}
+
+// ── REFRESH DASHBOARD stats + table list ──
+function refreshDashboard() {
+  if (!DB) return;
+  var tables = ['users','tech_domains','job_listings','salary_data','quiz_results','enrollments'];
+  var icons  = {users:'fa-users',tech_domains:'fa-layer-group',job_listings:'fa-briefcase',salary_data:'fa-chart-line',quiz_results:'fa-star',enrollments:'fa-graduation-cap'};
+  var colors = {users:'var(--cyan)',tech_domains:'var(--green)',job_listings:'var(--amber)',salary_data:'var(--pink)',quiz_results:'#b39ddb',enrollments:'#26c6da'};
+  var totalRows = 0;
+  var rows = tables.map(function(t) {
+    try {
+      var cnt = DB.exec('SELECT COUNT(*) FROM ' + t)[0].values[0][0];
+      totalRows += cnt;
+      return { name:t, cnt:cnt };
+    } catch(e) { return { name:t, cnt:0 }; }
+  });
+  $('#st-tables').text(tables.length);
+  $('#st-rows').text(totalRows);
+  $('#st-size').text(Math.round(totalRows * 0.09) + ' KB');
+  var html = rows.map(function(r) {
+    return '<div class="tbl-row" onclick="quickBrowse(\''+r.name+'\')">'
+      + '<i class="fas '+icons[r.name]+'" style="font-size:0.8rem;color:'+colors[r.name]+';width:18px"></i>'
+      + '<span class="tbl-name">'+r.name+'</span>'
+      + '<span class="tbl-rows">'+r.cnt+' rows</span>'
+      + '<span class="tbl-badge">TABLE</span></div>';
+  }).join('');
+  $('#table-list').html(html);
+}
+
+// ── TABLE BROWSER ──
+function browseTable() {
+  if (!DB) return;
+  var tbl = $('#browse-sel').val();
+  var flt = $('#browse-filter').val().trim();
+  try {
+    var sql = 'SELECT * FROM ' + tbl + ' LIMIT 50';
+    var res = DB.exec(sql);
+    if (!res.length) { $('#browse-result').html('<div class="sql-empty">No data</div>'); return; }
+    var rows = res[0];
+    // Filter client-side if there's a search term
+    if (flt) {
+      rows = { columns: rows.columns, values: rows.values.filter(function(row) {
+        return row.some(function(v) { return String(v).toLowerCase().includes(flt.toLowerCase()); });
+      })};
+    }
+    renderResult(rows, '0', 'browse-result');
+    $('#browse-count').text(rows.values.length + ' rows');
+  } catch(e) { $('#browse-result').html('<div class="sql-error">'+e.message+'</div>'); }
+}
+
+function quickBrowse(tbl) {
+  $('#browse-sel').val(tbl);
+  switchTab('browser', $('.db-tab')[2]);
+  browseTable();
+}
+
+// ── ACTIVITY LOG (jQuery append) ──
+function addLog(msg, type) {
+  var color = type === 'ok' ? 'var(--green)' : 'var(--pink)';
+  var time  = new Date().toTimeString().slice(0,8);
+  actLog.unshift('<div><span style="color:var(--muted)">['+time+']</span> <span style="color:'+color+'">'+msg+'</span></div>');
+  if (actLog.length > 6) actLog.pop();
+  $('#activity-log').html(actLog.join(''));
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SECTION E: CRUD OPERATIONS — Insert, Delete, Update, Search
+// ─────────────────────────────────────────────────────────────────────
+
+// INSERT a new user into the database
+function doInsert() {
+  if (!DB) return;
+  var name = $('#in-name').val().trim();
+  var email= $('#in-email').val().trim();
+  var dom  = $('#in-domain').val();
+  var exp  = parseInt($('#in-exp').val()) || 0;
+  if (!name || !email) { showToast('t-ins','Name and email are required','err'); return; }
+  try {
+    DB.run("INSERT INTO users(name,email,domain,exp_years) VALUES(?,?,?,?)", [name,email,dom,exp]);
+    qCount++; $('#st-qcount').text(qCount);
+    refreshDashboard();
+    addLog('INSERT: '+name+' → users', 'ok');
+    showToast('t-ins','✓ Inserted: '+name, 'ok');
+    $('#in-name,#in-email,#in-exp').val('');
+  } catch(e) { showToast('t-ins','Error: '+e.message,'err'); }
+}
+
+// DELETE a user from the database by ID
+function doDelete() {
+  if (!DB) return;
+  var id = parseInt($('#del-id').val());
+  if (!id) { showToast('t-del','Enter a valid user ID','err'); return; }
+  try {
+    var check = DB.exec("SELECT name FROM users WHERE id="+id);
+    if (!check.length || !check[0].values.length) { showToast('t-del','No user with id='+id,'err'); return; }
+    var name = check[0].values[0][0];
+    DB.run("DELETE FROM users WHERE id=?", [id]);
+    qCount++; $('#st-qcount').text(qCount);
+    refreshDashboard();
+    addLog('DELETE: user id='+id+' ('+name+')', 'err');
+    showToast('t-del','✓ Deleted: '+name, 'ok');
+    $('#del-id').val('');
+  } catch(e) { showToast('t-del','Error: '+e.message,'err'); }
+}
+
+// UPDATE a user's domain in the database
+function doUpdate() {
+  if (!DB) return;
+  var id  = parseInt($('#upd-id').val());
+  var dom = $('#upd-domain').val();
+  if (!id) { showToast('t-upd','Enter a valid user ID','err'); return; }
+  try {
+    DB.run("UPDATE users SET domain=? WHERE id=?", [dom, id]);
+    qCount++; $('#st-qcount').text(qCount);
+    addLog('UPDATE users id='+id+' SET domain='+dom, 'ok');
+    showToast('t-upd','✓ Updated user id='+id, 'ok');
+  } catch(e) { showToast('t-upd','Error: '+e.message,'err'); }
+}
+
+// SELECT users using LIKE search
+function doSearch() {
+  if (!DB) return;
+  var q = $('#srch-q').val().trim();
+  if (!q) return;
+  try {
+    var res = DB.exec("SELECT id, name, email, domain, exp_years FROM users WHERE name LIKE '%"+q+"%' OR email LIKE '%"+q+"%'");
+    if (!res.length || !res[0].values.length) {
+      $('#srch-result').html('<div class="sql-empty" style="font-size:0.65rem">No matches for "'+q+'"</div>');
+      return;
+    }
+    renderResult(res[0], '0', 'srch-result');
+  } catch(e) { $('#srch-result').html('<div class="sql-error">'+e.message+'</div>'); }
+}
+
+// Show a toast notification (jQuery fade)
+function showToast(id, msg, type) {
+  $('#'+id).removeClass('ok err').addClass(type).text(msg).fadeIn(200);
+  setTimeout(function() { $('#'+id).fadeOut(300); }, 3200);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SECTION F: CHART.JS — Market trend visualization
+// ─────────────────────────────────────────────────────────────────────
+var labels = ['2022','2023','2024','2025','2026','2027','2029','2032'];
+
+// Three different chart datasets
+var DATASETS = {
+  growth: {
+    title: 'Market Size — USD Billions (2022–2032)',
+    sets: [
+      { label:'AI & ML',    data:[120,210,390,670,1100,1580,2200,3200], borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.05)', fill:true, tension:0.4 },
+      { label:'Cloud',      data:[490,600,740,900,1060,1250,1500,2000], borderColor:'#69ff47', backgroundColor:'rgba(105,255,71,0.04)', fill:true, tension:0.4 },
+      { label:'Cybersec',   data:[170,190,225,280,350,403,500,680],    borderColor:'#ff4081', backgroundColor:'rgba(255,64,129,0.04)', fill:true, tension:0.4 },
+      { label:'IoT/Edge',   data:[380,420,510,650,820,1000,1400,2200], borderColor:'#ffb300', backgroundColor:'rgba(255,179,0,0.04)', fill:true, tension:0.4 }
+    ]
+  },
+  salary: {
+    title: 'India Salary Trends — ₹ Lakhs/yr (2022–2032)',
+    sets: [
+      { label:'AI/ML (Mid)',   data:[14,17,22,28,38,48,62,80], borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.05)', fill:true, tension:0.4 },
+      { label:'DevOps (Mid)',  data:[10,13,17,22,28,34,45,60], borderColor:'#ffb300', backgroundColor:'rgba(255,179,0,0.04)', fill:true, tension:0.4 },
+      { label:'Fullstack(Mid)',data:[9,11,15,19,22,28,38,52],  borderColor:'#69ff47', backgroundColor:'rgba(105,255,71,0.04)', fill:true, tension:0.4 },
+      { label:'Cybersec(Mid)', data:[10,13,17,22,30,38,50,68], borderColor:'#ff4081', backgroundColor:'rgba(255,64,129,0.04)', fill:true, tension:0.4 }
+    ]
+  },
+  jobs: {
+    title: 'Global Job Postings — Thousands (2022–2032)',
+    sets: [
+      { label:'AI Jobs',    data:[45,80,140,240,380,520,720,1100], borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.05)', fill:true, tension:0.4 },
+      { label:'Cloud Jobs', data:[80,110,150,200,260,330,450,620],  borderColor:'#ffb300', backgroundColor:'rgba(255,179,0,0.04)', fill:true, tension:0.4 },
+      { label:'Sec Jobs',   data:[60,75,100,135,185,240,340,520],   borderColor:'#ff4081', backgroundColor:'rgba(255,64,129,0.04)', fill:true, tension:0.4 }
+    ]
+  }
+};
+
+var chartOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { labels: { color:'#6b7a99', font: { family:"'JetBrains Mono'", size:11 } } } },
+  scales: {
+    x: { grid: { color:'rgba(255,255,255,0.04)' }, ticks: { color:'#6b7a99', font:{family:"'JetBrains Mono'",size:10} } },
+    y: { grid: { color:'rgba(255,255,255,0.04)' }, ticks: { color:'#6b7a99', font:{family:"'JetBrains Mono'",size:10} } }
+  }
+};
+
+var mainChart = new Chart(document.getElementById('mainChart'), {
+  type: 'line',
+  data: { labels: labels, datasets: DATASETS.growth.sets },
+  options: chartOpts
+});
+
+function setChart(key) {
+  var d = DATASETS[key];
+  mainChart.data.datasets = d.sets;
+  mainChart.update('active');
+  $('#chart-ttl').text(d.title);
+  $('.ctgl-btn').removeClass('active');
+  $('#btn-'+key).addClass('active');
+}
+
+// Donut chart for tech skill distribution
+new Chart(document.getElementById('donutChart'), {
   type: 'doughnut',
   data: {
-    labels: ['AI/ML', 'Cloud', 'Fullstack', 'Cybersec', 'IoT', 'Quantum'],
-    datasets: [{ data: [32, 24, 20, 14, 7, 3], backgroundColor: ['#00f5ff','#ffb547','#a8ff3e','#ff3ea8','#3effb4','#b57bff'], borderWidth: 0, hoverOffset: 6 }]
+    labels: ['AI/ML','Cloud','Fullstack','Cybersec','IoT','Quantum'],
+    datasets: [{
+      data: [32,24,20,14,7,3],
+      backgroundColor: ['#00e5ff','#69ff47','#ffb300','#ff4081','#26c6da','#b39ddb'],
+      borderWidth: 0, hoverOffset: 5
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, cutout: '65%',
-    plugins: { legend: { position: 'bottom', labels: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 }, padding: 10 } } }
+    plugins: { legend: { position:'bottom', labels: { color:'#6b7a99', font:{family:"'JetBrains Mono'",size:10}, padding:10 } } }
   }
 });
 
-// ─── QUIZ ─────────────────────────────────────────────────────────
-var questions = [
-  { q: "Which architecture pattern do Large Language Models like GPT and Claude use?", opts: ["Recurrent Neural Network (RNN)", "Transformer (Self-Attention)", "Convolutional Neural Network", "Boltzmann Machine"], ans: 1, topic: 0 },
-  { q: "In web development, what does 'SSR' stand for and why is it critical in 2026?", opts: ["Static Site Rendering", "Server-Side Rendering — improves SEO & TTFB", "Serverless Service Runtime", "Sequential Script Routing"], ans: 1, topic: 1 },
-  { q: "What does 'Zero-Trust Security' fundamentally assume?", opts: ["The internal network is always safe", "All perimeter firewalls are sufficient", "No user or device is trusted by default, even inside the network", "VPN provides complete security"], ans: 2, topic: 2 },
-  { q: "Which tool is the standard for Infrastructure-as-Code (IaC) in multi-cloud environments?", opts: ["Ansible", "Terraform by HashiCorp", "Jenkins", "Puppet"], ans: 1, topic: 3 },
-  { q: "RAG in AI stands for:", opts: ["Rapid Agentic Generation", "Retrieval-Augmented Generation", "Real-time Agent Graph", "Recursive Attention Grid"], ans: 1, topic: 0 },
-  { q: "Which CSS feature, combined with Bootstrap, enables truly responsive layouts without media queries?", opts: ["CSS float", "CSS Grid with auto-fit/minmax", "CSS inline-block", "CSS z-index"], ans: 1, topic: 1 },
-  { q: "Post-Quantum Cryptography (PQC) is being standardised because:", opts: ["RSA is too slow for mobile", "Quantum computers will eventually break current public-key encryption", "TLS 1.3 is deprecated", "Hash functions are unreliable"], ans: 1, topic: 4 },
-  { q: "In Kubernetes, what is a 'Pod'?", opts: ["A physical server rack", "The smallest deployable unit — wraps one or more containers", "A type of service load balancer", "A persistent volume claim"], ans: 1, topic: 3 },
+// ─────────────────────────────────────────────────────────────────────
+// SECTION G: QUIZ — 8 questions, scoring, jQuery DOM updates
+// ─────────────────────────────────────────────────────────────────────
+var QUESTIONS = [
+  { q:'What architecture do LLMs like GPT and Claude use?',
+    opts:['Recurrent Neural Network','Transformer (Self-Attention)','Convolutional Neural Net','Boltzmann Machine'], ans:1, topic:'AI Fundamentals' },
+  { q:'In web dev, SSR stands for — and why matters in 2026?',
+    opts:['Static Site Rendering','Server-Side Rendering (SEO+TTFB)','Serverless Service Runtime','Sequential Script Routing'], ans:1, topic:'Web Development' },
+  { q:'Zero-Trust security assumes:',
+    opts:['Internal network is safe','Firewalls are sufficient','Nothing is trusted by default','VPN gives full security'], ans:2, topic:'Cybersecurity' },
+  { q:'Standard IaC tool for multi-cloud environments?',
+    opts:['Ansible','Terraform by HashiCorp','Jenkins','Puppet'], ans:1, topic:'Cloud & DevOps' },
+  { q:'RAG in AI stands for:',
+    opts:['Rapid Agentic Generation','Retrieval-Augmented Generation','Real-time Agent Graph','Recursive Attention Grid'], ans:1, topic:'AI Fundamentals' },
+  { q:'SQL.js (used in this website) runs SQLite via:',
+    opts:['A cloud API','IndexedDB','WebAssembly (WASM)','PHP backend'], ans:2, topic:'Web Development' },
+  { q:'Post-Quantum Cryptography is critical because:',
+    opts:['RSA is slow on mobile','Quantum computers will break current encryption','TLS 1.3 is deprecated','Hashing is unreliable'], ans:1, topic:'Quantum / Security' },
+  { q:'In Kubernetes, the smallest deployable unit is:',
+    opts:['A Node','A Pod (wraps containers)','A Service','A Deployment'], ans:1, topic:'Cloud & DevOps' }
 ];
+var qIdx = 0, score = 0, answered = false, selOpt = -1;
+var topics = [...new Set(QUESTIONS.map(q => q.topic))];
 
-var currentQ = 0, score = 0, selectedOpt = -1, answered = false;
-var expLevel = 'junior', selectedRole = 'ai-ml';
+// Render topic list in sidebar
+$('#topic-list').html(topics.map(function(t, i) {
+  return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'
+    + '<span style="width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block;transition:background 0.3s" id="tdot-'+i+'"></span>'
+    + '<span style="font-size:0.72rem;color:var(--muted)" id="tlbl-'+i+'">'+t+'</span></div>';
+}).join(''));
 
-function renderQuestion() {
-  var q = questions[currentQ];
-  var letters = ['A','B','C','D'];
-  var html = '<div class="quiz-counter">Question ' + (currentQ+1) + ' of ' + questions.length + '</div>';
-  html += '<div class="quiz-q">' + q.q + '</div>';
-  q.opts.forEach(function(opt, i) {
-    html += '<div class="quiz-option" id="opt-' + i + '" onclick="selectOpt(' + i + ')"><div class="quiz-opt-letter">' + letters[i] + '</div>' + opt + '</div>';
+function renderQ() {
+  var Q = QUESTIONS[qIdx];
+  var ltrs = ['A','B','C','D'];
+  var html = '<div class="quiz-ctr">Question ' + (qIdx+1) + ' of ' + QUESTIONS.length + '</div>';
+  html += '<div class="quiz-q">' + Q.q + '</div>';
+  Q.opts.forEach(function(o, i) {
+    html += '<div class="quiz-opt" id="opt-'+i+'" onclick="pickOpt('+i+')">'
+      + '<div class="opt-ltr">'+ltrs[i]+'</div>' + o + '</div>';
   });
-  $('#quiz-content').html(html);
-  selectedOpt = -1; answered = false;
-  $('#quiz-submit').removeClass('d-none');
-  $('#quiz-next').addClass('d-none');
-  $('#quiz-progress').css('width', ((currentQ+1)/questions.length*100) + '%');
-  // activate topic dot
-  var topicIdx = q.topic;
-  $('#dot-' + topicIdx).css('background', 'var(--accent-cyan)');
-  $('#topic-' + topicIdx).css('color', 'var(--text-primary)');
+  $('#q-content').html(html);
+  selOpt = -1; answered = false;
+  $('#q-submit').removeClass('d-none');
+  $('#q-next').addClass('d-none');
+  $('#q-bar').css('width', ((qIdx+1)/QUESTIONS.length*100)+'%');
+  // Highlight the topic dot for this question
+  var tIdx2 = topics.indexOf(Q.topic);
+  if (tIdx2 >= 0) { $('#tdot-'+tIdx2).css('background','var(--cyan)'); $('#tlbl-'+tIdx2).css('color','var(--text)'); }
 }
 
-function selectOpt(i) {
+function pickOpt(i) {
   if (answered) return;
-  $('.quiz-option').removeClass('selected');
-  $('#opt-' + i).addClass('selected');
-  selectedOpt = i;
+  $('.quiz-opt').removeClass('sel');
+  $('#opt-'+i).addClass('sel');
+  selOpt = i;
 }
 
-function submitAnswer() {
-  if (selectedOpt < 0 || answered) return;
+function submitQ() {
+  if (selOpt < 0 || answered) return;
   answered = true;
-  var correct = questions[currentQ].ans;
-  if (selectedOpt === correct) {
-    $('#opt-' + selectedOpt).removeClass('selected').addClass('correct');
+  var correct = QUESTIONS[qIdx].ans;
+  if (selOpt === correct) {
+    $('#opt-'+selOpt).removeClass('sel').addClass('right');
     score++;
   } else {
-    $('#opt-' + selectedOpt).removeClass('selected').addClass('wrong');
-    $('#opt-' + correct).addClass('correct');
+    $('#opt-'+selOpt).removeClass('sel').addClass('wrong');
+    $('#opt-'+correct).addClass('right');
   }
-  $('#quiz-score-display').html(score + '<span style="color:var(--accent-cyan)">/' + questions.length + '</span>');
-  $('#score-bar').css('width', (score/questions.length*100) + '%');
-  $('#quiz-submit').addClass('d-none');
-  if (currentQ < questions.length - 1) $('#quiz-next').removeClass('d-none');
-  else {
-    setTimeout(showResult, 800);
-  }
+  // jQuery: update score display
+  $('#q-score').html(score+'<span>/8</span>');
+  $('#q-score-bar').css('width', (score/8*100)+'%');
+  $('#q-submit').addClass('d-none');
+  if (qIdx < QUESTIONS.length - 1) $('#q-next').removeClass('d-none');
+  else setTimeout(showResult, 700);
 }
 
-function nextQuestion() {
-  currentQ++;
-  renderQuestion();
-  $('#quiz-next').addClass('d-none');
-  $('#quiz-submit').removeClass('d-none');
+function nextQ() {
+  qIdx++;
+  renderQ();
+  $('#q-next').addClass('d-none');
+  $('#q-submit').removeClass('d-none');
 }
 
 function showResult() {
-  var pct = Math.round(score/questions.length*100);
-  var grade = pct >= 87 ? '🏆 Expert' : pct >= 62 ? '🎯 Proficient' : pct >= 37 ? '📚 Learning' : '🌱 Beginner';
-  $('#quiz-card').html('<div style="text-align:center;padding:2rem 0"><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-bottom:0.5rem">QUIZ COMPLETE</div><div style="font-family:var(--font-display);font-size:4rem;font-weight:800;color:var(--accent-cyan)">'+score+'/8</div><div style="font-family:var(--font-display);font-size:1.4rem;font-weight:700;margin:0.5rem 0">'+grade+'</div><div style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem">'+pct+'% accuracy · Tech Readiness Score 2026</div><button class="btn-primary-nexus" onclick="resetQuiz()"><span>Retake Quiz</span> <i class="fas fa-redo"></i></button></div>');
+  var pct = Math.round(score/8*100);
+  var grade = pct>=87?'🏆 Expert':pct>=62?'🎯 Proficient':pct>=37?'📚 Learning':'🌱 Beginner';
+  // jQuery: replace entire card content
+  $('#quiz-card').html(
+    '<div style="text-align:center;padding:2rem 0">'
+    + '<div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted)">QUIZ COMPLETE</div>'
+    + '<div style="font-size:4.5rem;font-weight:700;color:var(--cyan);line-height:1.1;margin-top:0.5rem">'+score+'/8</div>'
+    + '<div style="font-size:1.3rem;font-weight:700;margin-top:0.3rem">'+grade+'</div>'
+    + '<div style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem">'+pct+'% accuracy · Tech Readiness 2026</div>'
+    + '<button class="btn-primary-nx mt-4" onclick="resetQuiz()">Retake Quiz <i class="fas fa-redo"></i></button>'
+    + '</div>'
+  );
 }
 
 function resetQuiz() {
-  currentQ = 0; score = 0; selectedOpt = -1; answered = false;
-  $('#quiz-score-display').html('0<span style="color:var(--accent-cyan)">/8</span>');
-  $('#score-bar').css('width','0%');
-  for (var i=0; i<5; i++) { $('#dot-'+i).css('background','var(--text-muted)'); $('#topic-'+i).css('color','var(--text-muted)'); }
-  renderQuestion();
+  qIdx = 0; score = 0; selOpt = -1; answered = false;
+  $('#q-score').html('0<span>/8</span>');
+  $('#q-score-bar').css('width','0%');
+  topics.forEach(function(_,i) { $('#tdot-'+i).css('background','var(--muted)'); $('#tlbl-'+i).css('color','var(--muted)'); });
+  $('#quiz-card').html('<div class="quiz-prog"><div class="quiz-prog-fill" id="q-bar" style="width:12.5%"></div></div><div id="q-content"></div><div class="d-flex gap-3 mt-3"><button class="btn-outline-nx" id="q-submit" onclick="submitQ()">Submit Answer</button><button class="btn-primary-nx d-none" id="q-next" onclick="nextQ()"><span>Next</span><i class="fas fa-arrow-right"></i></button></div>');
+  renderQ();
 }
 
-renderQuestion();
+renderQ();  // render first question on load
 
-// ─── SALARY CALCULATOR ────────────────────────────────────────────
-var salaryDB = {
-  'ai-ml':     { junior:[18,12,25,28,'Google, OpenAI, Flipkart','$28K–$45K'], mid:[38,28,52,32,'Microsoft, TCS, Persistent','$55K–$80K'], senior:[65,50,85,38,'FAANG, Anthropic, Cohere','$95K–$140K'], lead:[90,70,130,42,'Research Labs, MNCs','$150K–$200K'] },
-  'fullstack': { junior:[12,8,18,28,'Startups, Infosys, Wipro','$18K–$28K'], mid:[22,15,32,30,'Flipkart, Swiggy, Zepto','$35K–$52K'], senior:[40,30,60,34,'FAANG, Unicorns','$65K–$95K'], lead:[65,50,90,36,'CTO offices, Product co.','$100K–$150K'] },
-  'devops':    { junior:[14,10,20,26,'IT firms, Startups','$20K–$32K'], mid:[28,20,40,30,'AWS partners, SaaS cos','$42K–$62K'], senior:[50,38,70,33,'Cloud-native cos','$75K–$110K'], lead:[75,55,100,37,'Infra leads, MNCs','$120K–$175K'] },
-  'cybersec':  { junior:[15,10,22,30,'IT companies, BFSI','$22K–$38K'], mid:[30,22,45,34,'Banks, Govt, MNCs','$48K–$75K'], senior:[55,40,78,38,'BFSI, Defence sector','$85K–$130K'], lead:[80,60,110,42,'CISOs, Consultancies','$140K–$200K'] },
-  'data':      { junior:[14,9,20,25,'Analytics firms','$22K–$35K'], mid:[30,22,44,28,'MAANG, unicorns','$48K–$70K'], senior:[52,38,72,32,'Research, AI labs','$80K–$115K'], lead:[78,55,105,38,'Chief Data Officers','$130K–$185K'] },
-  'quantum':   { junior:[20,14,30,50,'IITs, Startups, IBM','$32K–$55K'], mid:[45,30,65,55,'TCS Research, IISc','$72K–$105K'], senior:[75,55,100,60,'National labs, MNCs','$120K–$175K'], lead:[110,80,150,65,'Research directors','$180K–$250K'] },
+// ─────────────────────────────────────────────────────────────────────
+// SECTION H: SALARY CALCULATOR — DB data + jQuery UI updates
+// ─────────────────────────────────────────────────────────────────────
+var SAL_DB = {
+  'ai-ml':    { name:'AI/ML Engineer',   junior:[18,12,25,28,'Google, OpenAI, Flipkart','$28K–$45K'], mid:[38,28,52,32,'Microsoft, TCS','$55K–$80K'],     senior:[65,50,85,38,'FAANG, Anthropic','$95K–$140K'],    lead:[90,70,130,42,'Research Labs','$150K–$200K'] },
+  'fullstack':{ name:'Full Stack Dev',   junior:[12,8,18,28,'Startups, Infosys','$18K–$28K'],         mid:[22,15,32,30,'Flipkart, Swiggy','$35K–$52K'],    senior:[40,30,60,34,'FAANG, Unicorns','$65K–$95K'],     lead:[65,50,90,36,'Product cos.','$100K–$150K'] },
+  'devops':   { name:'DevOps/Cloud',     junior:[14,10,20,26,'IT firms, Startups','$20K–$32K'],       mid:[28,20,40,30,'AWS partners','$42K–$62K'],         senior:[50,38,70,33,'Cloud-native cos','$75K–$110K'],   lead:[75,55,100,37,'Infra leads','$120K–$175K'] },
+  'cybersec': { name:'Cybersecurity',    junior:[15,10,22,30,'IT, BFSI','$22K–$38K'],                 mid:[30,22,45,34,'Banks, Govt','$48K–$75K'],          senior:[55,40,78,38,'BFSI, Defence','$85K–$130K'],      lead:[80,60,110,42,'CISOs','$140K–$200K'] },
+  'data':     { name:'Data Scientist',   junior:[14,9,20,25,'Analytics firms','$22K–$35K'],            mid:[30,22,44,28,'MAANG, Unicorns','$48K–$70K'],      senior:[52,38,72,32,'AI labs','$80K–$115K'],            lead:[78,55,105,38,'CDOs','$130K–$185K'] },
+  'quantum':  { name:'Quantum Dev',      junior:[20,14,30,50,'IITs, IBM','$32K–$55K'],                 mid:[45,30,65,55,'TCS Research','$72K–$105K'],        senior:[75,55,100,60,'National labs','$120K–$175K'],   lead:[110,80,150,65,'Directors','$180K–$250K'] }
 };
-var roleNames = { 'ai-ml':'AI/ML Engineer','fullstack':'Full Stack Dev','devops':'DevOps/Cloud','cybersec':'Cybersecurity','data':'Data Scientist','quantum':'Quantum Dev' };
-var expNames  = { junior:'Junior (0–2 yrs)', mid:'Mid (3–5 yrs)', senior:'Senior (6–10 yrs)', lead:'Lead/Principal' };
-var companies = { 'ai-ml':['Google, OpenAI, Flipkart','Microsoft, TCS, Persistent','FAANG, Anthropic, Cohere','Research Labs, MNCs'], fullstack:['Startups, Infosys, Wipro','Flipkart, Swiggy, Zepto','FAANG, Unicorns','CTO offices, Product co.'], devops:['IT firms, Startups','AWS partners, SaaS cos','Cloud-native cos','Infra leads, MNCs'], cybersec:['IT companies, BFSI','Banks, Govt, MNCs','BFSI, Defence sector','CISOs, Consultancies'], data:['Analytics firms','MAANG, unicorns','Research, AI labs','Chief Data Officers'], quantum:['IITs, Startups, IBM','TCS Research, IISc','National labs, MNCs','Research directors'] };
-var expIdx    = { junior:0, mid:1, senior:2, lead:3 };
+var curRole = 'ai-ml', curExp = 'junior';
 
-function updateSalary(role, btn) {
-  selectedRole = role;
-  $('#role-buttons .salary-role-btn').removeClass('active');
+function setSal(role, btn) {
+  curRole = role;
+  $('#role-btns .role-btn').removeClass('active');
   $(btn).addClass('active');
-  refreshSalary();
+  updateSalDisplay();
 }
 function setExp(exp, btn) {
-  expLevel = exp;
-  $('#exp-buttons .salary-role-btn').removeClass('active');
+  curExp = exp;
+  $('#exp-btns .role-btn').removeClass('active');
   $(btn).addClass('active');
-  refreshSalary();
+  updateSalDisplay();
 }
-function refreshSalary() {
-  var d = salaryDB[selectedRole][expLevel];
-  var maxSal = 150, pct = Math.round(d[0]/maxSal*100);
+function updateSalDisplay() {
+  var d = SAL_DB[curRole][curExp];
+  var pct = Math.min(Math.round(d[0]/120*100), 100);
+  // jQuery: animate salary number update
   $('#sal-num').text(d[0]);
-  $('#sal-range').text('Range: ₹' + d[1] + 'L – ₹' + d[2] + 'L per annum');
-  $('#sal-bar').css('width', pct + '%');
-  $('#sal-role').text(roleNames[selectedRole]);
-  $('#sal-exp').text(expNames[expLevel]);
-  $('#sal-global').text(d[5]);
-  $('#sal-growth').text('+' + d[3] + '%');
-  $('#sal-companies').text(companies[selectedRole][expIdx[expLevel]]);
+  $('#sal-range').text('Range: ₹'+d[1]+'L – ₹'+d[2]+'L per annum');
+  $('#sal-fill').css('width', pct+'%');
+  $('#s-role').text(SAL_DB[curRole].name);
+  $('#s-level').text({junior:'Junior (0–2 yrs)',mid:'Mid (3–5 yrs)',senior:'Senior (6–10 yrs)',lead:'Lead / Principal'}[curExp]);
+  $('#s-usd').text(d[5]);
+  $('#s-growth').text('+'+d[3]+'%');
+  $('#s-cos').text(d[4]);
 }
-
-// ─── NEWSLETTER ───────────────────────────────────────────────────
-function subscribeNewsletter() {
-  var email = $('#nl-email').val();
-  if (!email || !email.includes('@')) {
-    $('#nl-email').css('border-color','var(--accent-magenta)');
-    return;
-  }
-  $('#nl-email').css('border-color','var(--accent-lime)');
-  $('#nl-success').removeClass('d-none');
-  setTimeout(function() { $('#nl-email').val('').css('border-color','rgba(255,255,255,0.1)'); }, 2000);
-}
-
-// ─── SMOOTH SCROLL ────────────────────────────────────────────────
-$('a[href^="#"]').on('click', function(e) {
-  var target = $(this.getAttribute('href'));
-  if (target.length) {
-    e.preventDefault();
-    $('html,body').animate({ scrollTop: target.offset().top - 80 }, 600, 'swing');
-  }
-});
 </script>
 </body>
 </html>
+HTMLEOF
+wc -l /mnt/user-data/outputs/nexusai-final.html
