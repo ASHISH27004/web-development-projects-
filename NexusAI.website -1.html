@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusAI — Future Tech Intelligence Hub 2026</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<style>
+  :root {
+    --bg-dark: #020408;
+    --bg-card: #0a0f1a;
+    --bg-surface: #0f1623;
+    --accent-cyan: #00f5ff;
+    --accent-lime: #a8ff3e;
+    --accent-amber: #ffb547;
+    --accent-magenta: #ff3ea8;
+    --text-primary: #f0f4ff;
+    --text-muted: #8a94b0;
+    --border-glow: rgba(0,245,255,0.15);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor { position: fixed; width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width .2s, height .2s, background .2s; mix-blend-mode: difference; }
+  #cursor-ring { position: fixed; width: 38px; height: 38px; border: 1.5px solid var(--accent-cyan); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all .15s ease; opacity: 0.5; }
+  body:hover #cursor { opacity: 1; }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+  }
+
+  /* Grid background */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Navbar */
+  .nexus-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(2, 4, 8, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,245,255,0.08);
+    padding: 1rem 0;
+    transition: all 0.3s;
+  }
+  .nexus-nav.scrolled { padding: 0.6rem 0; border-bottom-color: rgba(0,245,255,0.15); }
+
+  .nav-brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand span { color: var(--accent-magenta); -webkit-text-fill-color: var(--accent-magenta); }
+
+  .nexus-nav .nav-link {
+    color: var(--text-muted) !important;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem !important;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nexus-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+    background: var(--accent-cyan);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .nexus-nav .nav-link:hover { color: var(--accent-cyan) !important; }
+  .nexus-nav .nav-link:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan) !important;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.45rem 1.2rem !important;
+    transition: all 0.25s;
+  }
+  .nav-cta:hover { background: var(--accent-cyan); color: var(--bg-dark) !important; }
+
+  /* Hero */
+  .hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    animation: orb-drift 10s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 600px; height: 600px; background: rgba(0,245,255,0.06); top: -100px; right: -200px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(168,255,62,0.05); bottom: -100px; left: -100px; animation-delay: -5s; }
+  .orb-3 { width: 300px; height: 300px; background: rgba(255,62,168,0.04); top: 50%; right: 30%; animation-delay: -2s; }
+
+  @keyframes orb-drift { from { transform: translate(0, 0); } to { transform: translate(30px, 20px); } }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--accent-cyan); }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .line-accent { color: var(--accent-lime); display: block; }
+  .hero-title .line-dim { color: rgba(240,244,255,0.35); display: block; }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-primary-nexus {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary-nexus::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-lime);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+    z-index: 0;
+  }
+  .btn-primary-nexus:hover::before { transform: scaleX(1); }
+  .btn-primary-nexus span, .btn-primary-nexus i { position: relative; z-index: 1; }
+
+  .btn-ghost-nexus {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.9rem 1.5rem;
+    border: 1px solid rgba(240,244,255,0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-ghost-nexus:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(240,244,255,0.06);
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--accent-cyan); }
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.05em; }
+
+  /* Tech stack badge */
+  .tech-stack-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,245,255,0.05);
+    border: 1px solid rgba(0,245,255,0.12);
+    border-radius: 2px;
+    padding: 0.5rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-cyan);
+    margin: 0.2rem;
+    transition: all 0.2s;
+  }
+  .tech-stack-badge:hover { background: rgba(0,245,255,0.1); border-color: var(--accent-cyan); transform: translateY(-2px); }
+  .tech-stack-badge i { font-size: 0.85rem; }
+
+  /* Hero visual - animated terminal */
+  .hero-terminal {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,245,255,0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .terminal-header {
+    background: rgba(255,255,255,0.03);
+    padding: 0.7rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f56; } .dot-y { background: #febc2e; } .dot-g { background: #27c93f; }
+  .terminal-title { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+  .terminal-body { padding: 1.2rem; font-family: var(--font-mono); font-size: 0.78rem; min-height: 280px; }
+  .t-line { margin-bottom: 0.4rem; display: flex; }
+  .t-prompt { color: var(--accent-cyan); margin-right: 8px; }
+  .t-cmd { color: #e8f0ff; }
+  .t-comment { color: var(--text-muted); }
+  .t-output { color: var(--accent-lime); }
+  .t-warn { color: var(--accent-amber); }
+  .t-err { color: var(--accent-magenta); }
+  .cursor-blink { display: inline-block; width: 7px; height: 14px; background: var(--accent-cyan); animation: blink 1s step-end infinite; vertical-align: -2px; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Live ticker */
+  .ticker-wrap {
+    background: rgba(0,245,255,0.04);
+    border-top: 1px solid rgba(0,245,255,0.08);
+    border-bottom: 1px solid rgba(0,245,255,0.08);
+    padding: 0.65rem 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  .ticker-inner { display: flex; animation: ticker-scroll 30s linear infinite; white-space: nowrap; }
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .ticker-item .tag { color: var(--accent-cyan); }
+  .ticker-item .up { color: var(--accent-lime); }
+  .ticker-item .down { color: var(--accent-magenta); }
+  @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Section headings */
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.7; max-width: 550px; }
+
+  /* Tech domain cards */
+  .domain-section { padding: 6rem 0; position: relative; z-index: 2; }
+  .domain-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(240,244,255,0.05);
+    border-radius: 6px;
+    padding: 2rem;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+  .domain-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent-cyan));
+    transform: scaleX(0);
+    transition: transform 0.35s;
+  }
+  .domain-card:hover { transform: translateY(-6px); border-color: rgba(240,244,255,0.12); }
+  .domain-card:hover::before { transform: scaleX(1); }
+  .domain-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+    background: var(--card-icon-bg, rgba(0,245,255,0.08));
+    color: var(--card-accent, var(--accent-cyan));
+    border: 1px solid var(--card-border, rgba(0,245,255,0.15));
+  }
+  .domain-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .domain-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+  .domain-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .domain-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .domain-demand {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(168,255,62,0.1);
+    color: var(--accent-lime);
+    border: 1px solid rgba(168,255,62,0.2);
+  }
+
+  /* AI Market Trends section */
+  .trends-section { padding: 5rem 0; position: relative; z-index: 2; }
+  .chart-container {
+    background: var(--bg-card);
+    border: 1px solid rgba(240,244,255,0.05);
+    border-radius: 6px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+  .chart-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; }
+  .chart-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(0,245,255,0.08);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(0,245,255,0.15);
+  }
+
+  /* Interactive quiz */
+  .quiz-section { padding: 5rem 0; position: relative; z-index: 2; }
+  .quiz-card {
+    background: var(--bg-surface);
+    border: 1px solid rgba(0,245,255,0.1);
+    border-radius: 8px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .quiz-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(0,245,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .quiz-progress-bar {
+    background: rgba(255,255,255,0.06);
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .quiz-q { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .quiz-counter { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+  .quiz-option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 4px;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+  }
+  .quiz-option:hover { border-color: var(--accent-cyan); background: rgba(0,245,255,0.05); }
+  .quiz-option.selected { border-color: var(--accent-cyan); background: rgba(0,245,255,0.08); color: var(--accent-cyan); }
+  .quiz-option.correct { border-color: var(--accent-lime); background: rgba(168,255,62,0.08); color: var(--accent-lime); }
+  .quiz-option.wrong { border-color: var(--accent-magenta); background: rgba(255,62,168,0.08); color: var(--accent-magenta); }
+  .quiz-opt-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  /* Skills roadmap */
+  .roadmap-section { padding: 5rem 0; position: relative; z-index: 2; }
+  .roadmap-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .roadmap-item::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: -2rem;
+    width: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+  .roadmap-item:last-child::before { display: none; }
+  .roadmap-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .roadmap-num.active { background: var(--accent-cyan); color: var(--bg-dark); border-color: var(--accent-cyan); }
+  .roadmap-content { flex: 1; padding-top: 0.5rem; }
+  .roadmap-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .roadmap-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .roadmap-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.8rem; }
+  .skill-chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(168,255,62,0.07);
+    color: var(--accent-lime);
+    border: 1px solid rgba(168,255,62,0.15);
+  }
+
+  /* Market salary calculator */
+  .salary-section { padding: 5rem 0; position: relative; z-index: 2; }
+  .salary-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(240,244,255,0.06);
+    border-radius: 8px;
+    padding: 2rem;
+  }
+  .salary-role-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    padding: 0.55rem 1rem;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0.2rem;
+  }
+  .salary-role-btn:hover, .salary-role-btn.active {
+    background: rgba(0,245,255,0.08);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+  .salary-display {
+    text-align: center;
+    padding: 2rem 0;
+  }
+  .salary-amount {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .salary-amount span { color: var(--accent-lime); }
+  .salary-range { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; }
+  .salary-bar {
+    background: rgba(255,255,255,0.06);
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 0.8rem;
+    overflow: hidden;
+  }
+  .salary-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-lime));
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .salary-factors { margin-top: 1.5rem; }
+  .salary-factor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.85rem;
+  }
+  .salary-factor-label { color: var(--text-muted); }
+  .salary-factor-val { font-family: var(--font-mono); font-size: 0.78rem; }
+  .val-up { color: var(--accent-lime); }
+  .val-neutral { color: var(--text-muted); }
+
+  /* Newsletter */
+  .newsletter-section {
+    padding: 5rem 0;
+    position: relative;
+    z-index: 2;
+  }
+  .newsletter-card {
+    background: var(--bg-surface);
+    border: 1px solid rgba(0,245,255,0.1);
+    border-radius: 8px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .newsletter-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(0,245,255,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .newsletter-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem; letter-spacing: -1px; }
+  .newsletter-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  .newsletter-form { display: flex; gap: 0.6rem; max-width: 480px; margin: 0 auto; }
+  .newsletter-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    padding: 0.8rem 1.2rem;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .newsletter-input:focus { border-color: var(--accent-cyan); }
+  .newsletter-input::placeholder { color: var(--text-muted); }
+
+  /* Footer */
+  .nexus-footer {
+    padding: 3rem 0 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    z-index: 2;
+  }
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    margin-right: 1.5rem;
+    transition: color 0.2s;
+    font-family: var(--font-mono);
+  }
+  .footer-links a:hover { color: var(--accent-cyan); }
+
+  /* Scroll animations */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-dark); }
+  ::-webkit-scrollbar-thumb { background: rgba(0,245,255,0.2); border-radius: 2px; }
+
+  /* Mobile hamburger */
+  .navbar-toggler { border: 1px solid rgba(0,245,255,0.3); padding: 0.3rem 0.6rem; }
+  .navbar-toggler-icon { filter: invert(1); }
+
+  /* Pulse animation */
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(0,245,255,0.3); }
+    70% { box-shadow: 0 0 0 8px rgba(0,245,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,245,255,0); }
+  }
+  .pulse { animation: pulse-ring 2s infinite; }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAVBAR -->
+<nav class="nexus-nav navbar navbar-expand-lg">
+  <div class="container">
+    <a class="nav-brand navbar-brand" href="#hero">Nexus<span>AI</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="#domains">Domains</a></li>
+        <li class="nav-item"><a class="nav-link" href="#trends">Market</a></li>
+        <li class="nav-item"><a class="nav-link" href="#quiz">Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="#roadmap">Roadmap</a></li>
+        <li class="nav-item"><a class="nav-link" href="#salary">Salary</a></li>
+        <li class="nav-item ms-2"><a class="nav-link nav-cta" href="#newsletter">Get Access</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- LIVE TICKER -->
+<div class="ticker-wrap" style="margin-top:70px;">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38.1%</span></span>
+    <span class="ticker-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12.3%</span></span>
+    <span class="ticker-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone reached <span class="up">↑ HOT</span></span>
+    <span class="ticker-item"><span class="tag">WEB3</span> DeFi TVL $240B <span class="up">↑ 5.2%</span></span>
+    <span class="ticker-item"><span class="tag">EDGE_IO</span> 75B connected devices by 2025 <span class="up">↑ 22%</span></span>
+    <span class="ticker-item"><span class="tag">GREENTECH</span> Carbon-neutral cloud target 2030 <span class="up">↑ ESG</span></span>
+    <span class="ticker-item"><span class="tag">FULLSTACK</span> Avg Salary India ₹18L–₹45L <span class="up">↑ 28%</span></span>
+    <span class="ticker-item"><span class="tag">AI_MARKET</span> $2.6T by 2030 <span class="up">↑ 38.1%</span></span>
+    <span class="ticker-item"><span class="tag">CYBERSEC</span> $403B forecast <span class="up">↑ 12.3%</span></span>
+    <span class="ticker-item"><span class="tag">QUANTUM</span> 1000+ qubit milestone reached <span class="up">↑ HOT</span></span>
+    <span class="ticker-item"><span class="tag">WEB3</span> DeFi TVL $240B <span class="up">↑ 5.2%</span></span>
+    <span class="ticker-item"><span class="tag">EDGE_IO</span> 75B connected devices by 2025 <span class="up">↑ 22%</span></span>
+    <span class="ticker-item"><span class="tag">GREENTECH</span> Carbon-neutral cloud target 2030 <span class="up">↑ ESG</span></span>
+    <span class="ticker-item"><span class="tag">FULLSTACK</span> Avg Salary India ₹18L–₹45L <span class="up">↑ 28%</span></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero-section" id="hero">
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="hero-eyebrow">Future Tech Intelligence Hub — 2026</div>
+        <h1 class="hero-title">
+          Build The<br>
+          <span class="line-accent">Future Stack</span>
+          <span class="line-dim">Today.</span>
+        </h1>
+        <p class="hero-desc">Master AI, Quantum, Web3, and Cybersecurity with hands-on tech intelligence — bridging today's market with tomorrow's demand. Built with HTML · CSS · Bootstrap · jQuery · Servlets.</p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="tech-stack-badge"><i class="fab fa-html5"></i> HTML5</span>
+          <span class="tech-stack-badge"><i class="fab fa-css3-alt"></i> CSS3</span>
+          <span class="tech-stack-badge"><i class="fab fa-bootstrap"></i> Bootstrap 5</span>
+          <span class="tech-stack-badge"><i class="fab fa-js"></i> jQuery</span>
+          <span class="tech-stack-badge"><i class="fab fa-java"></i> Servlet API</span>
+          <span class="tech-stack-badge"><i class="fas fa-chart-line"></i> Chart.js</span>
+        </div>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#domains" class="btn-primary-nexus"><span>Explore Domains</span> <i class="fas fa-arrow-right"></i></a>
+          <a href="#quiz" class="btn-ghost-nexus"><i class="fas fa-brain"></i> Take Quiz</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="counter1">0<span>+</span></div>
+            <div class="stat-label">Tech Domains</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="counter2">0<span>L+</span></div>
+            <div class="stat-label">Avg ₹ Salary</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="counter3">0<span>%</span></div>
+            <div class="stat-label">Job Growth 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-terminal" id="terminal-box">
+          <div class="terminal-header">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <div class="terminal-title">nexus@ai-hub ~ zsh</div>
+          </div>
+          <div class="terminal-body" id="terminal-output">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH DOMAINS -->
+<section class="domain-section" id="domains">
+  <div class="container">
+    <div class="row mb-5 fade-up">
+      <div class="col-lg-7">
+        <div class="section-eyebrow">// 2026 Tech Domains</div>
+        <h2 class="section-title">High-Demand<br>Technology Stacks</h2>
+        <p class="section-desc">Six critical technology domains shaping industry in 2026 and beyond. Each sector represents multi-billion dollar career opportunities.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#00f5ff;--card-icon-bg:rgba(0,245,255,0.07);--card-border:rgba(0,245,255,0.15)" data-bs-toggle="modal" data-bs-target="#modal-ai">
+          <span class="domain-demand">🔥 Highest Demand</span>
+          <div class="domain-icon"><i class="fas fa-brain"></i></div>
+          <div class="domain-title">AI & Machine Learning</div>
+          <div class="domain-desc">Generative AI, LLMs, computer vision, MLOps, and neural architecture. The $2.6T market redefining every industry.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">TensorFlow</span><span class="domain-tag">PyTorch</span><span class="domain-tag">LangChain</span><span class="domain-tag">RAG</span><span class="domain-tag">Transformers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#a8ff3e;--card-icon-bg:rgba(168,255,62,0.07);--card-border:rgba(168,255,62,0.15)" data-bs-toggle="modal" data-bs-target="#modal-web">
+          <span class="domain-demand">📈 Rising Fast</span>
+          <div class="domain-icon" style="color:var(--accent-lime)"><i class="fas fa-code"></i></div>
+          <div class="domain-title">Full Stack Development</div>
+          <div class="domain-desc">MERN, Next.js 15, server actions, edge computing, and real-time apps. Demand surging 34% YoY in India & globally.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">React 19</span><span class="domain-tag">Next.js 15</span><span class="domain-tag">Node.js</span><span class="domain-tag">TypeScript</span><span class="domain-tag">GraphQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#ff3ea8;--card-icon-bg:rgba(255,62,168,0.07);--card-border:rgba(255,62,168,0.15)" data-bs-toggle="modal" data-bs-target="#modal-cyber">
+          <span class="domain-demand">🛡️ Critical Need</span>
+          <div class="domain-icon" style="color:var(--accent-magenta)"><i class="fas fa-shield-halved"></i></div>
+          <div class="domain-title">Cybersecurity & Zero-Trust</div>
+          <div class="domain-desc">3.4M global security professional shortage. AI-powered threat detection, zero-trust architecture, quantum cryptography.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">SIEM</span><span class="domain-tag">Zero Trust</span><span class="domain-tag">SOAR</span><span class="domain-tag">Pentesting</span><span class="domain-tag">PKI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#ffb547;--card-icon-bg:rgba(255,181,71,0.07);--card-border:rgba(255,181,71,0.15)" data-bs-toggle="modal" data-bs-target="#modal-cloud">
+          <span class="domain-demand">☁️ Evergreen</span>
+          <div class="domain-icon" style="color:var(--accent-amber)"><i class="fas fa-cloud"></i></div>
+          <div class="domain-title">Cloud & DevOps</div>
+          <div class="domain-desc">Multi-cloud, Kubernetes, GitOps, platform engineering, FinOps. Cloud market hits $1.6T by 2030 with 20%+ CAGR.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">Kubernetes</span><span class="domain-tag">Terraform</span><span class="domain-tag">AWS/GCP/Azure</span><span class="domain-tag">GitOps</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#b57bff;--card-icon-bg:rgba(181,123,255,0.07);--card-border:rgba(181,123,255,0.15)" data-bs-toggle="modal" data-bs-target="#modal-quantum">
+          <span class="domain-demand">⚛️ Emerging</span>
+          <div class="domain-icon" style="color:#b57bff"><i class="fas fa-atom"></i></div>
+          <div class="domain-title">Quantum Computing</div>
+          <div class="domain-desc">IBM 1000+ qubits achieved. Post-quantum cryptography standards finalised. Pharma, finance, logistics disruption imminent.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">Qiskit</span><span class="domain-tag">Cirq</span><span class="domain-tag">Post-Quantum</span><span class="domain-tag">VQE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 fade-up">
+        <div class="domain-card" style="--card-accent:#3effb4;--card-icon-bg:rgba(62,255,180,0.07);--card-border:rgba(62,255,180,0.15)" data-bs-toggle="modal" data-bs-target="#modal-iot">
+          <span class="domain-demand">🌐 Expanding</span>
+          <div class="domain-icon" style="color:#3effb4"><i class="fas fa-network-wired"></i></div>
+          <div class="domain-title">IoT & Edge AI</div>
+          <div class="domain-desc">75B devices by 2025. TinyML, edge inference, 5G mesh networks. Smart cities, precision agriculture, industrial IoT exploding.</div>
+          <div class="domain-tags">
+            <span class="domain-tag">TinyML</span><span class="domain-tag">MQTT</span><span class="domain-tag">Edge Impulse</span><span class="domain-tag">5G</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARKET TRENDS (Charts) -->
+<section class="trends-section" id="trends">
+  <div class="container">
+    <div class="row mb-5 fade-up">
+      <div class="col-lg-7">
+        <div class="section-eyebrow">// Market Intelligence</div>
+        <h2 class="section-title">Industry Growth<br>Projections 2026–2032</h2>
+      </div>
+      <div class="col-lg-5 d-flex align-items-end justify-content-lg-end">
+        <div class="d-flex gap-2">
+          <button class="salary-role-btn active" id="chart-toggle-growth" onclick="showGrowthChart()">Growth</button>
+          <button class="salary-role-btn" id="chart-toggle-salary" onclick="showSalaryChart()">Salaries</button>
+          <button class="salary-role-btn" id="chart-toggle-demand" onclick="showDemandChart()">Demand</button>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-8 fade-up">
+        <div class="chart-container">
+          <div class="chart-header">
+            <div class="chart-title" id="chartMainTitle">Market Size — USD Billions (2022–2032)</div>
+            <div class="chart-badge">LIVE DATA · 2026</div>
+          </div>
+          <canvas id="mainChart" height="320"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-4 fade-up">
+        <div class="chart-container mb-4">
+          <div class="chart-header">
+            <div class="chart-title">Tech Skill Split</div>
+          </div>
+          <canvas id="donutChart" height="180"></canvas>
+        </div>
+        <div class="row g-2">
+          <div class="col-6">
+            <div style="background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.1);border-radius:4px;padding:1rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-cyan)">38%</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">AI CAGR</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div style="background:rgba(168,255,62,0.05);border:1px solid rgba(168,255,62,0.1);border-radius:4px;padding:1rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-lime)">3.4M</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">JOBS SHORTAGE</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div style="background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.1);border-radius:4px;padding:1rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-amber)">$187K</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">TOP AI SALARY</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div style="background:rgba(255,62,168,0.05);border:1px solid rgba(255,62,168,0.1);border-radius:4px;padding:1rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-magenta)">97%</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px">CLOUD ADOPTION</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH QUIZ -->
+<section class="quiz-section" id="quiz">
+  <div class="container">
+    <div class="row mb-4 fade-up">
+      <div class="col-lg-7">
+        <div class="section-eyebrow">// Knowledge Check</div>
+        <h2 class="section-title">Tech Readiness<br>Quiz 2026</h2>
+        <p class="section-desc">Test your knowledge across AI, web dev, cybersecurity, and cloud technologies. 8 questions · 5 mins</p>
+      </div>
+    </div>
+    <div class="row fade-up">
+      <div class="col-lg-8">
+        <div class="quiz-card" id="quiz-card">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress" style="width:12.5%"></div>
+          </div>
+          <div id="quiz-content">
+            <!-- Injected by JS -->
+          </div>
+          <div class="d-flex gap-3 mt-3">
+            <button class="btn-ghost-nexus" id="quiz-submit" onclick="submitAnswer()">Submit Answer</button>
+            <button class="btn-primary-nexus d-none" id="quiz-next" onclick="nextQuestion()"><span>Next</span> <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="salary-card">
+          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);margin-bottom:0.5rem">SCORE BOARD</div>
+          <div id="quiz-score-display" style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;line-height:1">0<span style="color:var(--accent-cyan)">/8</span></div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">Correct answers</div>
+          <div class="salary-bar mt-3">
+            <div class="salary-bar-fill" id="score-bar" style="width:0%"></div>
+          </div>
+          <div style="margin-top:1.5rem">
+            <div class="roadmap-label">TOPICS COVERED</div>
+            <div id="topic-tracker" style="margin-top:0.6rem">
+              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-0"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-0">AI Fundamentals</span></div>
+              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-1"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-1">Web Development</span></div>
+              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-2"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-2">Cybersecurity</span></div>
+              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-3"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-3">Cloud & DevOps</span></div>
+              <div class="d-flex align-items-center gap-2 mb-2"><span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);display:block" id="dot-4"></span><span style="font-size:0.8rem;color:var(--text-muted)" id="topic-4">Quantum / Edge</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING ROADMAP -->
+<section class="roadmap-section" id="roadmap">
+  <div class="container">
+    <div class="row mb-5 fade-up">
+      <div class="col-lg-6">
+        <div class="section-eyebrow">// Learning Path</div>
+        <h2 class="section-title">Your 2026<br>Tech Roadmap</h2>
+        <p class="section-desc">A structured path from fundamentals to future-proof expertise — tailored for the Indian and global job market.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num active">01</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">Foundation · Months 1–3</div>
+            <div class="roadmap-title">Web Development Foundations</div>
+            <div class="roadmap-desc">Master HTML5, CSS3, responsive design with Bootstrap 5, JavaScript ES2025, jQuery DOM manipulation, and the Servlet/JSP backend stack.</div>
+            <div class="skill-chips">
+              <span class="skill-chip">HTML5</span><span class="skill-chip">CSS3</span><span class="skill-chip">Bootstrap 5</span><span class="skill-chip">jQuery</span><span class="skill-chip">Java Servlet</span>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num active">02</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">Frontend Mastery · Months 4–6</div>
+            <div class="roadmap-title">Modern JavaScript & Frameworks</div>
+            <div class="roadmap-desc">React 19, TypeScript, Next.js 15, server components, state management (Zustand/Redux), REST & GraphQL APIs, unit testing.</div>
+            <div class="skill-chips">
+              <span class="skill-chip">React 19</span><span class="skill-chip">TypeScript</span><span class="skill-chip">Next.js 15</span><span class="skill-chip">TanStack</span>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num">03</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">Backend & Data · Months 7–9</div>
+            <div class="roadmap-title">APIs, Databases & Microservices</div>
+            <div class="roadmap-desc">Node.js/Spring Boot microservices, PostgreSQL, MongoDB, Redis, Kafka event streaming, Docker containerisation, CI/CD pipelines.</div>
+            <div class="skill-chips">
+              <span class="skill-chip">Node.js</span><span class="skill-chip">PostgreSQL</span><span class="skill-chip">Kafka</span><span class="skill-chip">Docker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num">04</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">Cloud Native · Months 10–12</div>
+            <div class="roadmap-title">Cloud, DevOps & Infrastructure</div>
+            <div class="roadmap-desc">AWS/GCP/Azure certifications, Kubernetes orchestration, Terraform IaC, GitOps, Observability (Prometheus, Grafana, OpenTelemetry).</div>
+            <div class="skill-chips">
+              <span class="skill-chip">Kubernetes</span><span class="skill-chip">Terraform</span><span class="skill-chip">AWS SAA</span><span class="skill-chip">ArgoCD</span>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num">05</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">AI Integration · Months 13–18</div>
+            <div class="roadmap-title">AI/ML Engineering & LLMOps</div>
+            <div class="roadmap-desc">Python ML stack, fine-tuning LLMs, RAG pipelines, LangChain/LlamaIndex, vector databases (Pinecone/Weaviate), model deployment & monitoring.</div>
+            <div class="skill-chips">
+              <span class="skill-chip">PyTorch</span><span class="skill-chip">LangChain</span><span class="skill-chip">RAG</span><span class="skill-chip">Pinecone</span><span class="skill-chip">MLflow</span>
+            </div>
+          </div>
+        </div>
+        <div class="roadmap-item fade-up">
+          <div class="roadmap-num">06</div>
+          <div class="roadmap-content">
+            <div class="roadmap-label">Future Tech · Months 18–24</div>
+            <div class="roadmap-title">Quantum, Edge & Specialisation</div>
+            <div class="roadmap-desc">Post-quantum cryptography, Qiskit, TinyML on edge devices, XR/spatial computing, advanced cybersecurity, system design for scale.</div>
+            <div class="skill-chips">
+              <span class="skill-chip">Qiskit</span><span class="skill-chip">TinyML</span><span class="skill-chip">CRYSTALS-Kyber</span><span class="skill-chip">WebXR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SALARY CALCULATOR -->
+<section class="salary-section" id="salary">
+  <div class="container">
+    <div class="row mb-5 fade-up">
+      <div class="col-lg-7">
+        <div class="section-eyebrow">// Market Compensation</div>
+        <h2 class="section-title">2026 Salary<br>Intelligence</h2>
+        <p class="section-desc">Real-time market compensation data across India's top tech roles. Select a role + experience level.</p>
+      </div>
+    </div>
+    <div class="row g-4 fade-up">
+      <div class="col-lg-5">
+        <div class="salary-card">
+          <div class="roadmap-label mb-2">SELECT ROLE</div>
+          <div id="role-buttons">
+            <button class="salary-role-btn active" onclick="updateSalary('ai-ml', this)">AI/ML Engineer</button>
+            <button class="salary-role-btn" onclick="updateSalary('fullstack', this)">Full Stack Dev</button>
+            <button class="salary-role-btn" onclick="updateSalary('devops', this)">DevOps/Cloud</button>
+            <button class="salary-role-btn" onclick="updateSalary('cybersec', this)">Cybersecurity</button>
+            <button class="salary-role-btn" onclick="updateSalary('data', this)">Data Scientist</button>
+            <button class="salary-role-btn" onclick="updateSalary('quantum', this)">Quantum Dev</button>
+          </div>
+          <div class="roadmap-label mt-3 mb-2">EXPERIENCE LEVEL</div>
+          <div id="exp-buttons">
+            <button class="salary-role-btn active" onclick="setExp('junior', this)">Junior (0–2 yrs)</button>
+            <button class="salary-role-btn" onclick="setExp('mid', this)">Mid (3–5 yrs)</button>
+            <button class="salary-role-btn" onclick="setExp('senior', this)">Senior (6–10 yrs)</button>
+            <button class="salary-role-btn" onclick="setExp('lead', this)">Lead/Principal</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="salary-card">
+          <div class="salary-display">
+            <div class="salary-amount"><span>₹</span><span id="sal-num">18</span>L</div>
+            <div class="salary-range" id="sal-range">Range: ₹12L – ₹25L per annum</div>
+            <div class="salary-bar mt-3">
+              <div class="salary-bar-fill" id="sal-bar" style="width:35%"></div>
+            </div>
+          </div>
+          <div class="salary-factors">
+            <div class="salary-factor"><span class="salary-factor-label">Role</span><span class="salary-factor-val val-up" id="sal-role">AI/ML Engineer</span></div>
+            <div class="salary-factor"><span class="salary-factor-label">Experience</span><span class="salary-factor-val val-neutral" id="sal-exp">Junior (0–2 yrs)</span></div>
+            <div class="salary-factor"><span class="salary-factor-label">Global Equivalent</span><span class="salary-factor-val val-up" id="sal-global">$28K–$45K USD</span></div>
+            <div class="salary-factor"><span class="salary-factor-label">YoY Growth</span><span class="salary-factor-val val-up" id="sal-growth">+28%</span></div>
+            <div class="salary-factor"><span class="salary-factor-label">Top Companies</span><span class="salary-factor-val val-neutral" id="sal-companies">Google, OpenAI, Flipkart</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section" id="newsletter">
+  <div class="container">
+    <div class="row fade-up">
+      <div class="col-lg-10 mx-auto">
+        <div class="newsletter-card">
+          <div class="section-eyebrow">// Stay Ahead</div>
+          <div class="newsletter-title">Tech Intelligence,<br>Weekly.</div>
+          <div class="newsletter-desc">Weekly deep-dives on AI, market trends, salary data, and emerging tech — curated for ambitious builders.</div>
+          <div class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="you@company.com" id="nl-email">
+            <button class="btn-primary-nexus" onclick="subscribeNewsletter()"><span>Subscribe</span> <i class="fas fa-arrow-right"></i></button>
+          </div>
+          <div id="nl-success" class="d-none mt-3" style="font-family:var(--font-mono);font-size:0.78rem;color:var(--accent-lime)">
+            <i class="fas fa-check-circle"></i> You're in! First edition arrives next Monday.
+          </div>
+          <div style="margin-top:2rem;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap">
+            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-lock" style="color:var(--accent-cyan)"></i> Zero spam</span>
+            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-bolt" style="color:var(--accent-lime)"></i> Weekly digest</span>
+            <span style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-users" style="color:var(--accent-magenta)"></i> 42K+ readers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="nexus-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-4 mb-3 mb-lg-0">
+        <div class="nav-brand" style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent">NexusAI</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;font-family:var(--font-mono)">Future Tech Intelligence Hub © 2026</div>
+      </div>
+      <div class="col-lg-4 mb-3 mb-lg-0 text-lg-center footer-links">
+        <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">API</a>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted)">Built with: HTML · CSS · Bootstrap 5 · jQuery · Servlet API</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal fade" id="modal-ai" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(0,245,255,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-cyan)">AI & Machine Learning</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>Artificial Intelligence is the most transformative technology of the 21st century. From generative models (GPT-4o, Claude, Gemini) to computer vision systems detecting cancer earlier than specialists, AI is rewriting industries at a pace never seen before.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Key areas for 2026:</strong> Multimodal AI, AI agents & orchestration, edge AI inference, responsible AI / AI governance, AI-native application development (vibe coding, copilot APIs).</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">India opportunity:</strong> India has the world's 2nd largest AI talent pool. Top roles — ML Engineer, AI Research Scientist, Prompt Engineer, LLMOps Engineer, AI Product Manager — command ₹25L–₹80L+ packages.</p>
+        </div>
+        <div class="d-flex gap-2 mt-3 flex-wrap">
+          <span class="tech-stack-badge">TensorFlow</span><span class="tech-stack-badge">PyTorch</span><span class="tech-stack-badge">LangChain</span><span class="tech-stack-badge">Hugging Face</span><span class="tech-stack-badge">Vertex AI</span><span class="tech-stack-badge">SageMaker</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-web" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(168,255,62,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-lime)">Full Stack Development</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>Full Stack Development in 2026 means mastering the convergence of traditional web engineering with AI-native patterns. React Server Components, streaming UIs, edge runtimes, and AI copilot integration are no longer optional — they're baseline expectations.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Cutting-edge stack (2026):</strong> Next.js 15 App Router, React 19 compiler, Bun runtime, Drizzle ORM, Neon/PlanetScale, tRPC, Shadcn/UI, AI SDK by Vercel.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Traditional stack (still booming):</strong> Java Spring Boot + React, Servlet/JSP + Bootstrap + jQuery — powering 70% of India's enterprise systems. Both paths lead to excellent careers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-cyber" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(255,62,168,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-magenta)">Cybersecurity & Zero-Trust</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>With cybercrime expected to cost $10.5 trillion annually by 2025, and a 3.4 million security professional shortage globally, there has never been a better time to enter cybersecurity. AI-powered threats require AI-powered defences.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Hot roles:</strong> Cloud Security Architect, Threat Intelligence Analyst, Red Team Operator, AppSec Engineer, GRC Specialist, Incident Response Lead. CISM, CISSP, CEH, OSCP certifications highly valued.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Emerging (2026–2030):</strong> Post-quantum cryptography (NIST PQC standards live), AI-vs-AI adversarial security, automotive cybersecurity (EV & autonomous), supply chain security.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-cloud" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(255,181,71,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent-amber)">Cloud & DevOps</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>Cloud & DevOps remains the backbone of all digital transformation. Platform Engineering is the new DevOps — building Internal Developer Platforms (IDPs) that abstract infrastructure complexity and accelerate delivery.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">2026 evolution:</strong> FinOps (cloud cost optimisation), GitOps workflows (ArgoCD, Flux), AI Ops (AIOps), Service Mesh (Istio, Linkerd), Policy-as-Code (OPA, Kyverno), WebAssembly (WASM) on edge.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Certifications that pay:</strong> AWS Solutions Architect Professional, GCP Professional Cloud Architect, CKA/CKAD, HashiCorp Terraform Associate, GitLab CI specialist.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-quantum" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(181,123,255,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:#b57bff">Quantum Computing</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>Quantum computing crossed the 1000-qubit threshold. While fault-tolerant universal quantum computers are still years away, quantum advantage has been demonstrated in chemistry simulation, optimisation, and cryptography.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Near-term applications (2026–2030):</strong> Drug molecule simulation (Pharma), financial portfolio optimisation, logistics routing (airline, shipping), post-quantum cryptography standards migration.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">Career path:</strong> Learn linear algebra, quantum mechanics basics, then Qiskit (IBM), Cirq (Google), or PennyLane (Xanadu). India's IISER, IITs and TCS Research hiring quantum specialists at ₹30L–₹70L.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-iot" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg-surface);border:1px solid rgba(62,255,180,0.15);border-radius:8px">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:#3effb4">IoT & Edge AI</div>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.75">
+          <p>75 billion connected devices by 2025 generate massive data that cannot all be sent to the cloud. Edge AI — running ML models directly on devices — is the solution enabling real-time intelligence at the source.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">TinyML revolution:</strong> Models like MobileNet, EfficientDet, and custom distilled transformers now run on microcontrollers consuming milliwatts. Edge Impulse, TensorFlow Lite, and ONNX Runtime enable rapid deployment.</p>
+          <p class="mt-3"><strong style="color:var(--text-primary)">India opportunity:</strong> Smart agriculture (soil sensors, drone AI), smart cities (traffic AI), healthcare IoT (wearables, remote diagnostics), manufacturing (predictive maintenance). Government's Smart Cities Mission ₹2T investment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ─── CURSOR ───────────────────────────────────────────────────────
+$(document).on('mousemove', function(e) {
+  $('#cursor').css({ left: e.clientX, top: e.clientY });
+  setTimeout(function() {
+    $('#cursor-ring').css({ left: e.clientX, top: e.clientY });
+  }, 80);
+});
+
+// ─── NAVBAR SCROLL ────────────────────────────────────────────────
+$(window).on('scroll', function() {
+  if ($(this).scrollTop() > 50) $('.nexus-nav').addClass('scrolled');
+  else $('.nexus-nav').removeClass('scrolled');
+  checkFadeUp();
+});
+
+// ─── FADE UP ON SCROLL ────────────────────────────────────────────
+function checkFadeUp() {
+  $('.fade-up').each(function() {
+    var top = $(this).offset().top;
+    var scrollBottom = $(window).scrollTop() + $(window).height();
+    if (scrollBottom > top + 60) $(this).addClass('visible');
+  });
+}
+$(document).ready(function() { checkFadeUp(); });
+
+// ─── COUNTER ANIMATION ────────────────────────────────────────────
+function animateCounter(el, target, suffix) {
+  var current = 0;
+  var step = Math.ceil(target / 40);
+  var timer = setInterval(function() {
+    current += step;
+    if (current >= target) { current = target; clearInterval(timer); }
+    $(el).html(current + '<span>' + suffix + '</span>');
+  }, 40);
+}
+setTimeout(function() {
+  animateCounter('#counter1', 6, '+');
+  animateCounter('#counter2', 45, 'L+');
+  animateCounter('#counter3', 38, '%');
+}, 800);
+
+// ─── TERMINAL ANIMATION ───────────────────────────────────────────
+var termLines = [
+  { type: 'prompt', text: 'nexus scan --domain=AI-ML 2026' },
+  { type: 'output', text: '✓ Domain active · Market: $2.6T projected' },
+  { type: 'output', text: '✓ Top skill: LLM fine-tuning · RAG pipelines' },
+  { type: 'prompt', text: 'nexus jobs --filter="India,Remote"' },
+  { type: 'output', text: '✓ 84,000 open positions found' },
+  { type: 'warn',   text: '⚠ Skill gap detected: Post-quantum crypto' },
+  { type: 'prompt', text: 'nexus salary --role="ML Engineer" --exp=mid' },
+  { type: 'output', text: '✓ Median: ₹38L/yr  |  Top: ₹80L+ (FAANG)' },
+  { type: 'prompt', text: 'nexus forecast --year=2030' },
+  { type: 'output', text: '✓ AI Engineers needed: +4.2M globally' },
+  { type: 'output', text: '✓ Quantum developers: HIGH VALUE (scarce)' },
+  { type: 'comment', text: '# Run nexus --help for full command list' },
+];
+var lineIdx = 0;
+function typeNextLine() {
+  if (lineIdx >= termLines.length) return;
+  var line = termLines[lineIdx];
+  var cls = { prompt: 't-prompt', output: 't-output', warn: 't-warn', comment: 't-comment' }[line.type] || 't-output';
+  var prefix = line.type === 'prompt' ? '<span class="t-prompt">❯</span> ' : '';
+  var div = $('<div class="t-line"></div>').html(prefix + '<span class="' + cls + '">' + line.text + '</span>');
+  $('#terminal-output').append(div);
+  lineIdx++;
+  $('#terminal-output').scrollTop($('#terminal-output')[0].scrollHeight);
+  var delay = line.type === 'prompt' ? 800 : 350;
+  if (lineIdx < termLines.length) setTimeout(typeNextLine, delay);
+  else $('#terminal-output').append('<div class="t-line"><span class="t-prompt">❯</span> <span class="cursor-blink"></span></div>');
+}
+setTimeout(typeNextLine, 1200);
+
+// ─── CHARTS ───────────────────────────────────────────────────────
+var chartCtx = document.getElementById('mainChart').getContext('2d');
+var labels = ['2022','2023','2024','2025','2026','2027','2028','2030','2032'];
+
+var growthData = {
+  datasets: [
+    { label: 'AI & ML', data: [120,210,390,670,1100,1580,2100,2600,3200], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Cybersecurity', data: [170,190,225,280,350,403,480,580,700], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Cloud Services', data: [490,600,740,900,1060,1250,1450,1700,2100], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'IoT & Edge', data: [380,420,510,650,820,1000,1250,1700,2200], borderColor: '#a8ff3e', backgroundColor: 'rgba(168,255,62,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+  ]
+};
+
+var salaryData = {
+  datasets: [
+    { label: 'AI/ML Eng (₹L)', data: [12,14,18,24,32,42,52,70,90], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'DevOps (₹L)', data: [8,10,13,17,22,28,35,48,62], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Fullstack (₹L)', data: [7,9,12,16,21,26,32,44,58], borderColor: '#a8ff3e', backgroundColor: 'rgba(168,255,62,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Cybersec (₹L)', data: [10,12,15,20,28,36,46,62,80], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+  ]
+};
+
+var demandData = {
+  datasets: [
+    { label: 'AI Job Postings (K)', data: [45,80,140,240,380,520,680,900,1100], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,0.06)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Cloud Jobs (K)', data: [80,110,150,200,260,330,420,560,720], borderColor: '#ffb547', backgroundColor: 'rgba(255,181,71,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+    { label: 'Cybersec Jobs (K)', data: [60,75,100,135,185,240,310,430,580], borderColor: '#ff3ea8', backgroundColor: 'rgba(255,62,168,0.04)', tension: 0.4, fill: true, borderWidth: 2 },
+  ]
+};
+
+var chartTitles = ['Market Size — USD Billions (2022–2032)', 'India Salary Trends — ₹ Lakhs (2022–2032)', 'Global Job Postings — Thousands (2022–2032)'];
+var allDatasets = [growthData, salaryData, demandData];
+var currentDataset = 0;
+
+var mainChart = new Chart(chartCtx, {
+  type: 'line',
+  data: { labels: labels, datasets: growthData.datasets },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 11 } } } },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 } } }
+    }
+  }
+});
+
+function showGrowthChart() { switchChart(0); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-growth').addClass('active'); }
+function showSalaryChart() { switchChart(1); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-salary').addClass('active'); }
+function showDemandChart() { switchChart(2); $('#chart-toggle-growth,#chart-toggle-salary,#chart-toggle-demand').removeClass('active'); $('#chart-toggle-demand').addClass('active'); }
+
+function switchChart(idx) {
+  mainChart.data.datasets = allDatasets[idx].datasets;
+  mainChart.update('active');
+  $('#chartMainTitle').text(chartTitles[idx]);
+}
+
+// Donut chart
+var donutCtx = document.getElementById('donutChart').getContext('2d');
+new Chart(donutCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['AI/ML', 'Cloud', 'Fullstack', 'Cybersec', 'IoT', 'Quantum'],
+    datasets: [{ data: [32, 24, 20, 14, 7, 3], backgroundColor: ['#00f5ff','#ffb547','#a8ff3e','#ff3ea8','#3effb4','#b57bff'], borderWidth: 0, hoverOffset: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '65%',
+    plugins: { legend: { position: 'bottom', labels: { color: '#8a94b0', font: { family: "'JetBrains Mono'", size: 10 }, padding: 10 } } }
+  }
+});
+
+// ─── QUIZ ─────────────────────────────────────────────────────────
+var questions = [
+  { q: "Which architecture pattern do Large Language Models like GPT and Claude use?", opts: ["Recurrent Neural Network (RNN)", "Transformer (Self-Attention)", "Convolutional Neural Network", "Boltzmann Machine"], ans: 1, topic: 0 },
+  { q: "In web development, what does 'SSR' stand for and why is it critical in 2026?", opts: ["Static Site Rendering", "Server-Side Rendering — improves SEO & TTFB", "Serverless Service Runtime", "Sequential Script Routing"], ans: 1, topic: 1 },
+  { q: "What does 'Zero-Trust Security' fundamentally assume?", opts: ["The internal network is always safe", "All perimeter firewalls are sufficient", "No user or device is trusted by default, even inside the network", "VPN provides complete security"], ans: 2, topic: 2 },
+  { q: "Which tool is the standard for Infrastructure-as-Code (IaC) in multi-cloud environments?", opts: ["Ansible", "Terraform by HashiCorp", "Jenkins", "Puppet"], ans: 1, topic: 3 },
+  { q: "RAG in AI stands for:", opts: ["Rapid Agentic Generation", "Retrieval-Augmented Generation", "Real-time Agent Graph", "Recursive Attention Grid"], ans: 1, topic: 0 },
+  { q: "Which CSS feature, combined with Bootstrap, enables truly responsive layouts without media queries?", opts: ["CSS float", "CSS Grid with auto-fit/minmax", "CSS inline-block", "CSS z-index"], ans: 1, topic: 1 },
+  { q: "Post-Quantum Cryptography (PQC) is being standardised because:", opts: ["RSA is too slow for mobile", "Quantum computers will eventually break current public-key encryption", "TLS 1.3 is deprecated", "Hash functions are unreliable"], ans: 1, topic: 4 },
+  { q: "In Kubernetes, what is a 'Pod'?", opts: ["A physical server rack", "The smallest deployable unit — wraps one or more containers", "A type of service load balancer", "A persistent volume claim"], ans: 1, topic: 3 },
+];
+
+var currentQ = 0, score = 0, selectedOpt = -1, answered = false;
+var expLevel = 'junior', selectedRole = 'ai-ml';
+
+function renderQuestion() {
+  var q = questions[currentQ];
+  var letters = ['A','B','C','D'];
+  var html = '<div class="quiz-counter">Question ' + (currentQ+1) + ' of ' + questions.length + '</div>';
+  html += '<div class="quiz-q">' + q.q + '</div>';
+  q.opts.forEach(function(opt, i) {
+    html += '<div class="quiz-option" id="opt-' + i + '" onclick="selectOpt(' + i + ')"><div class="quiz-opt-letter">' + letters[i] + '</div>' + opt + '</div>';
+  });
+  $('#quiz-content').html(html);
+  selectedOpt = -1; answered = false;
+  $('#quiz-submit').removeClass('d-none');
+  $('#quiz-next').addClass('d-none');
+  $('#quiz-progress').css('width', ((currentQ+1)/questions.length*100) + '%');
+  // activate topic dot
+  var topicIdx = q.topic;
+  $('#dot-' + topicIdx).css('background', 'var(--accent-cyan)');
+  $('#topic-' + topicIdx).css('color', 'var(--text-primary)');
+}
+
+function selectOpt(i) {
+  if (answered) return;
+  $('.quiz-option').removeClass('selected');
+  $('#opt-' + i).addClass('selected');
+  selectedOpt = i;
+}
+
+function submitAnswer() {
+  if (selectedOpt < 0 || answered) return;
+  answered = true;
+  var correct = questions[currentQ].ans;
+  if (selectedOpt === correct) {
+    $('#opt-' + selectedOpt).removeClass('selected').addClass('correct');
+    score++;
+  } else {
+    $('#opt-' + selectedOpt).removeClass('selected').addClass('wrong');
+    $('#opt-' + correct).addClass('correct');
+  }
+  $('#quiz-score-display').html(score + '<span style="color:var(--accent-cyan)">/' + questions.length + '</span>');
+  $('#score-bar').css('width', (score/questions.length*100) + '%');
+  $('#quiz-submit').addClass('d-none');
+  if (currentQ < questions.length - 1) $('#quiz-next').removeClass('d-none');
+  else {
+    setTimeout(showResult, 800);
+  }
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuestion();
+  $('#quiz-next').addClass('d-none');
+  $('#quiz-submit').removeClass('d-none');
+}
+
+function showResult() {
+  var pct = Math.round(score/questions.length*100);
+  var grade = pct >= 87 ? '🏆 Expert' : pct >= 62 ? '🎯 Proficient' : pct >= 37 ? '📚 Learning' : '🌱 Beginner';
+  $('#quiz-card').html('<div style="text-align:center;padding:2rem 0"><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-bottom:0.5rem">QUIZ COMPLETE</div><div style="font-family:var(--font-display);font-size:4rem;font-weight:800;color:var(--accent-cyan)">'+score+'/8</div><div style="font-family:var(--font-display);font-size:1.4rem;font-weight:700;margin:0.5rem 0">'+grade+'</div><div style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem">'+pct+'% accuracy · Tech Readiness Score 2026</div><button class="btn-primary-nexus" onclick="resetQuiz()"><span>Retake Quiz</span> <i class="fas fa-redo"></i></button></div>');
+}
+
+function resetQuiz() {
+  currentQ = 0; score = 0; selectedOpt = -1; answered = false;
+  $('#quiz-score-display').html('0<span style="color:var(--accent-cyan)">/8</span>');
+  $('#score-bar').css('width','0%');
+  for (var i=0; i<5; i++) { $('#dot-'+i).css('background','var(--text-muted)'); $('#topic-'+i).css('color','var(--text-muted)'); }
+  renderQuestion();
+}
+
+renderQuestion();
+
+// ─── SALARY CALCULATOR ────────────────────────────────────────────
+var salaryDB = {
+  'ai-ml':     { junior:[18,12,25,28,'Google, OpenAI, Flipkart','$28K–$45K'], mid:[38,28,52,32,'Microsoft, TCS, Persistent','$55K–$80K'], senior:[65,50,85,38,'FAANG, Anthropic, Cohere','$95K–$140K'], lead:[90,70,130,42,'Research Labs, MNCs','$150K–$200K'] },
+  'fullstack': { junior:[12,8,18,28,'Startups, Infosys, Wipro','$18K–$28K'], mid:[22,15,32,30,'Flipkart, Swiggy, Zepto','$35K–$52K'], senior:[40,30,60,34,'FAANG, Unicorns','$65K–$95K'], lead:[65,50,90,36,'CTO offices, Product co.','$100K–$150K'] },
+  'devops':    { junior:[14,10,20,26,'IT firms, Startups','$20K–$32K'], mid:[28,20,40,30,'AWS partners, SaaS cos','$42K–$62K'], senior:[50,38,70,33,'Cloud-native cos','$75K–$110K'], lead:[75,55,100,37,'Infra leads, MNCs','$120K–$175K'] },
+  'cybersec':  { junior:[15,10,22,30,'IT companies, BFSI','$22K–$38K'], mid:[30,22,45,34,'Banks, Govt, MNCs','$48K–$75K'], senior:[55,40,78,38,'BFSI, Defence sector','$85K–$130K'], lead:[80,60,110,42,'CISOs, Consultancies','$140K–$200K'] },
+  'data':      { junior:[14,9,20,25,'Analytics firms','$22K–$35K'], mid:[30,22,44,28,'MAANG, unicorns','$48K–$70K'], senior:[52,38,72,32,'Research, AI labs','$80K–$115K'], lead:[78,55,105,38,'Chief Data Officers','$130K–$185K'] },
+  'quantum':   { junior:[20,14,30,50,'IITs, Startups, IBM','$32K–$55K'], mid:[45,30,65,55,'TCS Research, IISc','$72K–$105K'], senior:[75,55,100,60,'National labs, MNCs','$120K–$175K'], lead:[110,80,150,65,'Research directors','$180K–$250K'] },
+};
+var roleNames = { 'ai-ml':'AI/ML Engineer','fullstack':'Full Stack Dev','devops':'DevOps/Cloud','cybersec':'Cybersecurity','data':'Data Scientist','quantum':'Quantum Dev' };
+var expNames  = { junior:'Junior (0–2 yrs)', mid:'Mid (3–5 yrs)', senior:'Senior (6–10 yrs)', lead:'Lead/Principal' };
+var companies = { 'ai-ml':['Google, OpenAI, Flipkart','Microsoft, TCS, Persistent','FAANG, Anthropic, Cohere','Research Labs, MNCs'], fullstack:['Startups, Infosys, Wipro','Flipkart, Swiggy, Zepto','FAANG, Unicorns','CTO offices, Product co.'], devops:['IT firms, Startups','AWS partners, SaaS cos','Cloud-native cos','Infra leads, MNCs'], cybersec:['IT companies, BFSI','Banks, Govt, MNCs','BFSI, Defence sector','CISOs, Consultancies'], data:['Analytics firms','MAANG, unicorns','Research, AI labs','Chief Data Officers'], quantum:['IITs, Startups, IBM','TCS Research, IISc','National labs, MNCs','Research directors'] };
+var expIdx    = { junior:0, mid:1, senior:2, lead:3 };
+
+function updateSalary(role, btn) {
+  selectedRole = role;
+  $('#role-buttons .salary-role-btn').removeClass('active');
+  $(btn).addClass('active');
+  refreshSalary();
+}
+function setExp(exp, btn) {
+  expLevel = exp;
+  $('#exp-buttons .salary-role-btn').removeClass('active');
+  $(btn).addClass('active');
+  refreshSalary();
+}
+function refreshSalary() {
+  var d = salaryDB[selectedRole][expLevel];
+  var maxSal = 150, pct = Math.round(d[0]/maxSal*100);
+  $('#sal-num').text(d[0]);
+  $('#sal-range').text('Range: ₹' + d[1] + 'L – ₹' + d[2] + 'L per annum');
+  $('#sal-bar').css('width', pct + '%');
+  $('#sal-role').text(roleNames[selectedRole]);
+  $('#sal-exp').text(expNames[expLevel]);
+  $('#sal-global').text(d[5]);
+  $('#sal-growth').text('+' + d[3] + '%');
+  $('#sal-companies').text(companies[selectedRole][expIdx[expLevel]]);
+}
+
+// ─── NEWSLETTER ───────────────────────────────────────────────────
+function subscribeNewsletter() {
+  var email = $('#nl-email').val();
+  if (!email || !email.includes('@')) {
+    $('#nl-email').css('border-color','var(--accent-magenta)');
+    return;
+  }
+  $('#nl-email').css('border-color','var(--accent-lime)');
+  $('#nl-success').removeClass('d-none');
+  setTimeout(function() { $('#nl-email').val('').css('border-color','rgba(255,255,255,0.1)'); }, 2000);
+}
+
+// ─── SMOOTH SCROLL ────────────────────────────────────────────────
+$('a[href^="#"]').on('click', function(e) {
+  var target = $(this.getAttribute('href'));
+  if (target.length) {
+    e.preventDefault();
+    $('html,body').animate({ scrollTop: target.offset().top - 80 }, 600, 'swing');
+  }
+});
+</script>
+</body>
+</html>
